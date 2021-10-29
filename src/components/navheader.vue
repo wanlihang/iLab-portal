@@ -37,7 +37,7 @@
             <div class="flex-initial flex items-center">
               <a
                 @click="$router.push({ name: 'vip' })"
-                v-if="roleStatus"
+                v-if="configFunc.vip"
                 class="rounded mr-12 text-center color-vip"
               >
                 <img
@@ -215,7 +215,6 @@ export default {
   data() {
     return {
       loading: false,
-      roleStatus: false,
       showKey: null,
       hash: document.location.hash.split("?")[0],
       memberCan: false,
@@ -258,7 +257,6 @@ export default {
       this.$api.Home.HeaderNav().then((res) => {
         this.loading = false;
         this.list = res.data;
-        this.roleStatus = this.configFunc.vip;
       });
     },
     getUnread() {

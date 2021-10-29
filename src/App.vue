@@ -43,7 +43,7 @@ export default {
       if (val) {
         this.$utils.saveMsv(val);
       }
-    }
+    },
   },
   computed: {
     ...mapState([
@@ -52,6 +52,7 @@ export default {
       "dialogMobile",
       "config",
       "isLogin",
+      "configFunc",
     ]),
   },
   mounted() {
@@ -102,22 +103,26 @@ export default {
       this.setConfig(config);
 
       // 插件功能开启/关闭
-      let funcTable = {
-        vip: true,
-        live: _.indexOf(config.enabled_addons, "Zhibo") !== -1,
-        book: _.indexOf(config.enabled_addons, "MeeduBooks") !== -1,
-        topic: _.indexOf(config.enabled_addons, "MeeduTopics") !== -1,
-        paper: _.indexOf(config.enabled_addons, "Paper") !== -1,
-        practice: _.indexOf(config.enabled_addons, "Paper") !== -1,
-        mockPaper: _.indexOf(config.enabled_addons, "Paper") !== -1,
-        wrongBook: _.indexOf(config.enabled_addons, "Paper") !== -1,
-        wenda: _.indexOf(config.enabled_addons, "Wenda") !== -1,
-        share: _.indexOf(config.enabled_addons, "MultiLevelShare") !== -1,
-        codeExchanger: _.indexOf(config.enabled_addons, "CodeExchanger") !== -1,
-        snapshort: _.indexOf(config.enabled_addons, "Snapshot") !== -1,
-        ke: _.indexOf(config.enabled_addons, "XiaoBanKe") !== -1,
-        promoCode: _.indexOf(config.enabled_addons, "MultiLevelShare") === -1,
-      };
+      let funcTable = this.configFunc;
+      funcTable["live"] = _.indexOf(config.enabled_addons, "Zhibo") !== -1;
+      funcTable["book"] = _.indexOf(config.enabled_addons, "MeeduBooks") !== -1;
+      funcTable["topic"] =
+        _.indexOf(config.enabled_addons, "MeeduTopics") !== -1;
+      funcTable["paper"] = _.indexOf(config.enabled_addons, "Paper") !== -1;
+      funcTable["practice"] = _.indexOf(config.enabled_addons, "Paper") !== -1;
+      funcTable["mockPaper"] = _.indexOf(config.enabled_addons, "Paper") !== -1;
+      funcTable["wrongBook"] = _.indexOf(config.enabled_addons, "Paper") !== -1;
+      funcTable["wenda"] = _.indexOf(config.enabled_addons, "Wenda") !== -1;
+      funcTable["share"] =
+        _.indexOf(config.enabled_addons, "MultiLevelShare") !== -1;
+      funcTable["codeExchanger"] =
+        _.indexOf(config.enabled_addons, "CodeExchanger") !== -1;
+      funcTable["snapshort"] =
+        _.indexOf(config.enabled_addons, "Snapshot") !== -1;
+      funcTable["ke"] = _.indexOf(config.enabled_addons, "XiaoBanKe") !== -1;
+      funcTable["promoCode"] =
+        _.indexOf(config.enabled_addons, "MultiLevelShare") === -1;
+
       this.updateFuncConfig(funcTable);
     },
   },
