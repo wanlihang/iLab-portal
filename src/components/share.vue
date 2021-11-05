@@ -8,19 +8,6 @@
         height="40"
         src="../assets/img/commen/icon-qq.png"
     /></a>
-    <a
-      class="wechat"
-      v-if="qq.url || sina.url"
-      @mouseenter="enter()"
-      @mouseleave="leave()"
-    >
-      <img
-        class="wechat-icon"
-        width="40"
-        height="40"
-        src="../assets/img/commen/icon-weixin.png"
-      />
-    </a>
     <a class="sina" v-if="sina.url" target="_blank" :href="sina.url"
       ><img
         class="sina-icon"
@@ -59,21 +46,9 @@ export default {
       this.getData();
     },
   },
-  created() {
-    this.$nextTick(function () {
-      this.search();
-    });
-  },
+  created() {},
   mounted() {},
   methods: {
-    search() {
-      var qrcode = new QRCode("qrcode", {
-        text: window.location.href, //表示内容，可以是地址或者是文字'55566'或者参数
-        colorDark: "#000000", //前景色
-        colorLight: "#ffffff", //背景色
-        correctLevel: QRCode.CorrectLevel.H, //容错级别
-      });
-    },
     enter() {
       this.seen = true;
     },
