@@ -95,7 +95,7 @@
                       播放下一节课程
                     </div>
                     <div class="last-video">
-                      {{ totalTime }}秒后开始自动播放下一届
+                      {{ totalTime }}秒后开始自动播放下一节
                     </div>
                   </template>
                   <div class="last-video" v-else>恭喜你看完本套课程！</div>
