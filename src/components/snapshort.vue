@@ -106,6 +106,7 @@ export default {
     ...mapState(["isLogin", "user"]),
   },
   mounted() {
+    this.getCount();
     this.getConfig();
   },
   beforeDestroy() {
@@ -135,7 +136,6 @@ export default {
 
         if (this.status) {
           this.$nextTick(() => {
-            this.getCount();
             this.getCamera();
           });
         }

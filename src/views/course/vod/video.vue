@@ -354,7 +354,7 @@
     <snap-shot
       :cid="video.id"
       resource-type="vod"
-      v-if="isWatch"
+      v-if="configFunc.snapshort && isWatch"
       :duration="playDuration"
     ></snap-shot>
     <nav-footer></nav-footer>
@@ -433,7 +433,7 @@ export default {
     },
   },
   computed: {
-    ...mapState(["isLogin", "user", "config"]),
+    ...mapState(["isLogin", "user", "config", "configFunc"]),
   },
   mounted() {
     window.addEventListener("scroll", this.handleTabFix, true);
