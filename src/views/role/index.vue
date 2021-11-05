@@ -123,7 +123,7 @@ export default {
       .role-item {
         position: relative;
         width: 366px;
-        height: 400px;
+        height: auto;
         background: linear-gradient(
           135deg,
           #fff4e4 0%,
@@ -159,8 +159,12 @@ export default {
           }
         }
         .desc {
+          display: flex;
+          flex-direction: column;
           width: 100%;
+          height: auto;
           p {
+            display: block;
             width: 100%;
             height: 16px;
             font-size: 16px;
@@ -171,9 +175,6 @@ export default {
           }
         }
         .button {
-          position: absolute;
-          left: 30px;
-          bottom: 30px;
           width: 306px;
           height: 50px;
           background: #e1a500;
