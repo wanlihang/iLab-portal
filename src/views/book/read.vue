@@ -440,6 +440,7 @@ export default {
       }
       this.id = articleId;
       this.getData();
+      document.body.scrollTop = document.documentElement.scrollTop = 0
       // this.$router.push({
       //   name: "bookRead",
       //   query: { id: articleId },
@@ -455,6 +456,7 @@ export default {
       }
       this.id = articleId;
       this.getData();
+      document.body.scrollTop = document.documentElement.scrollTop = 0
     },
     buyBook() {
       this.$router.push({
