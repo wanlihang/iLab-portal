@@ -107,7 +107,6 @@ export default {
   },
   mounted() {
     this.getConfig();
-    this.getCount();
   },
   beforeDestroy() {
     this.stopCamera();
@@ -136,6 +135,7 @@ export default {
 
         if (this.status) {
           this.$nextTick(() => {
+            this.getCount();
             this.getCamera();
           });
         }
