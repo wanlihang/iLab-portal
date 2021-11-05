@@ -163,7 +163,9 @@
                   <div class="nickname">
                     {{ commentItem.user.nick_name }}
                   </div>
-                  <div class="comment-time">{{ commentItem.diff }}</div>
+                  <div class="comment-time">
+                    {{ commentItem.created_at | changeTime }}
+                  </div>
                 </div>
 
                 <div class="comment-text" v-html="commentItem.content"></div>
@@ -235,7 +237,7 @@
                             用户不存在
                           </div>
                           <div class="reply-diff">
-                            {{ replyItem.diff }}
+                            {{ replyItem.created_at | changeTime }}
                           </div>
                         </div>
                         <div class="reply-text">
@@ -263,7 +265,7 @@
                             @click="
                               ReplyAnswer(
                                 commentItem.id,
-                                replyItem.reply_id,
+                                replyItem.id,
                                 replyItem.user.nick_name,
                                 index
                               )
@@ -440,7 +442,7 @@ export default {
       }
       this.id = articleId;
       this.getData();
-      document.body.scrollTop = document.documentElement.scrollTop = 0
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
       // this.$router.push({
       //   name: "bookRead",
       //   query: { id: articleId },
@@ -456,7 +458,7 @@ export default {
       }
       this.id = articleId;
       this.getData();
-      document.body.scrollTop = document.documentElement.scrollTop = 0
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
     buyBook() {
       this.$router.push({
@@ -550,16 +552,16 @@ export default {
           this.configInput2 = [];
           this.$message.success("回复成功");
           let item;
-          if (id) {
+          if (this.answerId !== 0) {
             item = {
               id: res.data.comment_id,
               parent_id: parentId,
               content: this.reply.content,
               children_count: 0,
-              reply_comment: {
+              reply: {
                 user: { nick_name: nick_name },
               },
-              diff: "1秒前",
+              created_at: "1秒前",
               user: {
                 avatar: this.user.avatar,
                 nick_name: this.user.nick_name,
@@ -572,7 +574,7 @@ export default {
               content: this.reply.content,
               children_count: 0,
               reply_comment: null,
-              diff: "1秒前",
+              created_at: "1秒前",
               user: {
                 avatar: this.user.avatar,
                 nick_name: this.user.nick_name,
