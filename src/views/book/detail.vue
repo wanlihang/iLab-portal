@@ -127,7 +127,7 @@
             <div class="chapter-item">
               <div class="chapter-videos-box">
                 <div
-                  class="book-item"
+                  class="book-itemsp"
                   @click="goRead(articleItem)"
                   v-for="articleItem in articles[0]"
                   :key="articleItem.id"
@@ -736,6 +736,55 @@ export default {
         .chapter-videos-box {
           width: 100%;
           height: auto;
+          .book-itemsp {
+            width: 100%;
+            height: 24px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+            margin-bottom: 30px;
+            &:last-child {
+              margin-bottom: 0px;
+            }
+            .video-title {
+              height: 22px;
+              display: flex;
+              align-items: center;
+              .text {
+                display: block;
+                height: 14px;
+                font-size: 14px;
+                font-weight: 400;
+                color: #333333;
+                line-height: 14px;
+              }
+              .free {
+                width: 44px;
+                height: 22px;
+                background: #04c877;
+                border-radius: 2px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+                font-weight: 400;
+                color: #ffffff;
+                margin-left: 15px;
+              }
+            }
+            .video-info {
+              position: absolute;
+              height: 14px;
+              font-size: 14px;
+              font-weight: 400;
+              color: #999999;
+              line-height: 14px;
+              top: 5px;
+              right: 0;
+            }
+          }
           .book-item {
             width: 100%;
             height: 24px;
