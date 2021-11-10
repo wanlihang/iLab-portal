@@ -134,10 +134,16 @@ export default {
         on: {
           click: function (e) {
             let url = e.target.name;
-            if (url.match("https:") || url.match("http:") || url.match("www")) {
-              window.location.href = url;
-            } else {
-              vm.$router.push({ path: url });
+            if (url) {
+              if (
+                url.match("https:") ||
+                url.match("http:") ||
+                url.match("www")
+              ) {
+                window.location.href = url;
+              } else {
+                vm.$router.push({ path: url });
+              }
             }
           },
         },
