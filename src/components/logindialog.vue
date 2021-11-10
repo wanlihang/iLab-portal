@@ -593,7 +593,7 @@
     </div>
     <div class="dialog-login-box" v-if="dialogStatus === 10">
       <div class="tabs">
-        <div class="item-tab active">设置修改密码</div>
+        <div class="item-tab active">设置（修改）密码</div>
         <img
           class="btn-close"
           @click="cancel()"
