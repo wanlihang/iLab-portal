@@ -717,7 +717,7 @@ export default {
         this.playTimeUpdate(parseInt(window.player.video.currentTime));
       });
       window.player.on("ended", () => {
-        this.playTimeUpdate(parseInt(window.player.video.currentTime));
+        this.playTimeUpdate(parseInt(window.player.video.currentTime), true);
         this.playendedStatus = true;
         this.totalTime = 10;
         this.$nextTick(function () {
@@ -754,8 +754,8 @@ export default {
       let duration = e.detail.currentTime;
       this.playTimeUpdate(duration);
     },
-    playTimeUpdate(duration) {
-      if (duration - this.playDuration >= 10) {
+    playTimeUpdate(duration, isEnd) {
+      if (duration - this.playDuration >= 10 || isEnd === true) {
         this.playDuration = duration;
         this.$api.Course.VideoRecord(this.video.id, {
           duration: this.playDuration,
