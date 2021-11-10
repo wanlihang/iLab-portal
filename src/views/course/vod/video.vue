@@ -717,6 +717,7 @@ export default {
         this.playTimeUpdate(parseInt(window.player.video.currentTime));
       });
       window.player.on("ended", () => {
+        this.playTimeUpdate(parseInt(window.player.video.currentTime));
         this.playendedStatus = true;
         this.totalTime = 10;
         this.$nextTick(function () {
