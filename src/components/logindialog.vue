@@ -591,6 +591,82 @@
         </div>
       </div>
     </div>
+    <div class="dialog-login-box" v-if="dialogStatus === 10">
+      <div class="tabs">
+        <div class="item-tab active">设置修改密码</div>
+        <img
+          class="btn-close"
+          @click="cancel()"
+          src="../assets/img/commen/icon-close.png"
+        />
+      </div>
+      <div class="box">
+        <div class="input-item">
+          <input
+            type="text"
+            placeholder="请输入绑定手机号"
+            autocomplete="off"
+            v-model="messageForm.mobile"
+            class="input"
+            required=""
+          />
+        </div>
+        <div class="input-item">
+          <input
+            type="text"
+            placeholder="请输入图形验证码"
+            autocomplete="off"
+            v-model="messageForm.captcha"
+            class="input-short"
+            required=""
+          />
+          <div class="captcha">
+            <img
+              class="captcha-img"
+              :src="captcha.img"
+              mode="widthFix"
+              @click="getCaptcha"
+            />
+          </div>
+        </div>
+        <div class="input-item">
+          <input
+            type="text"
+            placeholder="请输入手机验证码"
+            autocomplete="off"
+            v-model="messageForm.sms"
+            class="input-short"
+            required=""
+          />
+          <div class="buttons">
+            <span class="send-sms-button" @click="sendSms()">
+              <template v-if="sms.loading"> {{ sms.current }}s </template>
+              <template v-else>获取验证码</template>
+            </span>
+          </div>
+        </div>
+        <div class="input-item">
+          <input
+            type="password"
+            placeholder="请设置账号密码"
+            autocomplete="off"
+            v-model="messageForm.password"
+            class="input"
+            required=""
+          />
+        </div>
+        <div class="btn-box" style="margin-bottom: 0px !important">
+          <button
+            type="submit"
+            class="submit"
+            @keyup.enter="editValidate"
+            @click="editValidate"
+          >
+            重置密码
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -785,6 +861,9 @@ export default {
       if (this.dialogStatus === 9) {
         this.scene = "mobile_bind";
       }
+      if (this.dialogStatus === 10) {
+        this.scene = "password_reset";
+      }
       this.$api.Other.SendSms({
         mobile: this.messageForm.mobile,
         image_key: this.captcha.key,
@@ -831,6 +910,9 @@ export default {
       }
       if (this.dialogStatus === 9) {
         this.NewMobileValidate();
+      }
+      if (this.dialogStatus === 10) {
+        this.editValidate();
       }
     },
     tabChange(key) {

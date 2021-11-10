@@ -81,6 +81,16 @@
               <div class="btn" @click="goChangeMobile()">换绑手机号</div>
             </div>
           </div>
+          <div class="item-line">
+            <div class="item-left">
+              <div class="item-name">设置（修改）密码</div>
+            </div>
+            <div class="item-right">
+              <div class="btn" @click="goChangePassword()">
+                点击设置（修改）密码
+              </div>
+            </div>
+          </div>
           <!-- <div class="item-line">
             <div class="item-left">
               <div class="item-name">绑定QQ</div>
@@ -421,6 +431,10 @@ export default {
       this.changeDialogType(7);
       this.showLoginDialog();
     },
+    goChangePassword() {
+      this.changeDialogType(10);
+      this.showLoginDialog();
+    },
     getData() {
       this.$api.Member.Profile().then((res) => {
         if (res.data) {
@@ -624,13 +638,13 @@ export default {
             flex-direction: row;
             align-items: center;
             .item-name {
-              width: 56px;
+              width: 116px;
               height: 14px;
               font-size: 14px;
               font-weight: 400;
               color: #666666;
               line-height: 14px;
-              margin-right: 64px;
+              margin-right: 4px;
             }
             .item-tit {
               width: 56px;
