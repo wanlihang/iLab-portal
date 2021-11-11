@@ -1101,7 +1101,7 @@ export default {
       })
         .then((resp) => {
           this.loading = false;
-          this.$message.success("设置成功");
+          this.$message.success("修改完成");
           this.resetDialog();
           this.hideLoginDialog();
         })

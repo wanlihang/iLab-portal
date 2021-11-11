@@ -286,16 +286,17 @@ export default {
           margin-bottom: 0px;
         }
         .question-name {
-          width: 560px;
-          overflow: hidden;
+          width: 815px;
           height: 14px;
           font-size: 14px;
           font-weight: 400;
           color: #333333;
           line-height: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .question-type {
-          flex: 1;
           height: 14px;
           font-size: 14px;
           font-weight: 400;

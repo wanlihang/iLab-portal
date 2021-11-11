@@ -451,6 +451,7 @@ export default {
     .hidden-menu {
       width: 194px;
       height: auto;
+      box-shadow: 0px 2px 8px 0px rgba(85, 102, 119, 0.1);
       .menu-item {
         width: 194px;
         border: none;
