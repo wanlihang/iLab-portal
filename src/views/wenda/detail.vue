@@ -92,7 +92,7 @@
                   </div>
                   <div class="nickname red" v-else>用户不存在</div>
                   <div class="diff">
-                    {{ item.diff }}
+                    {{ item.created_at | changeTime }}
                   </div>
                   <template v-if="item.is_correct === 1">
                     <div class="correct-answer">
@@ -184,7 +184,7 @@
                             用户不存在
                           </div>
                           <div class="reply-diff">
-                            {{ replyItem.diff }}
+                            {{ replyItem.created_at | changeTime }}
                           </div>
                         </div>
                         <div class="reply-text">
@@ -391,7 +391,7 @@ export default {
               reply_comment: {
                 user: { nick_name: nick_name },
               },
-              diff: "1秒前",
+              created_at: "刚刚",
               user: {
                 avatar: this.user.avatar,
                 nick_name: this.user.nick_name,
@@ -404,7 +404,7 @@ export default {
               render_content: this.reply.content,
               children_count: 0,
               reply_comment: null,
-              diff: "1秒前",
+              created_at: "刚刚",
               user: {
                 avatar: this.user.avatar,
                 nick_name: this.user.nick_name,
