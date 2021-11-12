@@ -195,7 +195,9 @@
                     <div class="nickname">
                       {{ comment.users[commentItem.user_id].nick_name }}
                     </div>
-                    <div class="comment-time">{{ commentItem.diff }}</div>
+                    <div class="comment-time">
+                      {{ commentItem.created_at | changeTime }}
+                    </div>
                   </div>
 
                   <div class="comment-text" v-html="commentItem.content"></div>
