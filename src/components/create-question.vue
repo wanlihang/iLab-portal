@@ -218,7 +218,7 @@ export default {
     animation: scaleBig 0.3s;
     .tabs {
       width: 100%;
-      height: 24px;
+      height: auto;
       display: flex;
       flex-direction: row;
       padding-left: 30px;
@@ -228,8 +228,8 @@ export default {
       position: relative;
       justify-content: space-between;
       margin-bottom: 10px;
+      overflow: hidden;
       .tit {
-        height: 18px;
         font-size: 18px;
         font-weight: 500;
         color: #333333;
