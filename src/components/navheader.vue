@@ -376,11 +376,11 @@ export default {
   }
 }
 .logo {
-  width: 140px;
-  height: 40px;
+  width: auto;
+  height: 50px;
   img {
-    width: 140px;
-    height: 40px;
+    width: auto;
+    height: 50px;
   }
 }
 .skeletonLogo {
