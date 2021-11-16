@@ -142,7 +142,7 @@ export default {
     column-gap: 48px;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     overflow: hidden;
-    padding-top: 50px;
+    padding-top: 30px;
     .live-course-item {
       width: 100%;
       height: 273px;
