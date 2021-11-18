@@ -174,6 +174,7 @@ export default {
       border-radius: 3px;
       border: none;
       cursor: pointer;
+      align-items: center;
       &.active .index {
         background: #3ca7fa;
         border: 1px solid #3ca7fa;
@@ -181,8 +182,8 @@ export default {
       }
 
       .index {
-        width: 20px;
-        height: 20px;
+        width: 30px;
+        height: 30px;
         border: 1px solid #cccccc;
         border-radius: 50%;
         display: flex;
