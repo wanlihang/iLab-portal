@@ -515,15 +515,24 @@ const routes = [{
     path: '/500',
     name: 'Error500',
     meta: {
-      title: "500错误",
+      title: "500",
       hideHeader: true
     },
     component: () => import('../views/index/500.vue'),
 
   },
   {
-    path: '*',
+    path: '/404',
     name: 'Error404',
+    meta: {
+      title: "404",
+      hideHeader: true
+    },
+    component: () => import('../views/index/404.vue'),
+
+  },
+  {
+    path: '*',
     meta: {
       title: "404错误",
       hideHeader: true
