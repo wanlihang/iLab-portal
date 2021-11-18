@@ -1,19 +1,14 @@
 <template>
   <div id="app">
     <nav-header v-if="!this.$route.meta.hideHeader"></nav-header>
-    <Login-Dialog
-      :dialogType="loginDialogType"
-      :status="loginDialogStatus"
-      :mobile="dialogMobile"
-      :notCancel="cancelStatus"
-      @hideLoginDialog="hideLoginDialog"
-      @changeType="changeType"
-    ></Login-Dialog>
+    <Login-Dialog :dialogType="loginDialogType" :status="loginDialogStatus" :mobile="dialogMobile" :notCancel="cancelStatus" @hideLoginDialog="hideLoginDialog" @changeType="changeType"></Login-Dialog>
     <keep-alive>
       <router-view v-if="config && this.$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view v-if="config && !this.$route.meta.keepAlive"></router-view>
-    <back-top></back-top>
+
+    <back-top v-show="backTopStatus"></back-top>
+
   </div>
 </template>
 <script>
@@ -33,6 +28,7 @@ export default {
   data() {
     return {
       cancelStatus: false,
+      backTopStatus: false,
     };
   },
   watch: {
@@ -60,6 +56,10 @@ export default {
   },
   mounted() {
     this.MeEduInit();
+    window.addEventListener("scroll", this.getHeight, true);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.getHeight, true);
   },
   methods: {
     ...mapMutations([
@@ -73,9 +73,20 @@ export default {
     changeType(val) {
       this.changeDialogType(val);
     },
+    getHeight() {
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      let bodyHeight = document.body.clientHeight;
+      if (bodyHeight >= 2000) {
+        this.backTopStatus = true;
+      } else {
+        this.backTopStatus = false;
+      }
+    },
     MeEduInit() {
       this.getConfig();
-
       if (this.$utils.getToken()) {
         this.getUser();
       }
@@ -133,4 +144,5 @@ export default {
 </script>
 
 <style>
+
 </style>

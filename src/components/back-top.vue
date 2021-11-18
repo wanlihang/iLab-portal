@@ -1,5 +1,5 @@
 <template>
-  <div class="backTop" v-show="backTopStatus" @click="goBackTop">
+  <div class="backTop"  @click="goBackTop">
     <img src="../assets/img/commen/icon-backtop.png" />
   </div>
 </template>
@@ -7,22 +7,9 @@
 export default {
   data() {
     return {
-      backTopStatus:false,
-      bodyHeight:document.body.clientHeight,
     };
   },
-  watch:{
-     'document.body.clientHeight'(val) {
-       this.$nextTick(()=>{
-          this.bodyHeight=val;
-          console.log(this.bodyHeight);
-       })
-    },
-  },
-  mounted(){
-     if(this.bodyHeight>200){
-      this.backTopStatus=true;
-    }
+  mounted() {
   },
   methods: {
     goBackTop() {
