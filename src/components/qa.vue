@@ -243,10 +243,10 @@ export default {
   .question-content {
     width: 100%;
     height: auto;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 400;
     color: #333333;
-    line-height: 16px;
+    line-height: 24px;
     padding: 30px 30px 0px 30px;
     background-color: #fff;
     box-sizing: border-box;
