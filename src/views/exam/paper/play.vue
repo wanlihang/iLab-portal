@@ -336,14 +336,13 @@ export default {
           let status = res.data.status;
           let totalScore = res.data.total_score;
           this.results.openmask = false;
+          this.submitTip = false;
           if (status === 2) {
             this.$message.success("考试结束，得分：" + totalScore);
             this.getData();
           } else {
-            this.$message.success("试卷已提交，请等待阅卷完成");
-            setTimeout(() => {
-              this.$router.back();
-            }, 500);
+            this.results.openmask = true;
+            this.readTip = true;
           }
         })
         .catch((e) => {
