@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="box">
-      <div class="backTop" @click="goBackTop">
+      <div class="backTop" v-show="backTopStatus" @click="goBackTop">
         <img src="../../assets/img/commen/icon-backtop.png" />
       </div>
       <div class="topic-box">
@@ -338,12 +338,16 @@ export default {
       configInput2: [],
       replyAnswers: [],
       answerId: null,
+      backTopStatus:false,
     };
   },
   computed: {
     ...mapState(["isLogin", "user"]),
   },
   mounted() {
+    if(document.documentElement.clientHeight>2000){
+        this.backTopStatus=true;
+    }
     this.getData();
     this.getComments();
     this.getLikeStatus();
