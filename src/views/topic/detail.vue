@@ -1,9 +1,6 @@
 <template>
   <div class="content">
     <div class="box">
-      <div class="backTop" v-show="backTopStatus" @click="goBackTop">
-        <img src="../../assets/img/commen/icon-backtop.png" />
-      </div>
       <div class="topic-box">
         <div class="nav">
           <a @click="$router.push({ name: 'index' })">首页</a> /
@@ -338,16 +335,12 @@ export default {
       configInput2: [],
       replyAnswers: [],
       answerId: null,
-      backTopStatus:false,
     };
   },
   computed: {
     ...mapState(["isLogin", "user"]),
   },
   mounted() {
-    if(document.documentElement.clientHeight>2000){
-        this.backTopStatus=true;
-    }
     this.getData();
     this.getComments();
     this.getLikeStatus();
@@ -357,9 +350,6 @@ export default {
     goLogin() {
       this.changeDialogType(1);
       this.showLoginDialog();
-    },
-    goBackTop() {
-      window.scrollTo(0, 0);
     },
     getLikeStatus() {
       this.$api.TemplateOne.LikeStatus({
@@ -573,21 +563,6 @@ export default {
     display: flex;
     flex-direction: row;
     position: relative;
-    .backTop {
-      position: fixed;
-      right: 17px;
-      bottom: 150px;
-      z-index: 30;
-      cursor: pointer;
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      img {
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-      }
-    }
     .share-box {
       width: 304px;
       height: 312px;

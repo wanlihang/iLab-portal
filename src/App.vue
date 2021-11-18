@@ -13,6 +13,7 @@
       <router-view v-if="config && this.$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view v-if="config && !this.$route.meta.keepAlive"></router-view>
+    <back-top></back-top>
   </div>
 </template>
 <script>
@@ -21,11 +22,13 @@ const _ = require("lodash");
 import { mapState, mapMutations } from "vuex";
 import NavHeader from "./components/navheader.vue";
 import LoginDialog from "./components/logindialog.vue";
+import BackTop from "./components/back-top.vue";
 
 export default {
   components: {
     NavHeader,
     LoginDialog,
+    BackTop
   },
   data() {
     return {

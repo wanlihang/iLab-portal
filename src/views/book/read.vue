@@ -35,9 +35,6 @@
       </div>
     </div>
     <div class="read-box">
-      <div class="backTop" v-show="backTopStatus" @click="goBackTop">
-        <img src="../../assets/img/commen/icon-backtop.png" />
-      </div>
       <div class="left-box" v-if="indexStaus">
         <div class="chapter-list-box">
           <template v-if="chapters.length > 0">
@@ -351,7 +348,6 @@ export default {
       configInput2: [],
       replyAnswers: [],
       answerId: null,
-      backTopStatus:false,
     };
   },
   computed: {
@@ -363,9 +359,6 @@ export default {
     },
   },
   mounted() {
-    if(document.documentElement.clientHeight>2000){
-        this.backTopStatus=true;
-    }
     this.getData();
     this.getComments();
   },
@@ -379,9 +372,6 @@ export default {
       this.canSee = false;
       this.prevId = 0;
       this.nextId = 0;
-    },
-    goBackTop() {
-      window.scrollTo(0, 0);
     },
     goRead(item) {
       if (item.id === this.list.id) {
@@ -678,21 +668,6 @@ export default {
     padding-top: 30px;
     box-sizing: border-box;
     position: relative;
-    .backTop {
-      position: fixed;
-      right: 17px;
-      bottom: 150px;
-      z-index: 30;
-      cursor: pointer;
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      img {
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-      }
-    }
     .left-box {
       position: relative;
       width: 304px;

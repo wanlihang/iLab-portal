@@ -141,12 +141,14 @@
     <snap-shot
       :cid="paper.id"
       resource-type="paper"
+      v-if="configFunc.snapshort&&userPaper && userPaper.status === 1"
       :duration="workTime"
     ></snap-shot>
     <nav-footer></nav-footer>
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import QuestionChoice from "../../../components/choice.vue";
 import QuestionSelect from "../../../components/select.vue";
 import QuestionInput from "../../../components/input.vue";
@@ -189,6 +191,9 @@ export default {
         sec: 0,
       },
     };
+  },
+  computed: {
+    ...mapState(["configFunc"]),
   },
   mounted() {
     this.getData();
