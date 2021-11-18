@@ -21,7 +21,7 @@
     </div>
     <div class="info" :class="{ spcolor: spcolor }">
       <span class="tit"
-        >{{ question.type_text }}（{{ question.score }}分）</span
+        >{{num}}.{{ question.type_text }}（{{ question.score }}分）</span
       >
     </div>
     <div class="question-content" :class="{ spcolor: spcolor }">
@@ -97,6 +97,7 @@ export default {
     "showImage",
     "wrongBook",
     "spcolor",
+    "num",
   ],
   data() {
     return {

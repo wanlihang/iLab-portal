@@ -37,6 +37,7 @@
             <div class="question-content">
               <!-- 单选 -->
               <question-choice
+               :num="activeQid"
                 v-if="question.type === 1"
                 :wrongBook="true"
                 :question="question"
@@ -49,6 +50,7 @@
 
               <!-- 多选 -->
               <question-select
+               :num="activeQid"
                 v-else-if="question.type === 2"
                 :wrongBook="true"
                 :question="question"
@@ -61,6 +63,7 @@
 
               <!-- 填空 -->
               <question-input
+               :num="activeQid"
                 v-else-if="question.type === 3"
                 :wrongBook="true"
                 :question="question"
@@ -73,6 +76,7 @@
 
               <!-- 问答 -->
               <question-qa
+               :num="activeQid"
                 v-else-if="question.type === 4"
                 :wrongBook="true"
                 :question="question"
@@ -85,6 +89,7 @@
 
               <!-- 判断 -->
               <question-judge
+               :num="activeQid"
                 v-else-if="question.type === 5"
                 :wrongBook="true"
                 :question="question"
@@ -97,6 +102,7 @@
 
               <!-- 题帽题 -->
               <question-cap
+               :num="activeQid"
                 v-else-if="question.type === 6"
                 :wrongBook="true"
                 :question="question"

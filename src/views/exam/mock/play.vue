@@ -58,6 +58,7 @@
           <div class="item" :key="index">
             <!-- 单选 -->
             <question-choice
+              :num="index+1"
               v-if="question.question.type === 1"
               :question="question.question"
               :reply="question.answer_content"
@@ -69,6 +70,7 @@
 
             <!-- 多选 -->
             <question-select
+              :num="index+1"
               v-else-if="question.question.type === 2"
               :question="question.question"
               :reply="question.answer_content"
@@ -80,6 +82,7 @@
 
             <!-- 填空 -->
             <question-input
+              :num="index+1"
               v-else-if="question.question.type === 3"
               :question="question.question"
               :reply="question.answer_content || ''"
@@ -91,6 +94,7 @@
 
             <!-- 问答 -->
             <question-qa
+              :num="index+1"
               v-else-if="question.question.type === 4"
               :question="question.question"
               :reply="question.answer_content"
@@ -104,6 +108,7 @@
 
             <!-- 判断 -->
             <question-judge
+              :num="index+1"
               v-else-if="question.question.type === 5"
               :question="question.question"
               :score="question.score"
@@ -115,6 +120,7 @@
 
             <!-- 题帽题 -->
             <question-cap
+              :num="index+1"
               v-else-if="question.question.type === 6"
               :question="question.question"
               :score="question.score"

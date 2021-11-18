@@ -27,22 +27,22 @@
           <div class="practice-join-box">
             <div class="question-content">
               <!-- 单选 -->
-              <question-choice v-if="question.type === 1" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="null"></question-choice>
+              <question-choice :num="activeQid" v-if="question.type === 1" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="null"></question-choice>
 
               <!-- 多选 -->
-              <question-select v-else-if="question.type === 2" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="''"></question-select>
+              <question-select :num="activeQid" v-else-if="question.type === 2" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="''"></question-select>
 
               <!-- 填空 -->
-              <question-input v-else-if="question.type === 3" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="''"></question-input>
+              <question-input :num="activeQid" v-else-if="question.type === 3" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="''"></question-input>
 
               <!-- 问答 -->
-              <question-qa v-else-if="question.type === 4" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :show-image="false" :score="question.score" :is-over="showAnswer"></question-qa>
+              <question-qa :num="activeQid" v-else-if="question.type === 4" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :show-image="false" :score="question.score" :is-over="showAnswer"></question-qa>
 
               <!-- 判断 -->
-              <question-judge v-else-if="question.type === 5" :wrongBook="true" :question="question" :is-correct="false" :score="question.score" @update="questionUpdate" :is-over="showAnswer" :reply="null"></question-judge>
+              <question-judge :num="activeQid" v-else-if="question.type === 5" :wrongBook="true" :question="question" :is-correct="false" :score="question.score" @update="questionUpdate" :is-over="showAnswer" :reply="null"></question-judge>
 
               <!-- 题帽题 -->
-              <question-cap v-else-if="question.type === 6" :wrongBook="true" :question="question" :is-correct="false" :score="question.score" :show-image="false" @update="questionUpdate" :is-over="showAnswer"></question-cap>
+              <question-cap :num="activeQid" v-else-if="question.type === 6" :wrongBook="true" :question="question" :is-correct="false" :score="question.score" :show-image="false" @update="questionUpdate" :is-over="showAnswer"></question-cap>
             </div>
           </div>
         </template>

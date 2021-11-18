@@ -2,7 +2,7 @@
   <div class="spbackground">
     <div class="info">
       <span class="tit"
-        >{{ question.type_text }}（{{ question.score }}分）</span
+        >{{num}}.{{ question.type_text }}（{{ question.score }}分）</span
       >
     </div>
     <div class="question-content">
@@ -186,6 +186,7 @@ export default {
     "score",
     "showImage",
     "wrongBook",
+    "num",
   ],
   data() {
     return {
