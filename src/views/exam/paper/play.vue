@@ -1,15 +1,29 @@
 <template>
   <div class="content">
     <div class="mask" v-if="results.openmask">
-      <div class="popup borderbox">
-        <div class="text">是否确认交卷？</div>
+      <div class="popup borderbox" v-if="submitTip">
+        <div class="tabs">
+          <div class="item-tab">确认信息</div>
+          <img class="btn-close" @click="cancel()" src="../../../assets/img/commen/icon-close.png" />
+        </div>
+        <div class="text">确认要交卷吗？</div>
         <div class="button">
-          <div class="cancel" style="cursor: pointer" @click="cancel()">
-            继续答题
-          </div>
           <div class="confirm" style="cursor: pointer" @click="submitHandle()">
-            确认交卷
+            确定
           </div>
+          <div class="cancel" style="cursor: pointer" @click="cancel()">
+            取消
+          </div>
+        </div>
+      </div>
+      <div class="popup borderbox" v-if="readTip">
+        <div class="tabs">
+          <div class="item-tab">交卷提示</div>
+          <img class="btn-close" @click="cancel()" src="../../../assets/img/commen/icon-close.png" />
+        </div>
+        <div class="text">此次在线考试包含主观题，等待老师阅卷后查看成绩</div>
+        <div class="button">
+          <div class="confirm" style="cursor: pointer" @click="ok()">好的</div>
         </div>
       </div>
     </div>
@@ -159,6 +173,8 @@ export default {
         openmask: false,
         surplus: null,
       },
+      submitTip: false,
+      readTip: false,
       workTime: 0,
       id: this.$route.query.id || 0,
       pid: this.$route.query.pid || 0,
@@ -180,6 +196,16 @@ export default {
   methods: {
     cancel() {
       this.results.openmask = false;
+      this.submitTip = false;
+      this.readTip = false;
+    },
+    ok() {
+      this.results.openmask = false;
+      this.submitTip = false;
+      this.readTip = false;
+      setTimeout(() => {
+        this.$router.back();
+      }, 500);
     },
     finish() {
       this.submitHandle();
@@ -194,6 +220,7 @@ export default {
     },
     submitAll() {
       this.results.openmask = true;
+      this.submitTip = true;
     },
     //倒计时
     countdown() {
@@ -426,50 +453,97 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 100;
+    z-index: 1001;
     .popup {
-      width: 295px;
-      height: 151px;
+      width: 500px;
+      height: 300px;
       background: #ffffff;
       border-radius: 8px;
       display: flex;
       flex-direction: column;
-      .text {
-        width: 100%;
-        height: 104px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-        font-weight: 400;
-        color: #333333;
-        border-bottom: 1px solid #f5f5f5;
-      }
-      .button {
+      animation: scaleBig 0.3s;
+      .tabs {
         width: 100%;
         height: auto;
         display: flex;
         flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        padding: 23px 23px 0px 30px;
+        overflow: hidden;
+        .item-tab {
+          width: 72px;
+          height: 18px;
+          font-size: 18px;
+          font-weight: 500;
+          color: #333333;
+          line-height: 18px;
+          margin-top: 7px;
+        }
+        .btn-close {
+          width: 19px;
+          height: 19px;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+            animation: rotate360 1s;
+          }
+        }
+      }
+      .text {
+        width: 100%;
+        height: 178px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 400;
+        color: #333333;
+        line-height: 18px;
+      }
+      .button {
+        width: 100%;
+        height: 74px;
+        background: #ffffff;
+        box-shadow: 0px -1px 5px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 0px 0px 8px 8px;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
         .cancel {
-          width: 146px;
-          height: 45px;
+          width: 88px;
+          height: 44px;
+          border-radius: 4px;
+          border: 1px solid #cccccc;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 400;
-          color: #171923;
-          border-right: 1px solid #f5f5f5;
+          color: #666666;
+          cursor: pointer;
+          margin-right: 30px;
+          &:hover {
+            opacity: 0.8;
+          }
         }
         .confirm {
-          width: 147px;
-          height: 45px;
+          width: 88px;
+          height: 44px;
+          background: #3CA7FA;
+          border-radius: 4px;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 400;
-          color: #3ca7fa;
+          color: #ffffff;
+          cursor: pointer;
+          margin-right: 30px;
+          &:hover {
+            opacity: 0.8;
+          }
         }
       }
     }
