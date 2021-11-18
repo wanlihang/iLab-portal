@@ -3,11 +3,7 @@
     <div class="navheader">
       <div class="top">
         <div class="left-top">
-          <img
-            @click="$router.back()"
-            class="icon-back"
-            src="../../../assets/img/commen/icon-back-h.png"
-          />{{ list.name }}
+          <img @click="$router.back()" class="icon-back" src="../../../assets/img/commen/icon-back-h.png" />{{ list.name }}
         </div>
         <div class="right-top">
           <div class="prev-button" @click="prevPage()">上一题</div>
@@ -17,13 +13,7 @@
     </div>
     <div class="project-box">
       <div class="left-box">
-        <NumberSheet
-          v-if="qidArr"
-          type="practice"
-          :activeNum="activeQid"
-          :qidArr="qidArr"
-          @change="changeQid"
-        ></NumberSheet>
+        <NumberSheet v-if="qidArr" type="practice" :activeNum="activeQid" :qidArr="qidArr" @change="changeQid"></NumberSheet>
       </div>
       <div class="right-box">
         <template v-if="loading">
@@ -31,85 +21,28 @@
         </template>
         <template v-else-if="list && question">
           <div class="delete-icon" @click="collectAnswer()">
-            <img
-              v-if="isCollected"
-              src="../../../assets/img/commen/icon-collect-h.png"
-            />
+            <img v-if="isCollected" src="../../../assets/img/commen/icon-collect-h.png" />
             <img v-else src="../../../assets/img/commen/icon-collect-n.png" />
           </div>
           <div class="practice-join-box">
             <div class="question-content">
               <!-- 单选 -->
-              <question-choice
-                v-if="question.type === 1"
-                :wrongBook="true"
-                :question="question"
-                :is-correct="false"
-                @update="questionUpdate"
-                :score="question.score"
-                :is-over="showAnswer"
-                :reply="null"
-              ></question-choice>
+              <question-choice v-if="question.type === 1" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="null"></question-choice>
 
               <!-- 多选 -->
-              <question-select
-                v-else-if="question.type === 2"
-                :wrongBook="true"
-                :question="question"
-                :is-correct="false"
-                @update="questionUpdate"
-                :score="question.score"
-                :is-over="showAnswer"
-                :reply="''"
-              ></question-select>
+              <question-select v-else-if="question.type === 2" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="''"></question-select>
 
               <!-- 填空 -->
-              <question-input
-                v-else-if="question.type === 3"
-                :wrongBook="true"
-                :question="question"
-                :is-correct="false"
-                @update="questionUpdate"
-                :score="question.score"
-                :is-over="showAnswer"
-                :reply="''"
-              ></question-input>
+              <question-input v-else-if="question.type === 3" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="''"></question-input>
 
               <!-- 问答 -->
-              <question-qa
-                v-else-if="question.type === 4"
-                :wrongBook="true"
-                :question="question"
-                :is-correct="false"
-                @update="questionUpdate"
-                :show-image="false"
-                :score="question.score"
-                :is-over="showAnswer"
-              ></question-qa>
+              <question-qa v-else-if="question.type === 4" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :show-image="false" :score="question.score" :is-over="showAnswer"></question-qa>
 
               <!-- 判断 -->
-              <question-judge
-                v-else-if="question.type === 5"
-                :wrongBook="true"
-                :question="question"
-                :is-correct="false"
-                :score="question.score"
-                @update="questionUpdate"
-                :is-over="showAnswer"
-                :reply="null"
-              ></question-judge>
+              <question-judge v-else-if="question.type === 5" :wrongBook="true" :question="question" :is-correct="false" :score="question.score" @update="questionUpdate" :is-over="showAnswer" :reply="null"></question-judge>
 
               <!-- 题帽题 -->
-              <question-cap
-                v-else-if="question.type === 6"
-                :wrongBook="true"
-                :question="question"
-                :is-correct="false"
-                :score="question.score"
-                :show-image="false"
-                @update="questionUpdate"
-                :is-over="showAnswer"
-              ></question-cap>
+              <question-cap v-else-if="question.type === 6" :wrongBook="true" :question="question" :is-correct="false" :score="question.score" :show-image="false" @update="questionUpdate" :is-over="showAnswer"></question-cap>
             </div>
           </div>
         </template>
@@ -263,6 +196,11 @@ export default {
     collectAnswer() {
       this.$api.Exam.Practice.Collect({ question_id: this.question.id }).then(
         () => {
+          if (this.isCollected) {
+            this.$message.success("已取消收藏");
+          } else {
+            this.$message.success("已收藏试题");
+          }
           this.isCollected = !this.isCollected;
         }
       );
@@ -283,7 +221,7 @@ export default {
         //
       });
     },
-    questionUpdate() {},
+    questionUpdate() { },
   },
 };
 </script>

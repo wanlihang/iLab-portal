@@ -259,6 +259,11 @@ export default {
     collectAnswer() {
       this.$api.Exam.Practice.Collect({ question_id: this.question.id }).then(
         () => {
+          if (this.isCollected) {
+            this.$message.success("已取消收藏");
+          } else {
+            this.$message.success("已收藏试题");
+          }
           this.isCollected = !this.isCollected;
         }
       );
