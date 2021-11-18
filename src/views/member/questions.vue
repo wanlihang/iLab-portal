@@ -52,7 +52,7 @@
               class="paper-item-comp"
               v-for="(item, index) in list2"
               :key="index"
-              @click="goDetail(item.id)"
+              @click="goDetail(item.question_id)"
             >
               <div
                 class="title"
