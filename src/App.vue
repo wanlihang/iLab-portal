@@ -43,6 +43,9 @@ export default {
         this.$utils.saveMsv(val);
       }
     },
+    "$route"(to,from){
+      this.backTopStatus=false;
+    },
   },
   computed: {
     ...mapState([
