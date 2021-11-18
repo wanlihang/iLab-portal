@@ -82,7 +82,7 @@ export default {
         document.documentElement.scrollTop ||
         document.body.scrollTop;
       let bodyHeight = document.body.clientHeight;
-      if (bodyHeight >= 2000) {
+      if (scrollTop >= 2000) {
         this.backTopStatus = true;
       } else {
         this.backTopStatus = false;
