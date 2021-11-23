@@ -270,49 +270,49 @@ export default {
         shareLink =
           this.$utils.getShareHost() +
           "exam/practice/detail?id=" +
-          goods.id +
+          goods.goods_id +
           "&msv=" +
           this.user.id;
       } else if (goods.goods_type === "paper") {
         shareLink =
           this.$utils.getShareHost() +
           "exam/papers/detail?id=" +
-          goods.id +
+          goods.goods_id +
           "&msv=" +
           this.user.id;
       } else if (goods.goods_type === "topic") {
         shareLink =
           this.$utils.getShareHost() +
           "topic/detail?id=" +
-          goods.id +
+          goods.goods_id +
           "&msv=" +
           this.user.id;
       } else if (goods.goods_type === "learnPath") {
         shareLink =
           this.$utils.getShareHost() +
           "learnPath/detail?id=" +
-          goods.id +
+          goods.goods_id +
           "&msv=" +
           this.user.id;
       } else if (goods.goods_type === "book") {
         shareLink =
           this.$utils.getShareHost() +
           "book/detail?id=" +
-          goods.id +
+          goods.goods_id +
           "&msv=" +
           this.user.id;
       } else if (goods.goods_type === "live") {
         shareLink =
           this.$utils.getShareHost() +
           "live/detail?id=" +
-          goods.id +
+          goods.goods_id +
           "&msv=" +
           this.user.id;
       } else if (goods.goods_type === "video") {
         shareLink =
           this.$utils.getShareHost() +
           "courses/video?id=" +
-          goods.id +
+          goods.goods_id +
           "&msv=" +
           this.user.id;
       } else if (goods.goods_type === "vip") {
@@ -321,21 +321,21 @@ export default {
         shareLink =
           this.$utils.getShareHost() +
           "ms/detail?id=" +
-          goods.id +
+          goods.goods_id +
           "&msv=" +
           this.user.id;
       } else if (goods.goods_type === "tg") {
         shareLink =
           this.$utils.getShareHost() +
           "tg/detail?id=" +
-          goods.id +
+          goods.goods_id +
           "&msv=" +
           this.user.id;
       } else {
         shareLink =
           this.$utils.getShareHost() +
           "courses/detail?id=" +
-          goods.id +
+          goods.goods_id +
           "&msv=" +
           this.user.id;
       }

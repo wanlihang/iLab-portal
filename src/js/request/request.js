@@ -314,7 +314,10 @@ const Api = {
         },
         Reward(params) {
             return get('/addons/MultiLevelShare/api/v1/user/goods/reward', params);
-        }
+        },
+        Bind(params) {
+			return post('/addons/MultiLevelShare/api/v1/user/bind', params);
+		}
     },
     Book: {
         List(params) {
