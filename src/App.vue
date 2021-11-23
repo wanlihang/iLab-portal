@@ -1,14 +1,7 @@
 <template>
   <div id="app">
     <nav-header v-if="!this.$route.meta.hideHeader"></nav-header>
-    <Login-Dialog
-      :dialogType="loginDialogType"
-      :status="loginDialogStatus"
-      :mobile="dialogMobile"
-      :notCancel="cancelStatus"
-      @hideLoginDialog="hideLoginDialog"
-      @changeType="changeType"
-    ></Login-Dialog>
+    <Login-Dialog :dialogType="loginDialogType" :status="loginDialogStatus" :mobile="dialogMobile" :notCancel="cancelStatus" @hideLoginDialog="hideLoginDialog" @changeType="changeType"></Login-Dialog>
 
     <keep-alive>
       <router-view v-if="config && this.$route.meta.keepAlive"></router-view>
@@ -167,7 +160,9 @@ export default {
 
       this.updateFuncConfig(funcTable);
       if (this.$utils.isMobile()) {
-          window.location.href=config.h5_url;
+        if (config.h5_url !== "") {
+          window.location.href = config.h5_url;
+        }
       }
     },
   },
@@ -175,4 +170,5 @@ export default {
 </script>
 
 <style>
+
 </style>
