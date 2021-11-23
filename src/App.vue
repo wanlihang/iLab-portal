@@ -94,11 +94,29 @@ export default {
         this.getUser();
       }
     },
+    msvBind() {
+      // todo delete
+      let msv = this.$utils.getMsv();
+      if (!msv) {
+        return;
+      }
+
+      this.$api.MultiLevelShare.Bind({ msv: msv })
+        .then(() => {
+          console.log("bind success");
+          this.$utils.clearMsv();
+        })
+        .catch((e) => {
+          console.log(e.message);
+          this.$utils.clearMsv();
+        });
+    },
     async getUser() {
       try {
         let res = await this.$api.User.Detail();
         this.loginHandle(res.data);
-
+        this.msvBind();
+        
         // 强制绑定手机号
         if (
           res.data.is_bind_mobile === 0 &&
