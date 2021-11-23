@@ -167,7 +167,7 @@ export default {
 
       this.updateFuncConfig(funcTable);
       if (this.$utils.isMobile()) {
-          window.location.href=config.h5_url;
+        window.location.href = config.h5_url;
       }
     },
   },
