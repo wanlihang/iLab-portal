@@ -1,14 +1,21 @@
 <template>
   <div id="app">
     <nav-header v-if="!this.$route.meta.hideHeader"></nav-header>
-    <Login-Dialog :dialogType="loginDialogType" :status="loginDialogStatus" :mobile="dialogMobile" :notCancel="cancelStatus" @hideLoginDialog="hideLoginDialog" @changeType="changeType"></Login-Dialog>
+    <Login-Dialog
+      :dialogType="loginDialogType"
+      :status="loginDialogStatus"
+      :mobile="dialogMobile"
+      :notCancel="cancelStatus"
+      @hideLoginDialog="hideLoginDialog"
+      @changeType="changeType"
+    ></Login-Dialog>
+
     <keep-alive>
       <router-view v-if="config && this.$route.meta.keepAlive"></router-view>
     </keep-alive>
     <router-view v-if="config && !this.$route.meta.keepAlive"></router-view>
 
     <back-top v-show="backTopStatus"></back-top>
-
   </div>
 </template>
 <script>
@@ -23,7 +30,7 @@ export default {
   components: {
     NavHeader,
     LoginDialog,
-    BackTop
+    BackTop,
   },
   data() {
     return {
@@ -43,8 +50,13 @@ export default {
         this.$utils.saveMsv(val);
       }
     },
-    "$route"(to,from){
-      this.backTopStatus=false;
+    $route(to, from) {
+      this.backTopStatus = false;
+    },
+    isLogin(val) {
+      if (val) {
+        this.msvBind();
+      }
     },
   },
   computed: {
@@ -81,12 +93,8 @@ export default {
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
-      let bodyHeight = document.body.clientHeight;
-      if (scrollTop >= 2000) {
-        this.backTopStatus = true;
-      } else {
-        this.backTopStatus = false;
-      }
+
+      this.backTopStatus = scrollTop >= 2000;
     },
     MeEduInit() {
       this.getConfig();
@@ -95,7 +103,6 @@ export default {
       }
     },
     msvBind() {
-      // todo delete
       let msv = this.$utils.getMsv();
       if (!msv) {
         return;
@@ -116,7 +123,7 @@ export default {
         let res = await this.$api.User.Detail();
         this.loginHandle(res.data);
         this.msvBind();
-        
+
         // 强制绑定手机号
         if (
           res.data.is_bind_mobile === 0 &&
@@ -168,5 +175,4 @@ export default {
 </script>
 
 <style>
-
 </style>
