@@ -34,8 +34,8 @@ export default {
     return host;
   },
   isMobile() {
-      let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
-      return flag;
+    let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+    return flag;
   },
   currentDate() {
     const Manba = require('manba');
@@ -44,16 +44,16 @@ export default {
   getHMS(time) {
     const hour =
       parseInt(time / 3600) < 10 ?
-        "0" + parseInt(time / 3600) :
-        parseInt(time / 3600);
+      "0" + parseInt(time / 3600) :
+      parseInt(time / 3600);
     const min =
       parseInt((time % 3600) / 60) < 10 ?
-        "0" + parseInt((time % 3600) / 60) :
-        parseInt((time % 3600) / 60);
+      "0" + parseInt((time % 3600) / 60) :
+      parseInt((time % 3600) / 60);
     const sec =
       parseInt((time % 3600) % 60) < 10 ?
-        "0" + parseInt((time % 3600) % 60) :
-        parseInt((time % 3600) % 60);
+      "0" + parseInt((time % 3600) % 60) :
+      parseInt((time % 3600) % 60);
     return hour + ":" + min + ":" + sec;
   },
   random(minNum, maxNum) {
@@ -67,21 +67,21 @@ export default {
     }
   },
   copyright() {
-    var outs = [],
-      fi = function () {
-        return {
-          msg: "",
-          style: ""
-        }
-      };
+    let outs = [];
+    let fi = function () {
+      return {
+        msg: "",
+        style: ""
+      }
+    };
 
     var oi = fi();
-    oi.msg = "  MeEdu - 在线教育培训解决方案";
-    oi.style = "padding-top: 15px;padding-bottom:15px;line-height:30px;font-size:1.8rem;color:#3ca7fa";
+    oi.msg = "MeEdu - 在线教育培训解决方案";
+    oi.style = "padding-top: 15px;padding-bottom:15px;line-height:30px;font-size:2rem;color:#3ca7fa";
     outs.push(oi);
 
     oi = fi();
-    oi.msg = "\r\n官网：\nhttps://meedu.vip\r\n\r\nGitHub：\nhttps://github.com/qsnh/meedu\r\n\r\n使用手册：\nhttps://www.yuque.com/meedu/fvvkbf\r\n";
+    oi.msg = "\r\n官网：\nhttps://meedu.vip\r\n\r\nGitHub：\nhttps://github.com/qsnh/meedu\r\n\r\n使用手册：\nhttps://www.yuque.com/meedu/fvvkbf\r\n\r\n当前版本：v4.5.1\r\n";
     outs.push(oi);
 
     outs.map(function (x) {
