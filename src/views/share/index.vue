@@ -90,10 +90,10 @@
             <page-box :totals="total" @current-change="changepage" :pageSize="pagination.page_size" :tab="false"></page-box>
           </div>
         </div>
-        <div class="info-box" v-if="rules">
+        <div class="info-box">
           <div class="tit">分销课程说明</div>
           <div class="line"></div>
-          <div class="desc" v-html="rules"></div>
+          <div class="desc" v-if="rules" v-html="rules"></div>
         </div>
       </div>
     </div>
@@ -139,7 +139,7 @@ export default {
       projectType: 1,
       inviteUrl: null,
       loading: false,
-      rules: [],
+      rules: null,
     };
   },
   computed: {
