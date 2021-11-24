@@ -1,6 +1,5 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import config from '@/js/config';
+import VueRouter from 'vue-router';
 
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
@@ -542,7 +541,6 @@ const routes = [{
 ]
 
 const router = new VueRouter({
-  mode: config.routerMode,
   routes
 })
 
