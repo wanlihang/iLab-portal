@@ -366,7 +366,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 @keyframes el-skeleton-loading {
   0% {
     background-position: 100% 50%;

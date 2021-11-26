@@ -132,7 +132,7 @@ export default {
         },
         effect: "slide",
         on: {
-          click: function (e) {
+          click: function(e) {
             let url = e.target.name;
             if (url) {
               if (
@@ -193,7 +193,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .contanier {
   width: 1200px;
   min-height: 500px;
