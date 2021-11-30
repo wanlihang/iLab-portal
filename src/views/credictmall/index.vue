@@ -264,7 +264,6 @@ export default {
           width: 216px;
           height: 237px;
           border-radius: 8px;
-          overflow: hidden;
           cursor: pointer;
           background: #fff;
           &:hover {
@@ -292,6 +291,7 @@ export default {
             float: left;
             box-sizing: border-box;
             padding: 10px;
+            border-radius: 0px 0px 8px 8px;
             border: 1px solid #e5e5e5;
             border-top: none;
             .name {
