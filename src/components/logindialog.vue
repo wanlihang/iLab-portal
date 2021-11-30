@@ -718,7 +718,7 @@ export default {
     };
   },
   watch: {
-    dialogType: function () {
+    dialogType: function() {
       this.dialogStatus = this.dialogType;
       if (this.dialogStatus !== 0 && this.dialogStatus !== 5) {
         this.getCaptcha();
@@ -727,13 +727,13 @@ export default {
         this.getBindQrode();
       }
     },
-    mobile: function () {
+    mobile: function() {
       this.messageForm.mobile = this.mobile;
     },
   },
   created() {
     var t = this;
-    document.onkeydown = function (e) {
+    document.onkeydown = function(e) {
       var key;
       if (window.event == undefined) {
         key = e.keyCode;
@@ -1409,10 +1409,10 @@ export default {
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 400;
-          color: #3CA7FA;
-          line-height: 16px;
+          color: #999999;
+          line-height: 14px;
           outline: none;
           &:hover {
             opacity: 0.8;
