@@ -150,6 +150,15 @@ const routes = [{
 
   },
   {
+    path: '/credictmall',
+    name: 'Credictmall',
+    meta: {
+      title: "积分商城"
+    },
+    component: () => import('../views/credictmall/index.vue'),
+
+  },
+  {
     path: '/order/order',
     name: 'order',
     meta: {

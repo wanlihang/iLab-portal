@@ -677,7 +677,8 @@ export default {
   props: ["dialogType", "status", "mobile", "notCancel"],
   data() {
     return {
-      timer: "",
+      timer: null,
+      interval: null,
       loading: false,
       code: null,
       newMobile: null,
@@ -751,6 +752,7 @@ export default {
   mounted() {},
   beforeDestroy() {
     clearInterval(this.timer);
+    clearInterval(this.interval);
   },
   methods: {
     ...mapMutations([
@@ -875,10 +877,10 @@ export default {
           this.$message.success("发送成功");
           this.sms.loading = this;
           this.sms.current = this.sms.max;
-          let interval = setInterval(() => {
+          this.interval = setInterval(() => {
             if (this.sms.current <= 1) {
               this.sms.loading = false;
-              clearInterval(interval);
+              clearInterval(this.interval);
             } else {
               this.sms.current--;
             }
