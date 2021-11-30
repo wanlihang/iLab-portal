@@ -16,7 +16,12 @@
         </template>
         <template v-else-if="list.length > 0">
           <div class="left-list">
-            <div class="list-item" v-for="item in list" :key="item.id">
+            <div
+              class="list-item"
+              v-for="item in list"
+              :key="item.id"
+              @click="goDetail(item.id)"
+            >
               <div class="thumb">
                 <img :src="item.thumb" />
               </div>
@@ -81,12 +86,16 @@ import { mapState, mapMutations } from "vuex";
 import None from "../../components/none.vue";
 import PageBox from "../../components/page.vue";
 import NavFooter from "../../components/footer.vue";
+import SkeletonCredictList from "../../components/skeleton/skeletonCredictList.vue";
+import SkeletonCredictHistory from "../../components/skeleton/skeletonCredictHistory.vue";
 
 export default {
   components: {
     NavFooter,
     PageBox,
     None,
+    SkeletonCredictList,
+    SkeletonCredictHistory,
   },
   data() {
     return {
@@ -124,6 +133,14 @@ export default {
       this.pagination.page = item.currentPage;
       this.getData();
       window.scrollTo(0, 0);
+    },
+    goDetail(id) {
+      this.$router.push({
+        name: "CredictmallDetail",
+        query: {
+          id: id,
+        },
+      });
     },
     getData() {
       if (this.loading) {
