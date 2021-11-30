@@ -71,7 +71,34 @@
             <div class="tit">历史兑换订单</div>
             <div class="line"></div>
             <template v-if="history.length > 0">
-              <div class="right-box"></div>
+              <div class="right-box">
+                <div
+                  class="right-item"
+                  v-for="hisItem in history"
+                  :key="hisItem.id"
+                  @click="goDetail(hisItem.id)"
+                >
+                  <div class="thumb">
+                    <img :src="hisItem.thumb" />
+                  </div>
+                  <div class="body">
+                    <div class="name">{{ hisItem.title }}</div>
+                    <div class="status red" v-if="hisItem.status === 1">
+                      发货中
+                    </div>
+                    <div class="status" v-else-if="hisItem.status === 2">
+                      已完成
+                    </div>
+                    <div class="status" v-else>运单号：6432321234</div>
+                    <div class="value">
+                      <div class="time">
+                        {{ hisItem.created_at | changeTime }}
+                      </div>
+                      <div class="cre">{{ hisItem.view_times }}积分</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </template>
             <none type="white" v-else></none>
           </div>
@@ -104,7 +131,7 @@ export default {
       total: null,
       pagination: {
         page: 1,
-        size: 10,
+        size: 15,
       },
       loading: false,
       loading2: false,
@@ -189,7 +216,7 @@ export default {
       .tit {
         height: 20px;
         font-size: 20px;
-        font-weight: 500;
+        font-weight: 600;
         color: #333333;
         line-height: 20px;
         margin-right: 50px;
@@ -356,6 +383,83 @@ export default {
             line-height: 30px;
             span {
               color: #ff5068;
+            }
+          }
+          .right-item {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            flex-direction: row;
+            cursor: pointer;
+            margin-bottom: 30px;
+            &:last-child {
+              margin-bottom: 0px;
+            }
+            &:hover {
+              .thumb {
+                img {
+                  transform: scale(1.1, 1.1);
+                }
+              }
+            }
+            .thumb {
+              width: 107px;
+              height: 80px;
+              border-radius: 4px;
+              overflow: hidden;
+              margin-right: 15px;
+              img {
+                width: 107px;
+                height: 80px;
+                border-radius: 4px;
+                transition: all 0.5s;
+              }
+            }
+            .body {
+              width: 218px;
+              height: 80px;
+              display: flex;
+              flex-direction: column;
+              .name {
+                width: 100%;
+                height: 14px;
+                font-size: 14px;
+                font-weight: 500;
+                color: #333333;
+                line-height: 14px;
+                margin-top: 5px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                margin-bottom: 16px;
+              }
+              .status {
+                width: 100%;
+                height: 12px;
+                font-size: 12px;
+                font-weight: 400;
+                color: #333333;
+                line-height: 12px;
+                margin-bottom: 16px;
+                &.red {
+                  color: #ff5068;
+                }
+              }
+              .value {
+                width: 100%;
+                height: 12px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                .time,
+                .cre {
+                  height: 12px;
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #999999;
+                  line-height: 12px;
+                }
+              }
             }
           }
         }
