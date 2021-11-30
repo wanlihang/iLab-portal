@@ -1,5 +1,10 @@
 <template>
   <div class="content">
+    <credict-payment
+      :status="openDialog"
+      @hide="hideDialog"
+      @confirm="submit"
+    ></credict-payment>
     <div class="box">
       <template v-if="loading">
         <skeletonDetail></skeletonDetail>
@@ -51,11 +56,13 @@
 import { mapState, mapMutations } from "vuex";
 import NavFooter from "../../components/footer.vue";
 import SkeletonDetail from "../../components/skeleton/skeletonDetail.vue";
+import CredictPayment from "../../components/credict-payment.vue";
 
 export default {
   components: {
     NavFooter,
     SkeletonDetail,
+    CredictPayment,
   },
   data() {
     return {
@@ -88,6 +95,13 @@ export default {
     },
     startLearn() {
       console.log("已购买");
+    },
+    hideDialog() {
+      this.openDialog = false;
+    },
+    submit(val) {
+      this.openDialog = false;
+      console.log(val);
     },
     getDetail() {
       if (this.loading) {
