@@ -1405,7 +1405,6 @@ export default {
           width: 100%;
           height: 54px;
           background: #fff;
-          border: 1px solid #f6f6f6;
           border-radius: 4px;
           display: flex;
           align-items: center;
