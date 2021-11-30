@@ -24,6 +24,7 @@
             >
               <div class="thumb">
                 <img :src="item.thumb" />
+                <div class="status">发实物</div>
               </div>
               <div class="body">
                 <div class="name">{{ item.title }}</div>
@@ -277,9 +278,25 @@ export default {
             width: 100%;
             height: 162px;
             border-radius: 8px 8px 0px 0px;
+            background: #f4fafe;
+            display: flex;
+            justify-content: center;
             overflow: hidden;
+            position: relative;
+            .status {
+              position: absolute;
+              background: linear-gradient(270deg, #0ae6af 0%, #04c877 100%);
+              border-radius: 4px;
+              font-size: 12px;
+              font-weight: 400;
+              line-height: 12px;
+              color: #ffffff;
+              padding: 10px 15px;
+              bottom: 10px;
+              right: 10px;
+            }
             img {
-              width: 100%;
+              width: auto;
               height: 162px;
               transition: all 0.5s;
             }
@@ -408,8 +425,11 @@ export default {
               border-radius: 4px;
               overflow: hidden;
               margin-right: 15px;
+              background: #f4fafe;
+              display: flex;
+              justify-content: center;
               img {
-                width: 107px;
+                width: auto;
                 height: 80px;
                 border-radius: 4px;
                 transition: all 0.5s;
