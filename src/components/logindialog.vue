@@ -1411,7 +1411,7 @@ export default {
           justify-content: center;
           font-size: 16px;
           font-weight: 400;
-          color: #333;
+          color: #3CA7FA;
           line-height: 16px;
           outline: none;
           &:hover {
