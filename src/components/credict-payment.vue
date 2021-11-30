@@ -11,8 +11,30 @@
           src="../assets/img/commen/icon-close.png"
         />
       </div>
-      <div class="list-box">
-        <div class="item"></div>
+      <div
+        class="list-box"
+        :class="{
+          scroll: address.length > 3,
+        }"
+      >
+        <div
+          class="item"
+          v-for="item in address"
+          :key="item.id"
+          @click="checkHandle(item.id)"
+        >
+          <div class="checkbox-dot" v-if="item.id === checked">
+            <span></span>
+          </div>
+          <div class="checkbox-circle" v-else></div>
+          <div class="body">
+            <div class="value">{{ item.value }}</div>
+            <div class="info">
+              <div class="name">{{ item.nick_name }}</div>
+              <div class="mobile">{{ item.mobile }}</div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="btn-box">
         <div class="btn-new" @click="newAddress()">
@@ -35,6 +57,26 @@ export default {
   data() {
     return {
       checked: null,
+      address: [
+        {
+          value: "安徽省合肥市包河区岸上草原24栋2303",
+          nick_name: "朱迪迪",
+          mobile: "19293892113",
+          id: 1,
+        },
+        {
+          value: "安徽省合肥市包河区岸上草原15栋1103",
+          nick_name: "王迪",
+          mobile: "13866662228",
+          id: 2,
+        },
+        {
+          value: "安徽省合肥市包河区岸上草原15栋1103",
+          nick_name: "王迪",
+          mobile: "13866662228",
+          id: 3,
+        },
+      ],
     };
   },
   methods: {
@@ -44,6 +86,10 @@ export default {
     cancel() {
       this.resetDialog();
       this.$emit("hide");
+    },
+    checkHandle(id) {
+      this.resetDialog();
+      this.checked = id;
     },
     confirm() {
       this.resetDialog();
@@ -68,7 +114,7 @@ export default {
   z-index: 100;
   .dialog-box {
     width: 600px;
-    max-height: 266px;
+    min-height: 266px;
     background: #ffffff;
     border-radius: 8px;
     display: flex;
@@ -111,6 +157,79 @@ export default {
       width: 100%;
       display: flex;
       flex-direction: column;
+      max-height: 298px;
+      overflow: hidden;
+      margin-bottom: 50px;
+      &.scroll {
+        overflow-y: auto;
+      }
+      .item {
+        width: 100%;
+        height: auto;
+        float: left;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 50px;
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        .checkbox-circle {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          border: 1px solid #666666;
+        }
+        .checkbox-dot {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          border: 1px solid #666666;
+          box-sizing: border-box;
+          padding: 4px;
+          span {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #3ca7fa;
+          }
+        }
+        .body {
+          margin-left: 30px;
+          width: 480px;
+          height: auto;
+          display: flex;
+          flex-direction: column;
+          .value {
+            width: 100%;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333333;
+            line-height: 18px;
+            margin-bottom: 30px;
+          }
+          .info {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            .name {
+              font-size: 18px;
+              font-weight: 600;
+              color: #333333;
+              line-height: 18px;
+              margin-right: 30px;
+            }
+            .mobile {
+              font-size: 18px;
+              font-weight: 600;
+              color: #333333;
+              line-height: 18px;
+            }
+          }
+        }
+      }
     }
     .btn-box {
       width: 100%;
