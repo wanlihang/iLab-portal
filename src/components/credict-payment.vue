@@ -1,6 +1,55 @@
 <template>
   <div class="mask" v-if="status">
-    <div class="dialog-box">
+    <div class="dialog-box" v-if="newAdd">
+      <div class="tabs new">
+        <div class="item-tab">
+          收货人姓名
+        </div>
+        <img
+          class="btn-close"
+          @click="close()"
+          src="../assets/img/commen/icon-close.png"
+        />
+      </div>
+      <div class="form">
+        <div class="input">
+          <input
+            type="text"
+            class="input-item"
+            v-model="form.nick_name"
+            placeholder="请填写收货人姓名"
+          />
+        </div>
+        <div class="label">收货人手机号</div>
+        <div class="input">
+          <input
+            type="text"
+            class="input-item"
+            v-model="form.mobile"
+            placeholder="请填写收货人手机号码"
+          />
+        </div>
+        <div class="label">收件地址</div>
+        <div class="input">
+          省市区
+        </div>
+        <div class="label">详细地址</div>
+        <div class="input">
+          <input
+            type="text"
+            class="input-item"
+            v-model="form.address"
+            placeholder="例：朝阳小区20栋2032"
+          />
+        </div>
+      </div>
+      <div class="btn-box">
+        <div class="btn-confirm active" @click="save()">
+          保存地址
+        </div>
+      </div>
+    </div>
+    <div class="dialog-box" v-else>
       <div class="tabs">
         <div class="item-tab">
           请选择收件地址（选择地址后不支持修改）
@@ -57,6 +106,7 @@ export default {
   data() {
     return {
       checked: null,
+      newAdd: false,
       address: [
         {
           value: "安徽省合肥市包河区岸上草原24栋2303",
@@ -77,6 +127,14 @@ export default {
           id: 3,
         },
       ],
+      form: {
+        nick_name: null,
+        mobile: null,
+        province: null,
+        city: null,
+        area: null,
+        address: null,
+      },
     };
   },
   methods: {
@@ -90,6 +148,15 @@ export default {
     checkHandle(id) {
       this.resetDialog();
       this.checked = id;
+    },
+    newAddress() {
+      this.newAdd = true;
+    },
+    close() {
+      this.newAdd = false;
+    },
+    save() {
+      this.newAdd = false;
     },
     confirm() {
       if (!this.checked) {
@@ -133,6 +200,9 @@ export default {
       overflow: hidden;
       position: relative;
       margin-bottom: 44px;
+      &.new {
+        margin-bottom: 17px;
+      }
       .item-tab {
         width: auto;
         height: 18px;
@@ -153,6 +223,40 @@ export default {
         &:hover {
           opacity: 0.8;
           animation: rotate360 1s;
+        }
+      }
+    }
+    .form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      .label {
+        width: 100%;
+        height: 18px;
+        font-size: 18px;
+        font-weight: 500;
+        color: #333333;
+        line-height: 18px;
+        margin-bottom: 20px;
+      }
+      .input {
+        width: 100%;
+        height: 54px;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 30px;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 400;
+        color: #333333;
+        .input-item {
+          width: 100%;
+          height: 54px;
+          border-radius: 4px;
+          border: 1px solid #cccccc;
+          outline: none;
+          padding-left: 15px;
         }
       }
     }
