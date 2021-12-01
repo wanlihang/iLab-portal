@@ -36,6 +36,19 @@ const routes = [
     component: () => import("../views/course/vod/video.vue"),
   },
   {
+    path: "/k12",
+    name: "K12",
+    meta: {
+      title: "大小班",
+    },
+    component: () => import("../views/course/k12/index.vue"),
+  },
+  {
+    path: "/k12/detail",
+    name: "K12Detail",
+    component: () => import("../views/course/k12/detail.vue"),
+  },
+  {
     path: "/live",
     name: "live",
     meta: {

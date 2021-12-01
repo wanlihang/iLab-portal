@@ -160,6 +160,8 @@ export default {
         this.hasThumb = true;
       } else if (this.goods_type === "ms") {
         this.hasThumb = true;
+      } else if (this.goods_type === "k12") {
+        this.hasThumb = true;
       } else if (this.goods_type === "paper") {
         this.hasThumb = false;
       }

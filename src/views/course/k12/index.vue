@@ -1,11 +1,16 @@
 <template>
   <div class="content">
+    <filter-box3
+      v-show="!navLoading"
+      :categories="categories"
+      :cid1="pagination.cid1"
+      :cid2="pagination.cid2"
+      @change="filterChange3"
+    ></filter-box3>
     <filter-box
       v-show="!navLoading"
       :categories1="scenes"
-      :categories2="categories"
-      :cid1="pagination.scene"
-      :cid2="pagination.category_id"
+      :cid1="pagination.t"
       @change="filterChange"
     ></filter-box>
 
@@ -19,16 +24,15 @@
     <template v-else-if="list.length > 0">
       <div class="contanier">
         <div class="vod-course-item" v-for="course in list" :key="course.id">
-          <vod-course-item
+          <k12-course-item
             :cid="course.id"
-            :videos-count="course.videos_count"
+            :people-count="course.join_people_num"
             :thumb="course.thumb"
             :category="course.category"
             :title="course.title"
             :charge="course.charge"
-            :is-free="course.is_free"
-            :user-count="course.user_count"
-          ></vod-course-item>
+            :type="course.type_text"
+          ></k12-course-item>
         </div>
       </div>
     </template>
@@ -46,8 +50,9 @@
 </template>
 <script>
 import None from "../../../components/none.vue";
-import VodCourseItem from "../../../components/vod-course-item.vue";
+import K12CourseItem from "../../../components/k12-course-item.vue";
 import FilterBox from "../../../components/filter-box.vue";
+import FilterBox3 from "../../../components/filter-box3.vue";
 import PageBox from "../../../components/page.vue";
 import NavFooter from "../../../components/footer.vue";
 import SkeletonCourseList from "../../../components/skeleton/skeletonCourseList.vue";
@@ -56,8 +61,9 @@ import SkeletonNav2 from "../../../components/skeleton/skeletonNav2.vue";
 
 export default {
   components: {
-    VodCourseItem,
+    K12CourseItem,
     FilterBox,
+    FilterBox3,
     PageBox,
     NavFooter,
     None,
@@ -73,12 +79,20 @@ export default {
           name: "全部",
         },
         {
-          id: "free",
-          name: "免费",
+          id: "0",
+          name: "小班课",
         },
         {
-          id: "sub",
-          name: "热门",
+          id: "1",
+          name: "大班课",
+        },
+        {
+          id: "2",
+          name: "直播课",
+        },
+        {
+          id: "3",
+          name: "1v1",
         },
       ],
       list: [],
@@ -86,8 +100,9 @@ export default {
       pagination: {
         page: 1,
         size: 16,
-        scene: "",
-        category_id: 0,
+        t: "",
+        cid1: 0,
+        cid2: "",
       },
       categories: [],
       over: false,
@@ -97,13 +112,17 @@ export default {
   },
   mounted() {
     this.navLoading = true;
-    this.getCategories();
     this.getData();
   },
   methods: {
-    filterChange(scene, cid) {
-      this.pagination.scene = scene;
-      this.pagination.category_id = cid;
+    filterChange3(cid1, cid2) {
+      this.pagination.cid1 = cid1;
+      this.pagination.cid2 = cid2;
+      this.resetData();
+      this.getData();
+    },
+    filterChange(scene) {
+      this.pagination.t = scene;
       this.resetData();
       this.getData();
     },
@@ -117,23 +136,17 @@ export default {
       this.getData();
       window.scrollTo(0, 0);
     },
-    getCategories() {
-      this.$api.Course.Categories().then((res) => {
-        this.navLoading = false;
-        let categories = [];
-        categories.push(...res.data);
-        this.categories.push(...categories);
-      });
-    },
     getData() {
       if (this.loading) {
         return;
       }
       this.loading = true;
-      this.$api.Course.List(this.pagination).then((res) => {
+      this.$api.K12.List(this.pagination).then((res) => {
+        this.navLoading = false;
         this.loading = false;
-        let list = res.data.data;
-        this.total = res.data.total;
+        this.categories = res.data.categories;
+        let list = res.data.data.data;
+        this.total = res.data.data.total;
         if (list.length > 0) {
           this.list = list;
         }

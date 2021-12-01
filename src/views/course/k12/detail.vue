@@ -1,5 +1,12 @@
 <template>
   <div class="content">
+    <course-dialog
+      :courseCharge="dialog.courseCharge"
+      :configText="dialog.configText"
+      :status="dialog.status"
+      @payOrder="paySelect"
+      @hideDialog="hideDialog"
+    ></course-dialog>
     <div class="fix-nav" v-show="isfixTab">
       <div class="tabs">
         <div
@@ -23,60 +30,31 @@
         <historyRecord
           :id="course.id"
           :title="course.title"
-          type="live"
+          type="vod"
         ></historyRecord>
         <div class="nav">
           <a @click="$router.push({ name: 'index' })">首页</a> /
-          <a @click="$router.push({ name: 'live' })">直播课</a> /
+          <a @click="$router.push({ name: 'K12' })">大小班</a> /
           <span>{{ course.title }}</span>
         </div>
         <div class="course-info">
           <div class="course-info-box">
             <div class="course-thumb">
               <img :src="course.thumb" />
-              <div class="status">
-                <span>{{ course.status_text }}</span>
-              </div>
             </div>
             <div class="info">
               <div class="course-info-title">{{ course.title }}</div>
-              <div
-                class="collect-button"
-                :class="{ active: isLike }"
-                @click="likeHit"
-              >
-                <img
-                  v-if="isLike"
-                  class="like-icon"
-                  src="../../../assets/img/commen/icon-collect-h.png"
-                />
-                <img
-                  v-else
-                  class="like-icon"
-                  src="../../../assets/img/commen/icon-collect-n.png"
-                />
-              </div>
-              <p class="desc">{{ course.short_description }}</p>
+              <p class="desc">{{ course.short_desc }}</p>
               <template v-if="!isBuy && course.charge !== 0">
                 <div
                   class="buy-button"
                   v-if="course.charge > 0"
                   @click="buyCourse()"
                 >
-                  订阅直播￥{{ course.charge }}
-                </div>
-                <div
-                  class="role-button"
-                  v-if="course.vip_can_view === 1"
-                  @click="goRole()"
-                >
-                  会员免费看
+                  订阅课程￥{{ course.charge }}
                 </div>
               </template>
-              <template v-if="course.charge === 0">
-                <div class="has-button">本课程免费</div>
-              </template>
-              <template v-if="course.charge !== 0 && isBuy">
+              <template v-else>
                 <div class="has-button">课程已购买</div>
               </template>
             </div>
@@ -95,30 +73,35 @@
             </div>
           </div>
         </div>
-        <div class="course-teacher-box" v-if="course" v-show="currentTab === 2">
-          <div class="teacher" v-if="course.teacher">
-            <img class="avatar" :src="course.teacher.avatar" />
-            <a>{{ course.teacher.name }}</a>
+        <div
+          class="course-teacher-box"
+          v-if="course.teachers"
+          v-show="currentTab === 2"
+        >
+          <div
+            class="teacher-item"
+            v-for="(item, index) in course.teachers"
+            :key="index"
+          >
+            <div class="teacher">
+              <img class="avatar" :src="item.avatar" />
+              <a>{{ item.name }}</a>
+            </div>
+            <p class="teacher-desc">
+              {{ item.short_desc }}
+            </p>
           </div>
-          <p class="teacher-desc">
-            {{ course.teacher.short_desc }}
-          </p>
         </div>
         <div class="coursr-desc" v-if="course" v-show="currentTab === 2">
           <div v-html="course.render_desc"></div>
         </div>
         <div class="course-chapter-box" v-show="currentTab === 3">
-          <div
-            class="chapter-item"
-            v-for="chapter in chapters"
-            :key="chapter.id"
-          >
-            <div class="chapter-name">{{ chapter.name }}</div>
+          <div class="chapter-item">
             <div class="chapter-videos-box">
               <div
                 class="video-item"
                 @click="goPlay(video)"
-                v-for="video in chapter.videos"
+                v-for="video in lessons"
                 :key="video.id"
               >
                 <img
@@ -136,88 +119,17 @@
                 </div>
                 <div class="video-info">
                   <template v-if="video.status === 0">
-                    <span style="color: #3ca7fa"
-                      >开播时间 {{ video.published_at }}</span
-                    >
+                    <span style="color: #3ca7fa">未开课</span>
                   </template>
                   <template v-else-if="video.status === 1">
-                    <span style="color: #04c877">直播中</span>
+                    <span style="color: #04c877">上课中</span>
                   </template>
                   <template v-else-if="video.status === 2">
-                    <span>已结束 </span>
-                    <duration :seconds="video.duration"></duration>
+                    <span>已结课 </span>
+                    <a>查看回放</a>
                   </template>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="course-comments-box" v-show="currentTab === 4">
-          <div class="comment-divider">全部评论</div>
-          <div class="line"></div>
-          <template v-if="isLogin">
-            <div v-if="isBuy" class="replybox">
-              <div class="reply">
-                <img class="user-avatar" :src="user.avatar" />
-                <input
-                  type="text"
-                  class="reply-input"
-                  placeholder="此处填写你的评论"
-                  v-model="comment.content"
-                />
-                <div
-                  class="btn-submit"
-                  :class="{ active: comment.content.length > 0 }"
-                  @click="submitComment"
-                >
-                  评论
-                </div>
-              </div>
-            </div>
-          </template>
-          <template v-else>
-            <div class="replybox">
-              <div class="text" @click="goLogin()">未登录，请登录后再评论</div>
-            </div>
-          </template>
-          <div class="comment-top">
-            <template v-if="comment.list.length > 0">
-              <div
-                class="comment-item"
-                v-for="commentItem in comment.list"
-                :key="commentItem.id"
-              >
-                <div class="user-avatar">
-                  <img :src="comment.users[commentItem.user_id].avatar" />
-                </div>
-                <div class="comment-content">
-                  <div class="comment-info">
-                    <div class="nickname">
-                      {{ comment.users[commentItem.user_id].nick_name }}
-                    </div>
-                    <div class="comment-time">
-                      {{ commentItem.created_at | changeTime }}
-                    </div>
-                  </div>
-
-                  <div class="comment-text" v-html="commentItem.content"></div>
-
-                  <!-- <div
-                class="reply-content"
-                v-if="commentItem.reply_content"
-                v-html="commentItem.reply_content"
-              ></div> -->
-                </div>
-              </div>
-            </template>
-            <none v-else type="white"></none>
-            <div id="page" v-show="comment.list.length > 0 && total > 20">
-              <page-box
-                :totals="total"
-                @current-change="changepage"
-                :pageSize="comment.pagination.size"
-                :tab="false"
-              ></page-box>
             </div>
           </div>
         </div>
@@ -227,20 +139,17 @@
   </div>
 </template>
 <script>
+import Utils from "@/js/utils";
 import { mapState, mapMutations } from "vuex";
 import NavFooter from "../../../components/footer.vue";
-import Duration from "../../../components/duration.vue";
-import PageBox from "../../../components/page.vue";
-import None from "../../../components/none.vue";
+import CourseDialog from "../../../components/coursedialog.vue";
 import HistoryRecord from "../../../components/history-record.vue";
 import SkeletonDetail from "../../../components/skeleton/skeletonDetail.vue";
 
 export default {
   components: {
     NavFooter,
-    Duration,
-    PageBox,
-    None,
+    CourseDialog,
     HistoryRecord,
     SkeletonDetail,
   },
@@ -248,47 +157,38 @@ export default {
     return {
       loading: false,
       id: this.$route.query.id,
-      isLike: false,
+      isCollect: false,
       course: null,
       currentTab: 2,
-      total: null,
-      chapters: [],
+      nowTime: Date.parse(new Date()) / 1000,
+      buyVideos: null,
+      lessons: [],
       tabs: [
         {
-          name: "直播详情",
+          name: "课程详情",
           id: 2,
         },
         {
-          name: "直播排课",
+          name: "课程排课",
           id: 3,
         },
-        {
-          name: "课程评论",
-          id: 4,
-        },
       ],
-      isBuy: false,
-      comment: {
-        list: [],
-        users: {},
-        content: "",
-        loading: false,
-        pagination: {
-          page: 1,
-          size: 20,
-        },
+      dialog: {
+        id: null,
+        courseCharge: null,
+        configText: null,
+        status: false,
       },
+      isBuy: false,
       isfixTab: false,
     };
   },
   computed: {
-    ...mapState(["isLogin", "user"]),
+    ...mapState(["isLogin", "user", "config"]),
   },
   mounted() {
     window.addEventListener("scroll", this.handleTabFix, true);
     this.getDetail();
-    this.getComments();
-    this.getLikeStatus();
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.handleTabFix, true);
@@ -298,14 +198,6 @@ export default {
     goLogin() {
       this.changeDialogType(1);
       this.showLoginDialog();
-    },
-    getLikeStatus() {
-      this.$api.TemplateOne.LikeStatus({
-        id: this.id,
-        type: "live",
-      }).then((res) => {
-        this.isLike = res.data.like;
-      });
     },
     handleTabFix() {
       let scrollTop =
@@ -320,25 +212,68 @@ export default {
           : (this.isfixTab = false);
       }
     },
-    likeHit() {
-      if (this.isLogin) {
-        this.$api.TemplateOne.LikeHit({
-          id: this.id,
-          type: "live",
-        }).then((res) => {
-          this.isLike = !this.isLike;
-          if (this.isLike) {
-            this.$message.success("已收藏");
-          } else {
-            this.$message.success("取消收藏");
-          }
-        });
-      } else {
-        this.goLogin();
-      }
-    },
+
     tabChange(key) {
       this.currentTab = key;
+    },
+    goPlay(item) {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
+      if (this.isBuy) {
+        if (item.play_url) {
+          window.location.href =
+            item.play_url + "?token=" + this.$utils.getToken();
+        }
+      } else {
+        this.dialog.id = item.id;
+        this.dialog.status = true;
+        this.dialog.courseCharge = this.course.charge;
+        this.dialog.configText = item.title;
+      }
+    },
+    paySelect(val) {
+      if (val === 2) {
+        this.goRole();
+        return;
+      }
+      if (val === 1) {
+        this.$router.push({
+          name: "order",
+          query: {
+            goods_type: "k12",
+            goods_charge: this.course.charge,
+            goods_label: "大小班",
+            goods_name: this.course.title,
+            goods_id: this.course.id,
+            goods_thumb: this.course.thumb,
+          },
+        });
+        return;
+      }
+      if (val === 3) {
+        this.$router.push({
+          name: "order",
+          query: {
+            goods_type: "video",
+            goods_charge: this.dialog.videoCharge,
+            goods_label: "视频",
+            goods_name: this.dialog.configText,
+            goods_id: this.dialog.id,
+            goods_thumb: this.course.thumb,
+          },
+        });
+        return;
+      }
+    },
+    goRole() {
+      this.$router.push({
+        name: "vip",
+      });
+    },
+    hideDialog() {
+      this.dialog.status = false;
     },
     buyCourse() {
       if (!this.isLogin) {
@@ -348,37 +283,12 @@ export default {
       this.$router.push({
         name: "order",
         query: {
-          goods_type: "live",
+          goods_type: "k12",
           goods_charge: this.course.charge,
-          goods_label: "直播课程",
+          goods_label: "大小班",
           goods_name: this.course.title,
           goods_id: this.course.id,
           goods_thumb: this.course.thumb,
-        },
-      });
-    },
-    goRole() {
-      this.$router.push({
-        name: "vip",
-      });
-    },
-    goPlay(item) {
-      if (!this.isLogin) {
-        this.goLogin();
-        return;
-      }
-      // if (item.status === 0) {
-      //   this.$message.error("直播未开始");
-      //   return;
-      // }
-      if (this.isBuy === false) {
-        this.$message.error("请购买课程后观看");
-        return;
-      }
-      this.$router.push({
-        name: "liveVideo",
-        query: {
-          id: item.id,
         },
       });
     },
@@ -387,65 +297,16 @@ export default {
         return;
       }
       this.loading = true;
-      this.$api.Live.Detail(this.id)
+      this.$api.K12.Detail(this.id)
         .then((res) => {
           this.loading = false;
           this.course = res.data.course;
-          this.chapters = res.data.chapters;
-          this.isBuy = res.data.is_buy;
+          this.lessons = res.data.lessons;
+          this.isBuy = res.data.paid === 1 ? true : false;
           document.title = res.data.course.title;
         })
         .catch((e) => {
           this.$message.error("获取课程失败");
-        });
-    },
-    getComments() {
-      if (this.comment.loading) {
-        return;
-      }
-      this.comment.loading = true;
-      this.$api.Live.Comments(this.id, this.comment.pagination)
-        .then((res) => {
-          let users = res.data.users;
-          for (let key in users) {
-            this.comment.users[key] = users[key];
-          }
-
-          let list = res.data.data.data;
-          if (list.length > 0) {
-            this.comment.list = list;
-          }
-          this.total = res.data.data.total;
-        })
-        .catch((e) => {
-          this.$message.error(e.message);
-        });
-    },
-    changepage(item) {
-      this.comment.pagination.size = 20;
-      this.comment.pagination.page = item.currentPage;
-      this.submitComment();
-    },
-    resetComments() {
-      this.comment.loading = false;
-      this.comment.pagination.page = 1;
-      this.comment.list = [];
-      this.comment.content = "";
-    },
-    submitComment() {
-      if (this.comment.content.length === 0) {
-        return;
-      }
-      this.$api.Live.SubmitComment(this.id, {
-        content: this.comment.content,
-      })
-        .then(() => {
-          this.$message.success("成功");
-          this.resetComments();
-          this.getComments();
-        })
-        .catch((e) => {
-          this.$message.error(e.message);
         });
     },
   },
@@ -688,35 +549,42 @@ export default {
       margin-top: 30px;
       padding: 50px 30px;
       box-sizing: border-box;
-      .teacher {
-        width: auto;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        .avatar {
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-          margin-right: 20px;
-        }
-        a {
-          width: 100%;
-          height: 24px;
-          font-size: 24px;
-          font-weight: 600;
-          color: #333333;
-          line-height: 24px;
-        }
-      }
-      .teacher-desc {
-        margin-top: 26px;
+      .teacher-item {
         width: 100%;
-        font-size: 16px;
-        font-weight: 400;
-        color: #666666;
-        line-height: 32px;
-        overflow: hidden;
+        margin-bottom: 30px;
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        .teacher {
+          width: auto;
+          height: 80px;
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-right: 20px;
+          }
+          a {
+            width: 100%;
+            height: 24px;
+            font-size: 24px;
+            font-weight: 600;
+            color: #333333;
+            line-height: 24px;
+          }
+        }
+        .teacher-desc {
+          margin-top: 26px;
+          width: 100%;
+          font-size: 16px;
+          font-weight: 400;
+          color: #666666;
+          line-height: 32px;
+          overflow: hidden;
+        }
       }
     }
     .coursr-desc {
@@ -738,29 +606,9 @@ export default {
       .chapter-item {
         width: 100%;
         height: auto;
-        margin-top: 50px;
-        &:first-child {
-          margin-top: 0px;
-        }
-        .chapter-name {
-          width: 100%;
-          height: 16px;
-          font-size: 16px;
-          font-weight: 500;
-          color: #333333;
-          line-height: 16px;
-          margin-bottom: 30px;
-          &:first-child {
-            margin-bottom: 0px;
-          }
-          &:last-child {
-            margin-bottom: 0px;
-          }
-        }
         .chapter-videos-box {
           width: 100%;
           height: auto;
-          margin-top: 30px;
           .video-item {
             width: 100%;
             height: 24px;
@@ -768,23 +616,40 @@ export default {
             flex-direction: row;
             align-items: center;
             position: relative;
-            margin-bottom: 30px;
             cursor: pointer;
+            margin-bottom: 30px;
             &:last-child {
               margin-bottom: 0px;
             }
+
             .play-icon {
               width: 24px;
               height: 24px;
               cursor: pointer;
             }
             .video-title {
-              height: 14px;
+              height: 22px;
               font-size: 14px;
               font-weight: 400;
               color: #333333;
               line-height: 14px;
               margin-left: 15px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              .free {
+                margin-left: 15px;
+                width: 44px;
+                height: 22px;
+                background: #04c877;
+                border-radius: 2px;
+                color: #fff;
+                font-size: 12px;
+                font-weight: 400;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
             }
             .video-info {
               position: absolute;
@@ -893,6 +758,15 @@ export default {
         flex-direction: row;
         align-items: center;
         margin-bottom: 50px;
+        .text {
+          width: 100%;
+          text-align: center;
+          cursor: pointer;
+          &:hover {
+            color: #3ca7fa;
+            text-decoration: underline;
+          }
+        }
         .reply {
           width: 100%;
           display: flex;
