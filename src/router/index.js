@@ -199,6 +199,14 @@ const routes = [
     component: () => import("../views/member/courses.vue"),
   },
   {
+    path: "/member/k12",
+    name: "MemberK12",
+    meta: {
+      title: "我的班课",
+    },
+    component: () => import("../views/member/k12.vue"),
+  },
+  {
     path: "/member/live",
     name: "MemberLive",
     meta: {

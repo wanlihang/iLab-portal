@@ -185,7 +185,7 @@ const Api = {
       return post("/addons/ke/api/v1/course/" + id + "/paid", params);
     },
     UserCourses(params) {
-      return "/addons/ke/api/v1/user/courses", params;
+      return get("/addons/ke/api/v1/user/courses", params);
     },
   },
   Live: {
