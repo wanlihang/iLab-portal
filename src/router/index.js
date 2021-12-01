@@ -39,7 +39,7 @@ const routes = [
     path: "/k12",
     name: "K12",
     meta: {
-      title: "大小班",
+      title: "班课",
     },
     component: () => import("../views/course/k12/index.vue"),
   },

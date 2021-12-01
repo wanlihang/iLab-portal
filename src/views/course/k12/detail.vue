@@ -34,7 +34,7 @@
         ></historyRecord>
         <div class="nav">
           <a @click="$router.push({ name: 'index' })">首页</a> /
-          <a @click="$router.push({ name: 'K12' })">大小班</a> /
+          <a @click="$router.push({ name: 'K12' })">班课</a> /
           <span>{{ course.title }}</span>
         </div>
         <div class="course-info">
@@ -243,7 +243,7 @@ export default {
           query: {
             goods_type: "k12",
             goods_charge: this.course.charge,
-            goods_label: "大小班",
+            goods_label: "班课",
             goods_name: this.course.title,
             goods_id: this.course.id,
             goods_thumb: this.course.thumb,
@@ -284,7 +284,7 @@ export default {
         query: {
           goods_type: "k12",
           goods_charge: this.course.charge,
-          goods_label: "大小班",
+          goods_label: "班课",
           goods_name: this.course.title,
           goods_id: this.course.id,
           goods_thumb: this.course.thumb,
