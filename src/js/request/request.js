@@ -181,6 +181,12 @@ const Api = {
     Detail(id) {
       return get("/addons/ke/api/v1/course/" + id);
     },
+    CreateOrder(id, params) {
+      return post("/addons/ke/api/v1/course/" + id + "/paid", params);
+    },
+    UserCourses(params) {
+      return "/addons/ke/api/v1/user/courses", params;
+    },
   },
   Live: {
     List(params) {

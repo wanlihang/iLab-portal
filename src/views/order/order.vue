@@ -323,7 +323,7 @@ export default {
             this.$message.error(e.message);
           });
       } else if (this.goods.type === "k12") {
-        this.$api.Ke.CreateOrder(this.goods.id, {
+        this.$api.K12.CreateOrder(this.goods.id, {
           goods_id: this.goods.id,
           promo_code: this.promoCode,
         })

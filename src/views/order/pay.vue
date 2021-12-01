@@ -230,6 +230,13 @@ export default {
             id: this.id,
           },
         });
+      } else if (this.goods_type === "k12") {
+        this.$router.push({
+          name: "K12Detail",
+          query: {
+            id: this.id,
+          },
+        });
       }
     },
   },
