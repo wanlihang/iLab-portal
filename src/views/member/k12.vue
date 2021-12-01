@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="box">
-      <nav-member :cid="2" :news="newStatus"></nav-member>
+      <nav-member :cid="17" :news="newStatus"></nav-member>
       <div class="project-box">
         <div class="tabs">
           <div
