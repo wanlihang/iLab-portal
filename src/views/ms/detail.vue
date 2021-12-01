@@ -78,7 +78,11 @@
                 </div>
               </div>
               <div class="isOver" v-if="ms.is_over">已售罄</div>
-              <div class="buy-button" v-else @click="goOrder()">
+              <div
+                class="buy-button"
+                v-if="!order && !ms.is_over"
+                @click="goOrder()"
+              >
                 立即抢购￥{{ ms.charge }}
               </div>
 
@@ -270,7 +274,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .mask {
