@@ -119,10 +119,10 @@
                 </div>
                 <div class="video-info">
                   <template v-if="video.status === 0">
-                    <span style="color: #3ca7fa">未开课</span>
+                    <span style="color: #ff5068">未开课</span>
                   </template>
                   <template v-else-if="video.status === 1">
-                    <span style="color: #04c877">上课中</span>
+                    <span style="color: #3ca7fa">上课中</span>
                   </template>
                   <template v-else-if="video.status === 2">
                     <span>已结课 </span>
