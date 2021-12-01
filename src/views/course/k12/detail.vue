@@ -125,8 +125,7 @@
                     <span style="color: #3ca7fa">上课中</span>
                   </template>
                   <template v-else-if="video.status === 2">
-                    <span>已结课 </span>
-                    <a>查看回放</a>
+                    <span>已结课(查看回放)</span>
                   </template>
                 </div>
               </div>
