@@ -23,7 +23,7 @@
         <div class="label">收货人手机号</div>
         <div class="input">
           <input
-            type="text"
+            type="number"
             class="input-item"
             v-model="form.mobile"
             placeholder="请填写收货人手机号码"
@@ -156,6 +156,7 @@ export default {
       this.newAdd = false;
     },
     save() {
+      console.log(this.form);
       this.newAdd = false;
     },
     confirm() {
