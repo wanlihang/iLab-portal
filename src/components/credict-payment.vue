@@ -92,8 +92,11 @@ export default {
       this.checked = id;
     },
     confirm() {
-      this.resetDialog();
+      if (!this.checked) {
+        return;
+      }
       this.$emit("confirm", this.checked);
+      this.resetDialog();
     },
   },
 };
