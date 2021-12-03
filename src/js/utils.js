@@ -1,5 +1,7 @@
-const TOKEN_NAME = 'meedu-user-token';
-const MSV_NAME = 'meedu-msv';
+import config from "@/js/config";
+
+const TOKEN_NAME = "meedu-user-token";
+const MSV_NAME = "meedu-msv";
 
 export default {
   getToken() {
@@ -23,37 +25,37 @@ export default {
   getShareHost() {
     let hash = window.location.hash;
     if (hash.match("#")) {
-      hash = "/#/"
+      hash = "/#/";
     } else {
-      hash = ""
+      hash = "";
     }
-    let host = window.location.protocol +
-      "//" +
-      window.location.host + hash;
+    let host = window.location.protocol + "//" + window.location.host + hash;
 
     return host;
   },
   isMobile() {
-    let flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)
+    let flag = navigator.userAgent.match(
+      /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+    );
     return flag;
   },
   currentDate() {
-    const Manba = require('manba');
-    return Manba().format('YYYY/MM/DD h:mm:ss');
+    const Manba = require("manba");
+    return Manba().format("YYYY/MM/DD h:mm:ss");
   },
   getHMS(time) {
     const hour =
-      parseInt(time / 3600) < 10 ?
-      "0" + parseInt(time / 3600) :
-      parseInt(time / 3600);
+      parseInt(time / 3600) < 10
+        ? "0" + parseInt(time / 3600)
+        : parseInt(time / 3600);
     const min =
-      parseInt((time % 3600) / 60) < 10 ?
-      "0" + parseInt((time % 3600) / 60) :
-      parseInt((time % 3600) / 60);
+      parseInt((time % 3600) / 60) < 10
+        ? "0" + parseInt((time % 3600) / 60)
+        : parseInt((time % 3600) / 60);
     const sec =
-      parseInt((time % 3600) % 60) < 10 ?
-      "0" + parseInt((time % 3600) % 60) :
-      parseInt((time % 3600) % 60);
+      parseInt((time % 3600) % 60) < 10
+        ? "0" + parseInt((time % 3600) % 60)
+        : parseInt((time % 3600) % 60);
     return hour + ":" + min + ":" + sec;
   },
   random(minNum, maxNum) {
@@ -68,24 +70,25 @@ export default {
   },
   copyright() {
     let outs = [];
-    let fi = function () {
+    let fi = function() {
       return {
         msg: "",
-        style: ""
-      }
+        style: "",
+      };
     };
 
     var oi = fi();
     oi.msg = "MeEdu - 在线教育培训解决方案";
-    oi.style = "padding-top: 15px;padding-bottom:15px;line-height:30px;font-size:2rem;color:#3ca7fa";
+    oi.style =
+      "padding-top: 15px;padding-bottom:15px;line-height:30px;font-size:2rem;color:#3ca7fa";
     outs.push(oi);
 
     oi = fi();
-    oi.msg = "\r\n官网：\nhttps://meedu.vip\r\n\r\nGitHub：\nhttps://github.com/qsnh/meedu\r\n\r\n使用手册：\nhttps://www.yuque.com/meedu/fvvkbf\r\n\r\n当前版本：v4.5.2\r\n";
+    oi.msg = `\r\n官网：\nhttps://meedu.vip\r\n\r\nGitHub：\nhttps://github.com/qsnh/meedu\r\n\r\n使用手册：\nhttps://www.yuque.com/meedu/fvvkbf\r\n\r\n当前版本：${config.version}\r\n`;
     outs.push(oi);
 
-    outs.map(function (x) {
+    outs.map(function(x) {
       console.log("%c" + x.msg, x.style);
     });
-  }
-}
+  },
+};

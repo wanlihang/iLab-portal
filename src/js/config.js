@@ -1,9 +1,10 @@
-let url = process.env.VUE_APP_URL || '';
+let url = process.env.VUE_APP_URL || "";
 
-if (typeof window.meedu_app_url !== 'undefined' && window.meedu_app_url) {
-    url = window.meedu_app_url;
+if (typeof window.meedu_app_url !== "undefined" && window.meedu_app_url) {
+  url = window.meedu_app_url;
 }
 
 export default {
-    url: url
-}
+  url: url,
+  version: "v4.5.2",
+};
