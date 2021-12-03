@@ -166,7 +166,7 @@ export default {
         _.indexOf(config.enabled_addons, "MultiLevelShare") === -1;
 
       this.updateFuncConfig(funcTable);
-      if (this.$utils.isMobile()) {
+      if (this.$utils.isMobile() && config.h5_url !== "") {
         window.location.href = config.h5_url;
       }
     },

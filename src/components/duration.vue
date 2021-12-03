@@ -1,5 +1,5 @@
 <template>
-  <span>{{ hour }}:{{ minute }}:{{ second }}</span>
+  <span>{{ hour }}{{ minute }}:{{ second }}</span>
 </template>
 
 <script>
@@ -8,7 +8,11 @@ export default {
   computed: {
     hour() {
       let h = parseInt(this.seconds / 3600);
-      return h >= 10 ? h : "0" + h;
+      if (h === 0) {
+        return "";
+      } else {
+        return h >= 10 ? h + ":" : "0" + h + ":";
+      }
     },
     minute() {
       let m = parseInt((this.seconds % 3600) / 60);

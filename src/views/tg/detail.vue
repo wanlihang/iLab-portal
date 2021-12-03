@@ -94,7 +94,9 @@
                     距拼团有效期结束剩余
                     <count-down :timestamp="item.count_down"></count-down>
                   </div>
-                  <div class="join-button" @click="goPay(item.id)">去拼单</div>
+                  <div class="join-button" @click="goPay(item.id)">
+                    加入拼团
+                  </div>
                 </div>
               </div>
             </div>
@@ -243,7 +245,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .fix-nav {
@@ -353,6 +355,7 @@ export default {
                 margin-bottom: 30px;
               }
               .user {
+                width: 340px;
                 height: 48px;
                 display: flex;
                 flex-direction: row;
@@ -386,6 +389,7 @@ export default {
               .countdown {
                 display: flex;
                 flex-direction: row;
+                width: 240px;
                 height: 14px;
                 font-size: 14px;
                 font-weight: 400;

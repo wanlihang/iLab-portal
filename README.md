@@ -20,7 +20,7 @@
 安装依赖：
 
 ```
-yarn
+npm install
 ```
 
 修改配置：
@@ -34,7 +34,7 @@ cp .env.example .env
 编译：
 
 ```
-yarn build
+npm run build
 ```
 
 编译好，将会生成 `dist` 目录。将 `dist` 目录下的文件部署到新的站点。

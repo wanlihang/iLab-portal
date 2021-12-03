@@ -66,6 +66,12 @@ export default {
               path: "MemberTopic",
               status: this.configFunc["topic"],
             },
+            {
+              name: "我的班课",
+              id: 17,
+              path: "MemberK12",
+              status: this.configFunc["ke"],
+            },
           ],
         },
         {

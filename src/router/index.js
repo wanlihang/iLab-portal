@@ -1,550 +1,523 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import config from '@/js/config';
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-const originalPush = VueRouter.prototype.push
+const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
+  return originalPush.call(this, location).catch((err) => err);
+};
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-const routes = [{
-    path: '/',
-    name: 'index',
+const routes = [
+  {
+    path: "/",
+    name: "index",
     meta: {
-      title: "首页"
+      title: "首页",
     },
-    component: () => import('../views/index/index.vue'),
-
+    component: () => import("../views/index/index.vue"),
   },
   {
-    path: '/courses',
-    name: 'courses',
+    path: "/courses",
+    name: "courses",
     meta: {
-      title: "点播课"
+      title: "点播课",
     },
-    component: () => import('../views/course/vod/index.vue'),
-
+    component: () => import("../views/course/vod/index.vue"),
   },
   {
-    path: '/courses/detail',
-    name: 'coursesDetail',
-    component: () => import('../views/course/vod/detail.vue'),
-
+    path: "/courses/detail",
+    name: "coursesDetail",
+    component: () => import("../views/course/vod/detail.vue"),
   },
   {
-    path: '/courses/video',
-    name: 'coursesVideo',
-    component: () => import('../views/course/vod/video.vue'),
-
+    path: "/courses/video",
+    name: "coursesVideo",
+    component: () => import("../views/course/vod/video.vue"),
   },
   {
-    path: '/live',
-    name: 'live',
+    path: "/k12",
+    name: "K12",
     meta: {
-      title: "直播课"
+      title: "班课",
     },
-    component: () => import('../views/course/live/index.vue'),
-
+    component: () => import("../views/course/k12/index.vue"),
   },
   {
-    path: '/live/detail',
-    name: 'liveDetail',
-    component: () => import('../views/course/live/detail.vue'),
-
+    path: "/k12/detail",
+    name: "K12Detail",
+    component: () => import("../views/course/k12/detail.vue"),
   },
   {
-    path: '/live/video',
-    name: 'liveVideo',
+    path: "/live",
+    name: "live",
     meta: {
-      hideHeader: true
+      title: "直播课",
     },
-    component: () => import('../views/course/live/video.vue'),
-
+    component: () => import("../views/course/live/index.vue"),
   },
   {
-    path: '/topic',
-    name: 'topic',
+    path: "/live/detail",
+    name: "liveDetail",
+    component: () => import("../views/course/live/detail.vue"),
+  },
+  {
+    path: "/live/video",
+    name: "liveVideo",
     meta: {
-      title: "图文收费"
+      hideHeader: true,
     },
-    component: () => import('../views/topic/topic.vue'),
-
+    component: () => import("../views/course/live/video.vue"),
   },
   {
-    path: '/topic/detail',
-    name: 'topicDetail',
-    component: () => import('../views/topic/detail.vue'),
-
-  },
-  {
-    path: '/book',
-    name: 'book',
+    path: "/topic",
+    name: "topic",
     meta: {
-      title: "电子书"
+      title: "图文收费",
     },
-    component: () => import('../views/book/index.vue'),
-
+    component: () => import("../views/topic/topic.vue"),
   },
   {
-    path: '/book/detail',
-    name: 'bookDetail',
-    component: () => import('../views/book/detail.vue'),
-
+    path: "/topic/detail",
+    name: "topicDetail",
+    component: () => import("../views/topic/detail.vue"),
   },
   {
-    path: '/book/read',
-    name: 'bookRead',
+    path: "/book",
+    name: "book",
     meta: {
-      hideHeader: true
+      title: "电子书",
     },
-    component: () => import('../views/book/read.vue'),
-
+    component: () => import("../views/book/index.vue"),
   },
   {
-    path: '/learnPath',
-    name: 'learnPath',
+    path: "/book/detail",
+    name: "bookDetail",
+    component: () => import("../views/book/detail.vue"),
+  },
+  {
+    path: "/book/read",
+    name: "bookRead",
     meta: {
-      title: "学习路径"
+      hideHeader: true,
     },
-    component: () => import('../views/learnPath/index.vue'),
-
+    component: () => import("../views/book/read.vue"),
   },
   {
-    path: '/learnPath/detail',
-    name: 'learnPathDetail',
-    component: () => import('../views/learnPath/detail.vue'),
-
-  },
-  {
-    path: '/wenda',
-    name: 'wenda',
+    path: "/learnPath",
+    name: "learnPath",
     meta: {
-      title: "在线问答"
+      title: "学习路径",
     },
-    component: () => import('../views/wenda/index.vue'),
-
+    component: () => import("../views/learnPath/index.vue"),
   },
   {
-    path: '/wenda/detail',
-    name: 'wendaDetail',
-    component: () => import('../views/wenda/detail.vue'),
-
+    path: "/learnPath/detail",
+    name: "learnPathDetail",
+    component: () => import("../views/learnPath/detail.vue"),
   },
   {
-    path: '/vip',
-    name: 'vip',
+    path: "/wenda",
+    name: "wenda",
     meta: {
-      title: "会员中心"
+      title: "在线问答",
     },
-    component: () => import('../views/role/index.vue'),
-
+    component: () => import("../views/wenda/index.vue"),
   },
   {
-    path: '/study',
-    name: 'study',
+    path: "/wenda/detail",
+    name: "wendaDetail",
+    component: () => import("../views/wenda/detail.vue"),
+  },
+  {
+    path: "/vip",
+    name: "vip",
     meta: {
-      title: "学习中心"
+      title: "会员中心",
     },
-    component: () => import('../views/study/index.vue'),
-
+    component: () => import("../views/role/index.vue"),
   },
   {
-    path: '/order/order',
-    name: 'order',
+    path: "/study",
+    name: "study",
     meta: {
-      title: "收银台"
+      title: "学习中心",
     },
-    component: () => import('../views/order/order.vue'),
-
+    component: () => import("../views/study/index.vue"),
   },
   {
-    path: '/order/pay',
-    name: 'orderPay',
+    path: "/credictmall",
+    name: "Credictmall",
     meta: {
-      title: "支付中"
+      title: "积分商城",
     },
-    component: () => import('../views/order/pay.vue'),
-
+    component: () => import("../views/credictmall/index.vue"),
   },
   {
-    path: '/order/success',
-    name: 'orderSuccess',
+    path: "/credictmall/detail",
+    name: "CredictmallDetail",
+    component: () => import("../views/credictmall/detail.vue"),
+  },
+  {
+    path: "/order/order",
+    name: "order",
     meta: {
-      title: "支付成功"
+      title: "收银台",
     },
-    component: () => import('../views/order/success.vue'),
-
+    component: () => import("../views/order/order.vue"),
   },
   {
-    path: '/member',
-    name: 'Member',
+    path: "/order/pay",
+    name: "orderPay",
     meta: {
-      title: "用户中心"
+      title: "支付中",
     },
-    component: () => import('../views/member/index.vue'),
-
+    component: () => import("../views/order/pay.vue"),
   },
   {
-    path: '/member/courses',
-    name: 'MemberCourses',
+    path: "/order/success",
+    name: "orderSuccess",
     meta: {
-      title: "点播课程"
+      title: "支付成功",
     },
-    component: () => import('../views/member/courses.vue'),
-
+    component: () => import("../views/order/success.vue"),
   },
   {
-    path: '/member/live',
-    name: 'MemberLive',
+    path: "/member",
+    name: "Member",
     meta: {
-      title: "直播课程"
+      title: "用户中心",
     },
-    component: () => import('../views/member/live.vue'),
-
+    component: () => import("../views/member/index.vue"),
   },
   {
-    path: '/member/books',
-    name: 'MemberBooks',
+    path: "/member/courses",
+    name: "MemberCourses",
     meta: {
-      title: "电子书"
+      title: "点播课程",
     },
-    component: () => import('../views/member/books.vue'),
-
+    component: () => import("../views/member/courses.vue"),
   },
   {
-    path: '/member/topic',
-    name: 'MemberTopic',
+    path: "/member/k12",
+    name: "MemberK12",
     meta: {
-      title: "图文"
+      title: "我的班课",
     },
-    component: () => import('../views/member/topic.vue'),
-
+    component: () => import("../views/member/k12.vue"),
   },
   {
-    path: '/member/history',
-    name: 'MemberHistory',
+    path: "/member/live",
+    name: "MemberLive",
     meta: {
-      title: "浏览历史"
+      title: "直播课程",
     },
-    component: () => import('../views/member/history.vue'),
-
+    component: () => import("../views/member/live.vue"),
   },
   {
-    path: '/member/paper',
-    name: 'MemberPaper',
+    path: "/member/books",
+    name: "MemberBooks",
     meta: {
-      title: "我的考试"
+      title: "电子书",
     },
-    component: () => import('../views/member/paper.vue'),
-
+    component: () => import("../views/member/books.vue"),
   },
   {
-    path: '/member/mockpaper',
-    name: 'MembermMckpaper',
+    path: "/member/topic",
+    name: "MemberTopic",
     meta: {
-      title: "我的模考"
+      title: "图文",
     },
-    component: () => import('../views/member/mockpaper.vue'),
-
+    component: () => import("../views/member/topic.vue"),
   },
   {
-    path: '/member/practice',
-    name: 'MemberPractice',
+    path: "/member/history",
+    name: "MemberHistory",
     meta: {
-      title: "我的练习"
+      title: "浏览历史",
     },
-    component: () => import('../views/member/practice.vue'),
-
+    component: () => import("../views/member/history.vue"),
   },
   {
-    path: '/member/messages',
-    name: 'MemberMessages',
+    path: "/member/paper",
+    name: "MemberPaper",
     meta: {
-      title: "我的消息"
+      title: "我的考试",
     },
-    component: () => import('../views/member/messages.vue'),
-
+    component: () => import("../views/member/paper.vue"),
   },
   {
-    path: '/member/profile',
-    name: 'MemberProfile',
+    path: "/member/mockpaper",
+    name: "MembermMckpaper",
     meta: {
-      title: "我的资料"
+      title: "我的模考",
     },
-    component: () => import('../views/member/profile.vue'),
-
+    component: () => import("../views/member/mockpaper.vue"),
   },
   {
-    path: '/member/orders',
-    name: 'MemberOrders',
+    path: "/member/practice",
+    name: "MemberPractice",
     meta: {
-      title: "所有订单"
+      title: "我的练习",
     },
-    component: () => import('../views/member/orders.vue'),
-
+    component: () => import("../views/member/practice.vue"),
   },
   {
-    path: '/member/questions',
-    name: 'MemberQuestions',
+    path: "/member/messages",
+    name: "MemberMessages",
     meta: {
-      title: "我的问答"
+      title: "我的消息",
     },
-    component: () => import('../views/member/questions.vue'),
-
+    component: () => import("../views/member/messages.vue"),
   },
   {
-    path: '/member/share',
-    name: 'MemberShare',
+    path: "/member/profile",
+    name: "MemberProfile",
     meta: {
-      title: "邀请推广"
+      title: "我的资料",
     },
-    component: () => import('../views/member/share.vue'),
-
+    component: () => import("../views/member/profile.vue"),
   },
   {
-    path: '/member/codeexchanger',
-    name: 'MemberCodeExchanger',
+    path: "/member/orders",
+    name: "MemberOrders",
     meta: {
-      title: "兑换课程"
+      title: "所有订单",
     },
-    component: () => import('../views/member/codeexchanger.vue'),
-
+    component: () => import("../views/member/orders.vue"),
   },
   {
-    path: '/member/credit1_records',
-    name: 'MemberCredit1Records',
+    path: "/member/questions",
+    name: "MemberQuestions",
     meta: {
-      title: "我的积分"
+      title: "我的问答",
     },
-    component: () => import('../views/member/credit1_records.vue'),
-
+    component: () => import("../views/member/questions.vue"),
   },
   {
-    path: '/exam',
-    name: 'Exam',
+    path: "/member/share",
+    name: "MemberShare",
     meta: {
-      title: "在线考试"
+      title: "邀请推广",
     },
-    component: () => import('../views/exam/index.vue'),
-
+    component: () => import("../views/member/share.vue"),
   },
-
   {
-    path: '/exam/papers',
-    name: 'ExamPapers',
+    path: "/member/codeexchanger",
+    name: "MemberCodeExchanger",
     meta: {
-      title: "考试中心"
+      title: "兑换课程",
     },
-    component: () => import('../views/exam/paper/index.vue'),
-
+    component: () => import("../views/member/codeexchanger.vue"),
   },
   {
-    path: '/exam/papers/detail',
-    name: 'ExamPapersDetail',
-    component: () => import('../views/exam/paper/detail.vue'),
-
-  },
-  {
-    path: '/exam/papers/play',
-    name: 'ExamPapersPlay',
+    path: "/member/credit1_records",
+    name: "MemberCredit1Records",
     meta: {
-      hideHeader: true
+      title: "我的积分",
     },
-    component: () => import('../views/exam/paper/play.vue'),
-
+    component: () => import("../views/member/credit1_records.vue"),
   },
   {
-    path: '/exam/mockpaper',
-    name: 'ExamMockPapers',
+    path: "/exam",
+    name: "Exam",
     meta: {
-      title: "模拟考试"
+      title: "在线考试",
     },
-    component: () => import('../views/exam/mock/index.vue'),
-
+    component: () => import("../views/exam/index.vue"),
   },
-  {
-    path: '/exam/mockpaper/detail',
-    name: 'ExamMockpaperDetail',
-    component: () => import('../views/exam/mock/detail.vue'),
 
-  },
   {
-    path: '/exam/mockpaper/play',
-    name: 'ExamMockpaperPlay',
+    path: "/exam/papers",
+    name: "ExamPapers",
     meta: {
-      hideHeader: true
+      title: "考试中心",
     },
-    component: () => import('../views/exam/mock/play.vue'),
-
+    component: () => import("../views/exam/paper/index.vue"),
   },
   {
-    path: '/exam/practice',
-    name: 'ExamPractice',
+    path: "/exam/papers/detail",
+    name: "ExamPapersDetail",
+    component: () => import("../views/exam/paper/detail.vue"),
+  },
+  {
+    path: "/exam/papers/play",
+    name: "ExamPapersPlay",
     meta: {
-      title: "练习模式"
+      hideHeader: true,
     },
-    component: () => import('../views/exam/practice/index.vue'),
-
+    component: () => import("../views/exam/paper/play.vue"),
   },
   {
-    path: '/exam/practice/detail',
-    name: 'ExamPracticeDetail',
-    component: () => import('../views/exam/practice/detail.vue'),
-
-  },
-  {
-    path: '/exam/practice/play',
-    name: 'ExamPracticePlay',
+    path: "/exam/mockpaper",
+    name: "ExamMockPapers",
     meta: {
-      hideHeader: true
+      title: "模拟考试",
     },
-    component: () => import('../views/exam/practice/play.vue'),
-
+    component: () => import("../views/exam/mock/index.vue"),
   },
   {
-    path: '/exam/wrongbook',
-    name: 'ExamWrongBook',
+    path: "/exam/mockpaper/detail",
+    name: "ExamMockpaperDetail",
+    component: () => import("../views/exam/mock/detail.vue"),
+  },
+  {
+    path: "/exam/mockpaper/play",
+    name: "ExamMockpaperPlay",
     meta: {
-      title: "考试错题本"
+      hideHeader: true,
     },
-    component: () => import('../views/exam/wrongbook/index.vue'),
-
+    component: () => import("../views/exam/mock/play.vue"),
   },
   {
-    path: '/exam/wrongbook/play',
-    name: 'ExamWrongBookPlay',
+    path: "/exam/practice",
+    name: "ExamPractice",
+    meta: {
+      title: "练习模式",
+    },
+    component: () => import("../views/exam/practice/index.vue"),
+  },
+  {
+    path: "/exam/practice/detail",
+    name: "ExamPracticeDetail",
+    component: () => import("../views/exam/practice/detail.vue"),
+  },
+  {
+    path: "/exam/practice/play",
+    name: "ExamPracticePlay",
+    meta: {
+      hideHeader: true,
+    },
+    component: () => import("../views/exam/practice/play.vue"),
+  },
+  {
+    path: "/exam/wrongbook",
+    name: "ExamWrongBook",
+    meta: {
+      title: "考试错题本",
+    },
+    component: () => import("../views/exam/wrongbook/index.vue"),
+  },
+  {
+    path: "/exam/wrongbook/play",
+    name: "ExamWrongBookPlay",
     meta: {
       title: "错题本练习",
-      hideHeader: true
+      hideHeader: true,
     },
-    component: () => import('../views/exam/wrongbook/play.vue'),
-
+    component: () => import("../views/exam/wrongbook/play.vue"),
   },
   {
-    path: '/exam/collection',
-    name: 'ExamCollection',
+    path: "/exam/collection",
+    name: "ExamCollection",
     meta: {
-      title: "收藏习题"
+      title: "收藏习题",
     },
-    component: () => import('../views/exam/collection/index.vue'),
-
+    component: () => import("../views/exam/collection/index.vue"),
   },
   {
-    path: '/exam/collection/play',
-    name: 'ExamCollectionPlay',
+    path: "/exam/collection/play",
+    name: "ExamCollectionPlay",
     meta: {
       title: "收藏习题详情",
-      hideHeader: true
+      hideHeader: true,
     },
-    component: () => import('../views/exam/collection/play.vue'),
-
+    component: () => import("../views/exam/collection/play.vue"),
   },
   {
-    path: '/exam/questionbank',
-    name: 'ExamQuestionbank',
+    path: "/exam/questionbank",
+    name: "ExamQuestionbank",
     meta: {
-      title: "试题库"
+      title: "试题库",
     },
-    component: () => import('../views/exam/questionbank/index.vue'),
-
+    component: () => import("../views/exam/questionbank/index.vue"),
   },
   {
-    path: '/exam/questionbank/play',
-    name: 'ExamQuestionbankPlay',
+    path: "/exam/questionbank/play",
+    name: "ExamQuestionbankPlay",
     meta: {
       title: "试题库练习",
-      hideHeader: true
+      hideHeader: true,
     },
-    component: () => import('../views/exam/questionbank/play.vue'),
-
+    component: () => import("../views/exam/questionbank/play.vue"),
   },
   {
-    path: '/ms',
-    name: 'ms',
+    path: "/ms",
+    name: "ms",
     meta: {
-      title: "秒杀"
+      title: "秒杀",
     },
-    component: () => import('../views/ms/index.vue'),
-
+    component: () => import("../views/ms/index.vue"),
   },
   {
-    path: '/ms/detail',
-    name: 'msDetail',
-    component: () => import('../views/ms/detail.vue'),
-
+    path: "/ms/detail",
+    name: "msDetail",
+    component: () => import("../views/ms/detail.vue"),
   },
   {
-    path: '/tg',
-    name: 'tg',
+    path: "/tg",
+    name: "tg",
     meta: {
-      title: "团购"
+      title: "团购",
     },
-    component: () => import('../views/tg/index.vue'),
-
+    component: () => import("../views/tg/index.vue"),
   },
   {
-    path: '/tg/detail',
-    name: 'tgDetail',
-    component: () => import('../views/tg/detail.vue'),
-
+    path: "/tg/detail",
+    name: "tgDetail",
+    component: () => import("../views/tg/detail.vue"),
   },
   {
-    path: '/announcement',
-    name: 'announcement',
-    component: () => import('../views/announcement/index.vue'),
+    path: "/announcement",
+    name: "announcement",
+    component: () => import("../views/announcement/index.vue"),
   },
   {
-    path: '/search',
-    name: 'Search',
+    path: "/search",
+    name: "Search",
     meta: {
-      title: "全站搜索"
+      title: "全站搜索",
     },
-    component: () => import('../views/search/index.vue'),
+    component: () => import("../views/search/index.vue"),
   },
   {
-    path: '/share',
-    name: 'Share',
+    path: "/share",
+    name: "Share",
     meta: {
-      title: "推广"
+      title: "推广",
     },
-    component: () => import('../views/share/index.vue'),
+    component: () => import("../views/share/index.vue"),
   },
   {
-    path: '/500',
-    name: 'Error500',
+    path: "/500",
+    name: "Error500",
     meta: {
       title: "500",
-      hideHeader: true
+      hideHeader: true,
     },
-    component: () => import('../views/index/500.vue'),
-
+    component: () => import("../views/index/500.vue"),
   },
   {
-    path: '/404',
-    name: 'Error404',
+    path: "/404",
+    name: "Error404",
     meta: {
       title: "404",
-      hideHeader: true
+      hideHeader: true,
     },
-    component: () => import('../views/index/404.vue'),
-
+    component: () => import("../views/index/404.vue"),
   },
   {
-    path: '*',
+    path: "*",
     meta: {
       title: "404错误",
-      hideHeader: true
+      hideHeader: true,
     },
-    component: () => import('../views/index/404.vue'),
+    component: () => import("../views/index/404.vue"),
   },
-]
+];
 
 const router = new VueRouter({
-  mode: config.routerMode,
-  routes
-})
+  routes,
+});
 
-
-export default router
+export default router;

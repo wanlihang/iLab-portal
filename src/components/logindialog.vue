@@ -585,7 +585,7 @@
           <button type="submit" class="submit" @click="NewMobileValidate()">
             立即绑定
           </button>
-          <button class="logout" v-if="!notCancel" @click="goLogout">
+          <button class="logout" v-if="notCancel" @click="goLogout">
             安全退出
           </button>
         </div>
@@ -677,7 +677,8 @@ export default {
   props: ["dialogType", "status", "mobile", "notCancel"],
   data() {
     return {
-      timer: "",
+      timer: null,
+      interval: null,
       loading: false,
       code: null,
       newMobile: null,
@@ -718,7 +719,7 @@ export default {
     };
   },
   watch: {
-    dialogType: function () {
+    dialogType: function() {
       this.dialogStatus = this.dialogType;
       if (this.dialogStatus !== 0 && this.dialogStatus !== 5) {
         this.getCaptcha();
@@ -727,13 +728,13 @@ export default {
         this.getBindQrode();
       }
     },
-    mobile: function () {
+    mobile: function() {
       this.messageForm.mobile = this.mobile;
     },
   },
   created() {
     var t = this;
-    document.onkeydown = function (e) {
+    document.onkeydown = function(e) {
       var key;
       if (window.event == undefined) {
         key = e.keyCode;
@@ -751,6 +752,7 @@ export default {
   mounted() {},
   beforeDestroy() {
     clearInterval(this.timer);
+    clearInterval(this.interval);
   },
   methods: {
     ...mapMutations([
@@ -875,10 +877,10 @@ export default {
           this.$message.success("发送成功");
           this.sms.loading = this;
           this.sms.current = this.sms.max;
-          let interval = setInterval(() => {
+          this.interval = setInterval(() => {
             if (this.sms.current <= 1) {
               this.sms.loading = false;
-              clearInterval(interval);
+              clearInterval(this.interval);
             } else {
               this.sms.current--;
             }
@@ -1405,15 +1407,14 @@ export default {
           width: 100%;
           height: 54px;
           background: #fff;
-          border: 1px solid #f6f6f6;
           border-radius: 4px;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 400;
-          color: #333;
-          line-height: 16px;
+          color: #999999;
+          line-height: 14px;
           outline: none;
           &:hover {
             opacity: 0.8;
