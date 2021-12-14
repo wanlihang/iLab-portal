@@ -86,7 +86,7 @@
     <remote-script
       src="https://cdn.aodianyun.com/dms/rop_client.js"
       @load="initADY"
-      v-if="video.status === 0 || video.statsu === 1"
+      v-if="enabledChat"
     ></remote-script>
 
     <template v-if="video.status === 1">
@@ -136,6 +136,12 @@ export default {
   },
   computed: {
     ...mapState(["isLogin", "user", "config"]),
+    enabledChat() {
+      if (typeof this.video.status === "undefined") {
+        return false;
+      }
+      return this.video.status === 0 || this.video.status === 1;
+    },
   },
   watch: {
     chatRecords() {
