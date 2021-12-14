@@ -153,49 +153,54 @@ export default {
     if (window.ROP) {
       window.ROP.Leave();
     }
+    if (this.recordInterval) {
+      window.clearInterval(this.recordInterval);
+    }
   },
   methods: {
     getData() {
-      this.$api.Live.Play(this.id).then((res) => {
-        let resData = res.data;
+      this.$api.Live.Play(this.id)
+        .then((res) => {
+          let resData = res.data;
 
-        // 网页标题
-        document.title = resData.video.title;
+          // 网页标题
+          document.title = resData.video.title;
 
-        // 初始化聊天服务
-        if (typeof resData.chat !== "undefined") {
-          this.chatChannel = resData.chat.channel;
-          this.chatUser = resData.chat.user;
+          // 初始化聊天服务
+          if (typeof resData.chat !== "undefined") {
+            this.chatChannel = resData.chat.channel;
+            this.chatUser = resData.chat.user;
 
-          this.ADYParams.sub_key = resData.chat.aodianyun.sub_key;
-          this.ADYParams.pub_key = resData.chat.aodianyun.pub_key;
-          this.ADYParams.channel = resData.chat.channel;
-          this.ADYParams.user.id = resData.chat.user.id;
-          this.ADYParams.user.name = resData.chat.user.name;
-          this.ADYParams.user.avatar = resData.chat.user.avatar;
-        }
-
-        // 倒计时
-        this.curStartTime = resData.video.published_at;
-
-        this.course = resData.course;
-        this.video = resData.video;
-        this.playUrl = resData.play_url;
-
-        // 聊天记录
-        this.getChatRecords();
-
-        // 初始化播放器
-        if (this.video.status === 0) {
-          this.countTime();
-        } else if (this.video.status === 2) {
-          if (this.playUrl) {
-            this.$nextTick(() => {
-              this.initVodPlayer(this.playUrl, this.course.poster);
-            });
+            this.ADYParams.sub_key = resData.chat.aodianyun.sub_key;
+            this.ADYParams.pub_key = resData.chat.aodianyun.pub_key;
+            this.ADYParams.channel = resData.chat.channel;
+            this.ADYParams.user.id = resData.chat.user.id;
+            this.ADYParams.user.name = resData.chat.user.name;
+            this.ADYParams.user.avatar = resData.chat.user.avatar;
           }
-        }
-      });
+
+          // 倒计时
+          this.curStartTime = resData.video.published_at;
+
+          this.course = resData.course;
+          this.video = resData.video;
+          this.playUrl = resData.play_url;
+
+          // 聊天记录
+          this.getChatRecords();
+
+          // 初始化播放器
+          if (this.video.status === 0) {
+            this.countTime();
+          } else if (this.video.status === 2) {
+            if (this.playUrl) {
+              this.$nextTick(() => {
+                this.initVodPlayer(this.playUrl, this.course.poster);
+              });
+            }
+          }
+        })
+        .catch((e) => {});
     },
     countTime() {
       let date = new Date();
@@ -355,10 +360,6 @@ export default {
           color: "red",
         },
       });
-
-      this.recordInterval = setInterval(() => {
-        this.playRecord();
-      }, 10000);
     },
     playRecord() {
       this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {
