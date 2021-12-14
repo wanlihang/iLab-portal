@@ -380,9 +380,17 @@ export default {
       this.$api.Live.SendMessage(this.course.id, this.video.id, {
         content: content,
         duration: curDuration,
-      }).catch((e) => {
-        this.$msg.error(e.message);
-      });
+      })
+        .then((res) => {
+          this.chatRecords.push({
+            local: 1,
+            content: content,
+          });
+          this.chatBoxScrollBottom();
+        })
+        .catch((e) => {
+          this.$msg.error(e.message);
+        });
     },
     submitMessage() {
       if (!this.message.content) {
