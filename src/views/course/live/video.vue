@@ -400,6 +400,18 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #dddddd;
+}
+::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 0px;
+}
 .content {
   width: 100%;
   .navheader {
@@ -550,7 +562,7 @@ export default {
         width: 250px;
         height: 689px;
         box-sizing: border-box;
-        padding: 15px 15px 0 15px;
+        padding: 15px 0 0 0;
         position: relative;
         display: flex;
         flex-direction: column;
@@ -562,6 +574,8 @@ export default {
           font-weight: 600;
           color: #333333;
           margin-bottom: 15px;
+          box-sizing: border-box;
+          padding: 0 15px 30px 15px;
         }
         .chat-box {
           width: 100%;
@@ -570,6 +584,8 @@ export default {
           overflow-y: auto;
           display: flex;
           flex-direction: column;
+          box-sizing: border-box;
+          padding: 0 15px;
 
           .bullet-chat {
             width: 100%;
