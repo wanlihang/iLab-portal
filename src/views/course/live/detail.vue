@@ -201,24 +201,18 @@
                   </div>
 
                   <div class="comment-text" v-html="commentItem.content"></div>
-
-                  <!-- <div
-                class="reply-content"
-                v-if="commentItem.reply_content"
-                v-html="commentItem.reply_content"
-              ></div> -->
                 </div>
               </div>
             </template>
             <none v-else type="white"></none>
-            <div id="page" v-show="comment.list.length > 0 && total > 20">
-              <page-box
-                :totals="total"
-                @current-change="changepage"
-                :pageSize="comment.pagination.size"
-                :tab="false"
-              ></page-box>
-            </div>
+          </div>
+          <div id="page" v-show="comment.list.length > 0 && total > 20">
+            <page-box
+              :totals="total"
+              @current-change="changepage"
+              :pageSize="comment.pagination.size"
+              :tab="false"
+            ></page-box>
           </div>
         </div>
       </template>
@@ -821,18 +815,18 @@ export default {
         background: #e5e5e5;
         margin: 30px 0px;
       }
-
+      #page {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
       .comment-top {
         box-sizing: border-box;
         width: 100%;
         padding: 0;
         display: flex;
         flex-direction: column;
-        #page {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-        }
+
         .comment-item {
           width: 100%;
           display: flex;
