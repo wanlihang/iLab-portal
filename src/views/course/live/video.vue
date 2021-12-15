@@ -274,8 +274,6 @@ export default {
 
       window.ROP.Enter(pubKey, subKey, id, true);
       window.ROP.On("enter_suc", () => {
-        this.chanEvt("connect-success");
-
         window.ROP.Subscribe(channel);
         // 发送新用户上线消息
         window.ROP.Publish(
@@ -318,14 +316,15 @@ export default {
               nick_name: message.u.name,
             },
           });
+        } else if (message.t === "connect") {
+          this.chatRecords.push({
+            local: 1,
+            content: message.u.nickname + "已加入",
+          });
         }
       });
     },
     chanEvt(e, data) {
-      if (e === "connect-message") {
-        return;
-      }
-
       const mesMap = {
         "connect-success": "已加入聊天室",
         enter_fail: "无法加入聊天室",
@@ -333,13 +332,13 @@ export default {
         losed: "已断开连接",
         reconnect: "已重新连接",
         connectold: "异地登录",
+        "connect-repeat": "异地登录",
+        "connect-lose": "已断开链接",
       };
-
-      let mes = mesMap[e];
 
       this.chatRecords.push({
         local: 1,
-        content: mes,
+        content: mesMap[e],
       });
     },
     initVodPlayer(url, poster) {
