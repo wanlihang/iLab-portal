@@ -368,7 +368,6 @@ export default {
     },
     playRecord() {
       this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {
-        // todo
       });
     },
     getChatRecords() {
