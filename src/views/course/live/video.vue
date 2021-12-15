@@ -367,8 +367,7 @@ export default {
       });
     },
     playRecord() {
-      this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {
-      });
+      this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {});
     },
     getChatRecords() {
       this.$api.Live.ChatRecords(this.course.id, this.video.id, {
@@ -488,7 +487,7 @@ export default {
         .live-item-video {
           width: 100%;
           height: 535px;
-          background-color: #ccc;
+          background-color: #000000;
 
           .play {
             width: 100%;
@@ -504,7 +503,7 @@ export default {
             justify-content: center;
 
             .message {
-              background: rgba(0, 0, 0, 0.6);
+              background: rgba(255, 255, 255, 0.3);
               padding: 20px 30px;
               font-size: 24px;
               font-weight: 400;
