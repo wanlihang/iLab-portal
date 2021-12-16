@@ -18,7 +18,9 @@
               {{ course.title }}
             </div>
             <div class="live-course-info">
-              <div class="live-course-sub" v-if="course.category">{{ course.category.name }}</div>
+              <div class="live-course-sub" v-if="course.category">
+                {{ course.category.name }}
+              </div>
               <div class="live-course-charge">
                 <span class="charge-text" v-if="course.charge > 0">
                   <template>
