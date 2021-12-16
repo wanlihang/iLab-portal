@@ -102,7 +102,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user", "config"]),
+    ...mapState(["user", "config", "configFunc"]),
     totalVal() {
       let val = this.total - this.discount;
       val = val < 0 ? 0 : val;
@@ -121,6 +121,14 @@ export default {
         return;
       }
       if (!this.promoCode) {
+        return;
+      }
+      if (
+        this.configFunc.share &&
+        (this.promoCode.substr(0, 1) === "u" ||
+          this.promoCode.substr(0, 1) === "U")
+      ) {
+        this.configTip = 0;
         return;
       }
       this.loading = true;
