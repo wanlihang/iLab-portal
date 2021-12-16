@@ -126,6 +126,7 @@ export default {
 
         // 强制绑定手机号
         if (
+          this.config &&
           res.data.is_bind_mobile === 0 &&
           this.config.member.enabled_mobile_bind_alert === 1
         ) {
@@ -174,5 +175,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
