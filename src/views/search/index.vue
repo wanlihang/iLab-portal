@@ -35,7 +35,7 @@
               class="search-item"
               v-for="item in list"
               :key="item.id"
-              @click="goDetail(item.resource_type, item.id)"
+              @click="goDetail(item.resource_type, item.resource_id)"
             >
               <li
                 class="item-top"
@@ -246,7 +246,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .top-content {
