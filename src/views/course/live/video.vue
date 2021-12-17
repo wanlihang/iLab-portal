@@ -35,15 +35,24 @@
               </div>
             </div>
             <template v-else-if="video.status === 2">
-              <div class="play" v-if="playUrl">
+              <template v-if="!vodPlayerStatus">
+                <div class="alert-message">
+                  <div
+                    class="play-button"
+                    @click="showVodPlayer()"
+                    v-if="record_exists === 1"
+                  >
+                    回看直播 {{ record_hour }}{{ record_minute }}:{{
+                      record_second
+                    }}
+                  </div>
+                </div>
+              </template>
+              <div class="play" v-if="record_exists === 1 && vodPlayerStatus">
                 <div
                   id="meedu-vod-player"
                   style="width: 100%; height: 100%"
                 ></div>
-              </div>
-
-              <div class="alert-message" v-else>
-                <div class="message">暂无回放</div>
               </div>
             </template>
           </div>
@@ -132,6 +141,9 @@ export default {
           avatar: null,
         },
       },
+      vodPlayerStatus: false,
+      record_exists: 0,
+      record_duration: 0,
     };
   },
   computed: {
@@ -141,6 +153,22 @@ export default {
         return false;
       }
       return this.video.status === 0 || this.video.status === 1;
+    },
+    record_hour() {
+      let h = parseInt(this.record_duration / 3600);
+      if (h === 0) {
+        return "";
+      } else {
+        return h >= 10 ? h + ":" : "0" + h + ":";
+      }
+    },
+    record_minute() {
+      let m = parseInt((this.record_duration % 3600) / 60);
+      return m >= 10 ? m : "0" + m;
+    },
+    record_second() {
+      let s = (this.record_duration % 3600) % 60;
+      return s >= 10 ? s : "0" + s;
     },
   },
   watch: {
@@ -191,6 +219,8 @@ export default {
           this.course = resData.course;
           this.video = resData.video;
           this.playUrl = resData.play_url;
+          this.record_exists = resData.record_exists;
+          this.record_duration = resData.record_duration;
 
           // 聊天记录
           this.getChatRecords();
@@ -198,15 +228,19 @@ export default {
           // 初始化播放器
           if (this.video.status === 0) {
             this.countTime();
-          } else if (this.video.status === 2) {
-            if (this.playUrl) {
-              this.$nextTick(() => {
-                this.initVodPlayer(this.playUrl, this.course.poster);
-              });
-            }
           }
         })
         .catch((e) => {});
+    },
+    showVodPlayer() {
+      if (this.record_exists === 1 && this.playUrl.length > 0) {
+        this.vodPlayerStatus = true;
+        this.$nextTick(() => {
+          this.initVodPlayer(this.playUrl, this.course.poster);
+        });
+      } else {
+        this.$message.error("暂无回放");
+      }
     },
     countTime() {
       let date = new Date();
@@ -501,6 +535,24 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
+            .play-button {
+              width: auto;
+              height: auto;
+              background: #3ca7fa;
+              border-radius: 32px;
+              display: inline-block;
+              margin-top: -76px;
+              cursor: pointer;
+              font-size: 14px;
+              box-sizing: border-box;
+              padding: 15px 20px;
+              font-weight: 400;
+              line-height: 14px;
+              color: #ffffff;
+              &:hover {
+                opacity: 0.8;
+              }
+            }
 
             .message {
               background: rgba(255, 255, 255, 0.3);
