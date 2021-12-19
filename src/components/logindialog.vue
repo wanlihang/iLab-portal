@@ -841,6 +841,10 @@ export default {
         this.$message.error("请输入手机号");
         return;
       }
+      if (!this.$utils.isPoneAvailable(this.messageForm.mobile)) {
+        this.$message.error("请输入正确的手机号");
+        return;
+      }
       if (!this.messageForm.captcha) {
         this.$message.error("请输入图形验证码");
         return;
@@ -963,6 +967,10 @@ export default {
         this.$message.error("请输入手机号");
         return;
       }
+      if (!this.$utils.isPoneAvailable(this.passwordForm.mobile)) {
+        this.$message.error("请输入正确的手机号");
+        return;
+      }
       if (!this.passwordForm.password) {
         this.$message.error("请输入密码");
         return;
@@ -1002,6 +1010,10 @@ export default {
       }
       if (!this.messageForm.mobile) {
         this.$message.error("请输入手机号");
+        return;
+      }
+      if (!this.$utils.isPoneAvailable(this.messageForm.mobile)) {
+        this.$message.error("请输入正确的手机号");
         return;
       }
       if (!this.messageForm.sms) {
@@ -1049,6 +1061,10 @@ export default {
         this.$message.error("请输入手机号");
         return;
       }
+      if (!this.$utils.isPoneAvailable(this.messageForm.mobile)) {
+        this.$message.error("请输入正确的手机号");
+        return;
+      }
       if (!this.messageForm.sms) {
         this.$message.error("请输入手机验证码");
         return;
@@ -1085,6 +1101,10 @@ export default {
       }
       if (!this.messageForm.mobile) {
         this.$message.error("请输入手机号");
+        return;
+      }
+      if (!this.$utils.isPoneAvailable(this.messageForm.mobile)) {
+        this.$message.error("请输入正确的手机号");
         return;
       }
       if (!this.messageForm.sms) {
@@ -1124,6 +1144,10 @@ export default {
         this.$message.error("请填写新的绑定手机号码");
         return;
       }
+      if (!this.$utils.isPoneAvailable(this.messageForm.mobile)) {
+        this.$message.error("请输入正确的手机号");
+        return;
+      }
       this.loading = true;
       this.$api.Member.MobileChange({
         mobile: this.messageForm.mobile,
@@ -1154,6 +1178,10 @@ export default {
         this.$message.error("请填写新的绑定手机号码");
         return;
       }
+      if (!this.$utils.isPoneAvailable(this.messageForm.mobile)) {
+        this.$message.error("请输入正确的手机号");
+        return;
+      }
       this.loading = true;
       this.$api.Member.NewMobile({
         mobile: this.messageForm.mobile,
@@ -1173,6 +1201,10 @@ export default {
     },
     mobileValidate() {
       if (this.loading) {
+        return;
+      }
+      if (!this.$utils.isPoneAvailable(this.messageForm.mobile)) {
+        this.$message.error("请输入正确的手机号");
         return;
       }
       if (!this.messageForm.sms) {

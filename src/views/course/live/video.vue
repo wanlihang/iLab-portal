@@ -35,15 +35,24 @@
               </div>
             </div>
             <template v-else-if="video.status === 2">
-              <div class="play" v-if="playUrl">
+              <template v-if="!vodPlayerStatus">
+                <div class="alert-message">
+                  <div
+                    class="play-button"
+                    @click="showVodPlayer()"
+                    v-if="record_exists === 1"
+                  >
+                    回看直播 {{ record_hour }}{{ record_minute }}:{{
+                      record_second
+                    }}
+                  </div>
+                </div>
+              </template>
+              <div class="play" v-if="record_exists === 1 && vodPlayerStatus">
                 <div
                   id="meedu-vod-player"
                   style="width: 100%; height: 100%"
                 ></div>
-              </div>
-
-              <div class="alert-message" v-else>
-                <div class="message">暂无回放</div>
               </div>
             </template>
           </div>
@@ -86,7 +95,7 @@
     <remote-script
       src="https://cdn.aodianyun.com/dms/rop_client.js"
       @load="initADY"
-      v-if="video.status === 0 || video.statsu === 1"
+      v-if="enabledChat"
     ></remote-script>
 
     <template v-if="video.status === 1">
@@ -132,10 +141,35 @@ export default {
           avatar: null,
         },
       },
+      vodPlayerStatus: false,
+      record_exists: 0,
+      record_duration: 0,
     };
   },
   computed: {
     ...mapState(["isLogin", "user", "config"]),
+    enabledChat() {
+      if (typeof this.video.status === "undefined") {
+        return false;
+      }
+      return this.video.status === 0 || this.video.status === 1;
+    },
+    record_hour() {
+      let h = parseInt(this.record_duration / 3600);
+      if (h === 0) {
+        return "";
+      } else {
+        return h >= 10 ? h + ":" : "0" + h + ":";
+      }
+    },
+    record_minute() {
+      let m = parseInt((this.record_duration % 3600) / 60);
+      return m >= 10 ? m : "0" + m;
+    },
+    record_second() {
+      let s = (this.record_duration % 3600) % 60;
+      return s >= 10 ? s : "0" + s;
+    },
   },
   watch: {
     chatRecords() {
@@ -153,49 +187,60 @@ export default {
     if (window.ROP) {
       window.ROP.Leave();
     }
+    if (this.recordInterval) {
+      window.clearInterval(this.recordInterval);
+    }
   },
   methods: {
     getData() {
-      this.$api.Live.Play(this.id).then((res) => {
-        let resData = res.data;
+      this.$api.Live.Play(this.id)
+        .then((res) => {
+          let resData = res.data;
 
-        // 网页标题
-        document.title = resData.video.title;
+          // 网页标题
+          document.title = resData.video.title;
 
-        // 初始化聊天服务
-        if (typeof resData.chat !== "undefined") {
-          this.chatChannel = resData.chat.channel;
-          this.chatUser = resData.chat.user;
+          // 初始化聊天服务
+          if (typeof resData.chat !== "undefined") {
+            this.chatChannel = resData.chat.channel;
+            this.chatUser = resData.chat.user;
 
-          this.ADYParams.sub_key = resData.chat.aodianyun.sub_key;
-          this.ADYParams.pub_key = resData.chat.aodianyun.pub_key;
-          this.ADYParams.channel = resData.chat.channel;
-          this.ADYParams.user.id = resData.chat.user.id;
-          this.ADYParams.user.name = resData.chat.user.name;
-          this.ADYParams.user.avatar = resData.chat.user.avatar;
-        }
-
-        // 倒计时
-        this.curStartTime = resData.video.published_at;
-
-        this.course = resData.course;
-        this.video = resData.video;
-        this.playUrl = resData.play_url;
-
-        // 聊天记录
-        this.getChatRecords();
-
-        // 初始化播放器
-        if (this.video.status === 0) {
-          this.countTime();
-        } else if (this.video.status === 2) {
-          if (this.playUrl) {
-            this.$nextTick(() => {
-              this.initVodPlayer(this.playUrl, this.course.poster);
-            });
+            this.ADYParams.sub_key = resData.chat.aodianyun.sub_key;
+            this.ADYParams.pub_key = resData.chat.aodianyun.pub_key;
+            this.ADYParams.channel = resData.chat.channel;
+            this.ADYParams.user.id = resData.chat.user.id;
+            this.ADYParams.user.name = resData.chat.user.name;
+            this.ADYParams.user.avatar = resData.chat.user.avatar;
           }
-        }
-      });
+
+          // 倒计时
+          this.curStartTime = resData.video.published_at;
+
+          this.course = resData.course;
+          this.video = resData.video;
+          this.playUrl = resData.play_url;
+          this.record_exists = resData.record_exists;
+          this.record_duration = resData.record_duration;
+
+          // 聊天记录
+          this.getChatRecords();
+
+          // 初始化播放器
+          if (this.video.status === 0) {
+            this.countTime();
+          }
+        })
+        .catch((e) => {});
+    },
+    showVodPlayer() {
+      if (this.record_exists === 1 && this.playUrl.length > 0) {
+        this.vodPlayerStatus = true;
+        this.$nextTick(() => {
+          this.initVodPlayer(this.playUrl, this.course.poster);
+        });
+      } else {
+        this.$message.error("暂无回放");
+      }
     },
     countTime() {
       let date = new Date();
@@ -263,8 +308,6 @@ export default {
 
       window.ROP.Enter(pubKey, subKey, id, true);
       window.ROP.On("enter_suc", () => {
-        this.chanEvt("connect-success");
-
         window.ROP.Subscribe(channel);
         // 发送新用户上线消息
         window.ROP.Publish(
@@ -307,14 +350,15 @@ export default {
               nick_name: message.u.name,
             },
           });
+        } else if (message.t === "connect") {
+          this.chatRecords.push({
+            local: 1,
+            content: message.u.nickname + "已加入",
+          });
         }
       });
     },
     chanEvt(e, data) {
-      if (e === "connect-message") {
-        return;
-      }
-
       const mesMap = {
         "connect-success": "已加入聊天室",
         enter_fail: "无法加入聊天室",
@@ -322,13 +366,13 @@ export default {
         losed: "已断开连接",
         reconnect: "已重新连接",
         connectold: "异地登录",
+        "connect-repeat": "异地登录",
+        "connect-lose": "已断开链接",
       };
-
-      let mes = mesMap[e];
 
       this.chatRecords.push({
         local: 1,
-        content: mes,
+        content: mesMap[e],
       });
     },
     initVodPlayer(url, poster) {
@@ -355,15 +399,9 @@ export default {
           color: "red",
         },
       });
-
-      this.recordInterval = setInterval(() => {
-        this.playRecord();
-      }, 10000);
     },
     playRecord() {
-      this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {
-        // todo
-      });
+      this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {});
     },
     getChatRecords() {
       this.$api.Live.ChatRecords(this.course.id, this.video.id, {
@@ -398,7 +436,19 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #dddddd;
+}
+::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 0px;
+}
 .content {
   width: 100%;
   .navheader {
@@ -471,7 +521,7 @@ export default {
         .live-item-video {
           width: 100%;
           height: 535px;
-          background-color: #ccc;
+          background-color: #000000;
 
           .play {
             width: 100%;
@@ -485,9 +535,27 @@ export default {
             display: flex;
             align-items: center;
             justify-content: center;
+            .play-button {
+              width: auto;
+              height: auto;
+              background: #3ca7fa;
+              border-radius: 32px;
+              display: inline-block;
+              margin-top: -76px;
+              cursor: pointer;
+              font-size: 14px;
+              box-sizing: border-box;
+              padding: 15px 20px;
+              font-weight: 400;
+              line-height: 14px;
+              color: #ffffff;
+              &:hover {
+                opacity: 0.8;
+              }
+            }
 
             .message {
-              background: rgba(0, 0, 0, 0.6);
+              background: rgba(255, 255, 255, 0.3);
               padding: 20px 30px;
               font-size: 24px;
               font-weight: 400;
@@ -549,7 +617,7 @@ export default {
         width: 250px;
         height: 689px;
         box-sizing: border-box;
-        padding: 15px 15px 0 15px;
+        padding: 15px 0 0 0;
         position: relative;
         display: flex;
         flex-direction: column;
@@ -561,6 +629,8 @@ export default {
           font-weight: 600;
           color: #333333;
           margin-bottom: 15px;
+          box-sizing: border-box;
+          padding: 0 15px 30px 15px;
         }
         .chat-box {
           width: 100%;
@@ -569,6 +639,8 @@ export default {
           overflow-y: auto;
           display: flex;
           flex-direction: column;
+          box-sizing: border-box;
+          padding: 0 15px;
 
           .bullet-chat {
             width: 100%;

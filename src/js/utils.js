@@ -33,6 +33,14 @@ export default {
 
     return host;
   },
+  isPoneAvailable: function(pone) {
+    var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+    if (!myreg.test(pone)) {
+      return false;
+    } else {
+      return true;
+    }
+  },
   isMobile() {
     let flag = navigator.userAgent.match(
       /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i

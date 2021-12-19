@@ -19,7 +19,9 @@
               {{ course.title }}
             </div>
             <div class="topic-course-info">
-              <span class="topic-course-type">{{ course.category.name }}</span>
+              <span class="topic-course-type" v-if="course.category">{{
+                course.category.name
+              }}</span>
               <span class="topic-course-sub">
                 <span>{{ course.view_times }}人已阅读</span>
               </span>

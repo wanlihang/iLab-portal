@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import Utils from '@/js/utils';
+import Vue from "vue";
+import Vuex from "vuex";
+import Utils from "@/js/utils";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -77,8 +77,8 @@ export default new Vuex.Store({
     },
     updateFuncConfig(state, func) {
       state.configFunc = func;
-    }
+    },
   },
   actions: {},
-  modules: {}
-})
+  modules: {},
+});
