@@ -764,7 +764,7 @@ export default {
     }
     .right-box {
       width: 866px;
-      min-height: 581px;
+      height: auto;
       background: #ffffff;
       border-radius: 8px;
       box-sizing: border-box;
