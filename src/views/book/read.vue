@@ -385,6 +385,10 @@ export default {
       }
       this.id = item.id;
       this.getData();
+      this.replyAnswers = [];
+      this.configkey = [];
+      this.configInput = [];
+      this.configInput2 = [];
       this.resetComments();
       this.getComments();
       document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -451,6 +455,10 @@ export default {
       }
       this.id = articleId;
       this.getData();
+      this.replyAnswers = [];
+      this.configkey = [];
+      this.configInput = [];
+      this.configInput2 = [];
       this.resetComments();
       this.getComments();
       document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -469,6 +477,10 @@ export default {
       }
       this.id = articleId;
       this.getData();
+      this.replyAnswers = [];
+      this.configkey = [];
+      this.configInput = [];
+      this.configInput2 = [];
       this.resetComments();
       this.getComments();
       document.body.scrollTop = document.documentElement.scrollTop = 0;
