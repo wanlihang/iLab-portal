@@ -379,6 +379,8 @@ export default {
       }
       this.id = item.id;
       this.getData();
+      this.resetComments();
+      this.getComments();
       // this.$router.push({
       //   name: "bookRead",
       //   query: { id: item.id },
@@ -442,6 +444,8 @@ export default {
       }
       this.id = articleId;
       this.getData();
+      this.resetComments();
+      this.getComments();
       document.body.scrollTop = document.documentElement.scrollTop = 0;
       // this.$router.push({
       //   name: "bookRead",
@@ -458,6 +462,8 @@ export default {
       }
       this.id = articleId;
       this.getData();
+      this.resetComments();
+      this.getComments();
       document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
     buyBook() {
@@ -498,6 +504,7 @@ export default {
       this.comment.loading = true;
       this.$api.Book.Comments(this.id, this.comment.pagination)
         .then((res) => {
+          this.comment.loading = false;
           let list = res.data.data.data;
           if (list.length > 0) {
             this.comment.list = list;

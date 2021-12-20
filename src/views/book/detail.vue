@@ -201,14 +201,14 @@
               </div>
             </template>
             <none v-else type="white"></none>
-            <div id="page" v-show="comments.length > 0 && total > 20">
-              <page-box
-                :totals="total"
-                @current-change="changepage"
-                :pageSize="pagination.size"
-                :tab="false"
-              ></page-box>
-            </div>
+          </div>
+          <div id="page" v-show="comments.length > 0 && total > 20">
+            <page-box
+              :totals="total"
+              @current-change="changepage"
+              :pageSize="pagination.size"
+              :tab="false"
+            ></page-box>
           </div>
         </div>
       </template>
@@ -837,9 +837,11 @@ export default {
       }
     }
     .book-comments-box {
+      display: block;
       width: 1200px;
+      height: auto;
       box-sizing: border-box;
-      padding: 30px 0px 0px 0px;
+      padding: 30px 0px 30px 0px;
       background: #ffffff;
       margin-top: 30px;
       border-radius: 8px;
@@ -853,20 +855,21 @@ export default {
         line-height: 18px;
         margin-bottom: 30px;
       }
+      #page {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
       .comment-top {
         box-sizing: border-box;
         widows: 100%;
-        padding: 0px 30px 30px 30px;
+        padding: 0px 30px 0px 30px;
         display: flex;
         flex-direction: column;
-        #page {
-          width: 100%;
-          margin: 0 auto;
-          margin-top: 20px;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-        }
         .comment-item {
           widows: 100%;
           display: flex;
