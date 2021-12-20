@@ -381,6 +381,7 @@ export default {
       this.getData();
       this.resetComments();
       this.getComments();
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
       // this.$router.push({
       //   name: "bookRead",
       //   query: { id: item.id },
