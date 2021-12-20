@@ -61,7 +61,7 @@
               <template v-else>
                 <div
                   class="role-button"
-                  v-if="book.is_vip_free === 1"
+                  v-if="book.charge > 0 && book.is_vip_free === 1"
                   @click="goRole()"
                 >
                   会员免费看
