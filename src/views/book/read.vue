@@ -56,7 +56,9 @@
                     <div class="text">{{ articleItem.title }}</div>
                     <div
                       class="free"
-                      v-if="book.charge > 0 && articleItem.charge === 0"
+                      v-if="
+                        !isBuy && book.charge > 0 && articleItem.charge === 0
+                      "
                     >
                       试读
                     </div>
@@ -80,7 +82,9 @@
                     <div class="text">{{ articleItem.title }}</div>
                     <div
                       class="free"
-                      v-if="book.charge > 0 && articleItem.charge === 0"
+                      v-if="
+                        !isBuy && book.charge > 0 && articleItem.charge === 0
+                      "
                     >
                       试读
                     </div>
