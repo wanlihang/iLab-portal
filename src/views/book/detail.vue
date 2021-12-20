@@ -264,6 +264,7 @@ export default {
         size: 20,
       },
       comment: {
+        loading: false,
         content: "",
       },
       isfixTab: false,
@@ -413,6 +414,7 @@ export default {
       this.comment.loading = true;
       this.$api.Book.BookComments(this.id, this.pagination)
         .then((res) => {
+          this.comment.loading = false;
           this.comments = res.data.data.data;
           this.commentUsers = res.data.users;
           this.total = res.data.data.total;
@@ -452,7 +454,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .fix-nav {
