@@ -61,7 +61,7 @@
                       <div class="book-title">{{ item.name }}</div>
                       <div class="book-info">
                         <span class="read-count"
-                          >{{ item.user_count }}人已订阅</span
+                          >{{ item.user_count }}订阅</span
                         >
                       </div>
                       <div class="book-charge">
