@@ -128,7 +128,7 @@
           active: this.indexStaus,
         }"
       >
-        <div v-if="isLogin && isBuy" class="replybox">
+        <div v-if="isLogin && canSee" class="replybox">
           <div class="reply">
             <img class="user-avatar" :src="user.avatar" />
             <input
@@ -173,7 +173,7 @@
                   <div
                     :class="{ trans: configInput[index] === true }"
                     class="reply-answer"
-                    v-if="isBuy"
+                    v-if="canSee"
                     @click="showReply(index)"
                   >
                     回复
@@ -244,7 +244,7 @@
                           <div v-html="replyItem.content"></div>
                         </div>
                         <div
-                          v-if="isBuy"
+                          v-if="canSee"
                           class="answer-item"
                           @click="showReply2(index2)"
                         >
