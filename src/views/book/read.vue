@@ -113,7 +113,7 @@
           </div>
           <div
             class="role-button"
-            v-if="book.is_vip_free === 1"
+            v-if="book.charge > 0 && book.is_vip_free === 1"
             @click="goRole()"
           >
             会员免费看
@@ -817,6 +817,10 @@ export default {
         justify-content: center;
         margin-bottom: 50px;
         margin-top: 150px;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
       }
       .role-button {
         width: 440px;
@@ -831,6 +835,10 @@ export default {
         align-items: center;
         justify-content: center;
         margin-bottom: 50px;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
       }
     }
   }
