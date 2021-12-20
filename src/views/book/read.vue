@@ -2,15 +2,17 @@
   <div class="content">
     <div class="navheader">
       <div class="top">
-        <div class="top-left">
+        <div
+          class="top-left"
+          @click="
+            $router.push({
+              name: 'bookDetail',
+              query: { id: book.id },
+            })
+          "
+        >
           <img
             v-if="book"
-            @click="
-              $router.push({
-                name: 'bookDetail',
-                query: { id: book.id },
-              })
-            "
             class="icon-back"
             src="../../assets/img/commen/icon-back-h.png"
           />{{ book.name }}
@@ -638,11 +640,11 @@ export default {
         display: flex;
         flex-direction: row;
         align-items: center;
+        cursor: pointer;
         .icon-back {
           width: 24px;
           height: 24px;
           margin-right: 10px;
-          cursor: pointer;
         }
       }
       .top-right {
