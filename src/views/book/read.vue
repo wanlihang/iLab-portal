@@ -283,14 +283,14 @@
             </div>
           </template>
           <none v-else type="white"></none>
-          <div id="page" v-show="comment.list.length > 0 && total > 20">
-            <page-box
-              :totals="total"
-              @current-change="changepage"
-              :pageSize="comment.pagination.size"
-              :tab="false"
-            ></page-box>
-          </div>
+        </div>
+        <div id="page" v-show="comment.list.length > 0 && total > 20">
+          <page-box
+            :totals="total"
+            @current-change="changepage"
+            :pageSize="comment.pagination.size"
+            :tab="false"
+          ></page-box>
         </div>
       </div>
     </div>
@@ -849,7 +849,7 @@ export default {
       width: 866px;
       margin: 0 auto;
       box-sizing: border-box;
-      padding: 30px 0px 0px 0px;
+      padding: 30px 0px 30px 0px;
       background: #ffffff;
       margin-top: 30px;
       border-radius: 8px;
@@ -873,20 +873,20 @@ export default {
         margin: 0 auto;
         margin-bottom: 30px;
       }
+      #page {
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
       .comment-top {
         box-sizing: border-box;
         widows: 100%;
-        padding: 0px 30px 30px 30px;
+        padding: 0px 30px 0px 30px;
         display: flex;
         flex-direction: column;
-        #page {
-          width: 100%;
-          margin: 0 auto;
-          margin-top: 20px;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-        }
         .comment-item {
           widows: 100%;
           display: flex;
