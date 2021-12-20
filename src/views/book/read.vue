@@ -384,6 +384,7 @@ export default {
         return;
       }
       this.id = item.id;
+      history.replaceState(null, "", "?id=" + item.id);
       this.getData();
       this.replyAnswers = [];
       this.configkey = [];
@@ -454,6 +455,7 @@ export default {
         return;
       }
       this.id = articleId;
+      history.replaceState(null, "", "?id=" + articleId);
       this.getData();
       this.replyAnswers = [];
       this.configkey = [];
@@ -462,6 +464,7 @@ export default {
       this.resetComments();
       this.getComments();
       document.body.scrollTop = document.documentElement.scrollTop = 0;
+
       // this.$router.push({
       //   name: "bookRead",
       //   query: { id: articleId },
@@ -476,6 +479,7 @@ export default {
         return;
       }
       this.id = articleId;
+      history.replaceState(null, "", "?id=" + articleId);
       this.getData();
       this.replyAnswers = [];
       this.configkey = [];
