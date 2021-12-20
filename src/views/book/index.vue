@@ -132,11 +132,9 @@ export default {
       this.pagination.cid = cid;
       this.resetData();
       this.getData();
-      this.getHotData();
     },
     resetData() {
       this.list = [];
-      this.HotList = [];
       this.pagination.page = 1;
     },
     changepage(item) {
@@ -179,7 +177,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .contanier {
