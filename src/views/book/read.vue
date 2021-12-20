@@ -600,7 +600,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .navheader {
@@ -765,9 +765,11 @@ export default {
       .read {
         width: 100%;
         height: auto;
+        float: left;
         .title {
+          display: block;
           width: 100%;
-          height: 48px;
+          height: auto;
           font-size: 30px;
           font-weight: 600;
           color: #333333;
