@@ -384,7 +384,11 @@ export default {
         return;
       }
       this.id = item.id;
-      history.replaceState(null, "", "?id=" + item.id);
+      history.replaceState(
+        null,
+        null,
+        document.location.href.split("?")[0] + "?id=" + item.id
+      );
       this.getData();
       this.replyAnswers = [];
       this.configkey = [];
@@ -455,7 +459,11 @@ export default {
         return;
       }
       this.id = articleId;
-      history.replaceState(null, "", "?id=" + articleId);
+      history.replaceState(
+        null,
+        null,
+        document.location.href.split("?")[0] + "?id=" + articleId
+      );
       this.getData();
       this.replyAnswers = [];
       this.configkey = [];
@@ -479,7 +487,11 @@ export default {
         return;
       }
       this.id = articleId;
-      history.replaceState(null, "", "?id=" + articleId);
+      history.replaceState(
+        null,
+        null,
+        document.location.href.split("?")[0] + "?id=" + articleId
+      );
       this.getData();
       this.replyAnswers = [];
       this.configkey = [];
