@@ -60,18 +60,18 @@
               </template>
               <template v-else>
                 <div
-                  class="role-button"
-                  v-if="book.charge > 0 && book.is_vip_free === 1"
-                  @click="goRole()"
-                >
-                  会员免费看
-                </div>
-                <div
                   class="buy-button"
                   v-if="book.charge > 0"
                   @click="buyBook()"
                 >
                   订阅电子书￥{{ book.charge }}
+                </div>
+                <div
+                  class="role-button"
+                  v-if="book.charge > 0 && book.is_vip_free === 1"
+                  @click="goRole()"
+                >
+                  会员免费看
                 </div>
               </template>
             </div>
@@ -636,7 +636,7 @@ export default {
             line-height: 16px;
             box-sizing: border-box;
             bottom: 0;
-            left: 176px;
+            left: 0;
             cursor: pointer;
             &:hover {
               opacity: 0.8;
@@ -653,7 +653,8 @@ export default {
             line-height: 16px;
             box-sizing: border-box;
             bottom: 0;
-            left: 0;
+            left: 176px;
+
             cursor: pointer;
             &:hover {
               opacity: 0.8;
