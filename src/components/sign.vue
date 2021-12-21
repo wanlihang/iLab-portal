@@ -1,18 +1,32 @@
 <template>
-  <div class="backTop" @click="goBackTop">
-    <img src="../assets/img/commen/icon-top.png" />
-    <span>顶部</span>
+  <div class="backTop" @click="goSign">
+    <img src="../assets/img/commen/icon-sign-n.png" />
+    <span>签到</span>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {};
+    return {
+      loading: false,
+    };
   },
   mounted() {},
   methods: {
-    goBackTop() {
-      window.scrollTo(0, 0);
+    goSign() {
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
+      this.$api.Sign.SignIn()
+        .then((res) => {
+          this.loading = false;
+          this.$message.success("签到成功，积分+" + res.data.reward);
+          this.$emit("change", true);
+        })
+        .catch((e) => {
+          this.$message.error(e.message);
+        });
     },
   },
 };
@@ -21,7 +35,7 @@ export default {
 .backTop {
   position: fixed;
   right: 20px;
-  bottom: 150px;
+  bottom: 250px;
   z-index: 300;
   cursor: pointer;
   width: 70px;

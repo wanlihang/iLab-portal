@@ -14,6 +14,7 @@ const routes = [
     name: "index",
     meta: {
       title: "首页",
+      sign: true,
     },
     component: () => import("../views/index/index.vue"),
   },
@@ -187,6 +188,7 @@ const routes = [
     name: "Member",
     meta: {
       title: "用户中心",
+      sign: true,
     },
     component: () => import("../views/member/index.vue"),
   },
