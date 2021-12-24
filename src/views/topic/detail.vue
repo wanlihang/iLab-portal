@@ -421,6 +421,7 @@ export default {
         for (let key in res.data.users) {
           this.comment.users[key] = res.data.users[key];
         }
+
         // 评论
         this.comment.list = res.data.data.data;
         this.total = res.data.data.total;
