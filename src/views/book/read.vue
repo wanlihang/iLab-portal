@@ -390,10 +390,6 @@ export default {
         document.location.href.split("?")[0] + "?id=" + item.id
       );
       this.getData();
-      this.replyAnswers = [];
-      this.configkey = [];
-      this.configInput = [];
-      this.configInput2 = [];
       this.resetComments();
       this.getComments();
       document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -465,10 +461,6 @@ export default {
         document.location.href.split("?")[0] + "?id=" + articleId
       );
       this.getData();
-      this.replyAnswers = [];
-      this.configkey = [];
-      this.configInput = [];
-      this.configInput2 = [];
       this.resetComments();
       this.getComments();
       document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -559,6 +551,10 @@ export default {
       this.comment.loading = false;
       this.comment.pagination.page = 1;
       this.comment.list = [];
+      this.configkey = [];
+      this.configInput = [];
+      this.configInput2 = [];
+      this.replyAnswers = [];
       this.comment.content = "";
       this.reply.content = "";
     },

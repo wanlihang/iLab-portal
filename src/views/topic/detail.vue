@@ -431,6 +431,10 @@ export default {
       this.comment.loading = false;
       this.comment.pagination.page = 1;
       this.comment.list = [];
+      this.configkey = [];
+      this.configInput = [];
+      this.configInput2 = [];
+      this.replyAnswers = [];
       this.comment.content = "";
     },
     submitComment() {
