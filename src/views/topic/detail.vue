@@ -517,10 +517,11 @@ export default {
       this.$api.Topic.Vote(this.topic.id)
         .then((res) => {
           this.isVote = res.data.ok === 1;
-          this.topic.vote_count = res.data.count;
           if (this.isVote) {
+            this.topic.vote_count = this.topic.vote_count + 1;
             this.$message.success("已点赞");
           } else {
+            this.topic.vote_count = this.topic.vote_count - 1;
             this.$message.success("取消点赞");
           }
         })
@@ -554,7 +555,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .box {
