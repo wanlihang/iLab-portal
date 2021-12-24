@@ -26,7 +26,7 @@
             <page-box
               :totals="total"
               @current-change="changepage"
-              :pageSize="pagination.size"
+              :pageSize="pagination.page_size"
               :tab="false"
             ></page-box>
           </div>
@@ -56,7 +56,7 @@ export default {
       total: null,
       pagination: {
         page: 1,
-        size: 10,
+        page_size: 10,
       },
       loading: false,
     };
@@ -72,11 +72,11 @@ export default {
     resetData() {
       this.list = [];
       this.total = null;
-      this.pagination.size = 10;
+      this.pagination.page_size = 10;
       this.pagination.page = 1;
     },
     changepage(item) {
-      this.pagination.size = item.pageSize;
+      this.pagination.page_size = item.pageSize;
       this.pagination.page = item.currentPage;
       this.getData();
     },
@@ -89,7 +89,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .box {
@@ -147,7 +147,7 @@ export default {
           font-weight: 500;
           color: #333333;
           line-height: 16px;
-          margin-bottom: 34px;
+          margin-bottom: 6px;
         }
         .project-item {
           width: 100%;
@@ -156,6 +156,7 @@ export default {
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
+          margin-top: 28px;
           .title {
             height: 14px;
             font-size: 14px;
@@ -174,9 +175,6 @@ export default {
               margin-left: 10px;
               margin-right: 10px;
             }
-          }
-          &:not(:last-of-type) {
-            margin-bottom: 28px;
           }
         }
         #page {
