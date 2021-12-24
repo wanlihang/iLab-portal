@@ -61,7 +61,7 @@
       display: flex;
       flex-direction: column;
       .title {
-        width: 250px;
+        width: 100%;
         height: 20px;
         margin-top: 20px;
         margin-bottom: 28px;
@@ -75,7 +75,7 @@
         animation: el-skeleton-loading 1.4s ease infinite;
       }
       .info {
-        width: 150px;
+        width: 100%;
         height: 14px;
         background: linear-gradient(
           90deg,

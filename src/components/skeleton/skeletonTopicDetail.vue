@@ -30,7 +30,7 @@
   flex-direction: column;
   box-sizing: border-box;
   .title {
-    width: 806px;
+    width: 100%;
     height: 30px;
     margin-bottom: 30px;
     background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
@@ -38,20 +38,20 @@
     animation: el-skeleton-loading 1.4s ease infinite;
   }
   .item {
-    width: 200px;
+    width: 100%;
     height: 20px;
     background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
     background-size: 400% 100%;
     animation: el-skeleton-loading 1.4s ease infinite;
   }
   .line {
-    width: 806px;
+    width: 100%;
     height: 1px;
     background: #e5e5e5;
     margin: 30px 0px;
   }
   .info {
-    width: 806px;
+    width: 100%;
     height: 16px;
     margin-bottom: 20px;
     background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
