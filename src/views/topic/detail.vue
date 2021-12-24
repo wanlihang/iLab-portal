@@ -518,10 +518,10 @@ export default {
         .then((res) => {
           this.isVote = res.data.ok === 1;
           if (this.isVote) {
-            this.topic.vote_count = this.topic.vote_count + 1;
+            this.topic.vote_count++;
             this.$message.success("已点赞");
           } else {
-            this.topic.vote_count = this.topic.vote_count - 1;
+            this.topic.vote_count--;
             this.$message.success("取消点赞");
           }
         })
