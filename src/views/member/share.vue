@@ -476,6 +476,7 @@ export default {
             margin-top: 0px;
           }
           .title {
+            width: 60%;
             height: 14px;
             font-size: 14px;
             font-weight: 400;
@@ -483,6 +484,7 @@ export default {
             line-height: 14px;
           }
           .price {
+            width: 20%;
             height: 14px;
             font-size: 14px;
             font-weight: 400;
@@ -490,6 +492,7 @@ export default {
             line-height: 14px;
           }
           .info {
+            width: 20%;
             height: 14px;
             font-size: 14px;
             font-weight: 400;
