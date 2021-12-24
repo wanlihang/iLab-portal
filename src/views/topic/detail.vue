@@ -45,7 +45,7 @@
                   <div
                     class="vip-buy-button"
                     @click="buyVip"
-                    v-if="(topic.is_vip_free = 1)"
+                    v-if="topic.is_vip_free === 1"
                   >
                     会员免费看
                   </div>
