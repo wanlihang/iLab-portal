@@ -148,7 +148,7 @@ export default {
               status: this.configFunc["codeExchanger"],
             },
             {
-              name: "我的积分",
+              name: "积分商城",
               id: 16,
               path: "MemberCredit1Records",
               status: true,

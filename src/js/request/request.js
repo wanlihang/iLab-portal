@@ -84,6 +84,23 @@ const Api = {
       return post(`/addons/DaySignIn/api/v1/signIn`, params);
     },
   },
+  CreditMall: {
+    List(params) {
+      return get(`/addons/Credit1Mall/api/v1/goods`, params);
+    },
+    Detail(id) {
+      return get(`/addons/Credit1Mall/api/v1/goods/${id}`);
+    },
+    Exchange(id, params) {
+      return post(`/addons/Credit1Mall/api/v1/goods/${id}/exchange`, params);
+    },
+    Address() {
+      return get(`/addons/Credit1Mall/api/v1/user/address`);
+    },
+    Orders(params) {
+      return get(`/addons/Credit1Mall/api/v1/user/orders`, params);
+    },
+  },
   User: {
     Detail() {
       return get(`/api/v2/member/detail`);
