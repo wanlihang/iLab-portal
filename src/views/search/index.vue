@@ -175,11 +175,15 @@ export default {
         return;
       }
       this.loading = true;
-      this.$api.Search.Index(this.pagination).then((res) => {
-        this.loading = false;
-        this.list = res.data.data;
-        this.total = res.data.total;
-      });
+      this.$api.Search.Index(this.pagination)
+        .then((res) => {
+          this.loading = false;
+          this.list = res.data.data;
+          this.total = res.data.total;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
     search() {
       if (!this.pagination.keywords) {

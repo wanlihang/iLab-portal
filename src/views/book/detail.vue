@@ -60,18 +60,18 @@
               </template>
               <template v-else>
                 <div
-                  class="role-button"
-                  v-if="book.is_vip_free === 1"
-                  @click="goRole()"
-                >
-                  会员免费看
-                </div>
-                <div
                   class="buy-button"
                   v-if="book.charge > 0"
                   @click="buyBook()"
                 >
                   订阅电子书￥{{ book.charge }}
+                </div>
+                <div
+                  class="role-button"
+                  v-if="book.charge > 0 && book.is_vip_free === 1"
+                  @click="goRole()"
+                >
+                  会员免费看
                 </div>
               </template>
             </div>
@@ -201,14 +201,14 @@
               </div>
             </template>
             <none v-else type="white"></none>
-            <div id="page" v-show="comments.length > 0 && total > 20">
-              <page-box
-                :totals="total"
-                @current-change="changepage"
-                :pageSize="pagination.size"
-                :tab="false"
-              ></page-box>
-            </div>
+          </div>
+          <div id="page" v-show="comments.length > 0 && total > 20">
+            <page-box
+              :totals="total"
+              @current-change="changepage"
+              :pageSize="pagination.size"
+              :tab="false"
+            ></page-box>
           </div>
         </div>
       </template>
@@ -264,6 +264,7 @@ export default {
         size: 20,
       },
       comment: {
+        loading: false,
         content: "",
       },
       isfixTab: false,
@@ -413,6 +414,7 @@ export default {
       this.comment.loading = true;
       this.$api.Book.BookComments(this.id, this.pagination)
         .then((res) => {
+          this.comment.loading = false;
           this.comments = res.data.data.data;
           this.commentUsers = res.data.users;
           this.total = res.data.data.total;
@@ -452,7 +454,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .fix-nav {
@@ -634,7 +636,7 @@ export default {
             line-height: 16px;
             box-sizing: border-box;
             bottom: 0;
-            left: 176px;
+            left: 0;
             cursor: pointer;
             &:hover {
               opacity: 0.8;
@@ -651,7 +653,8 @@ export default {
             line-height: 16px;
             box-sizing: border-box;
             bottom: 0;
-            left: 0;
+            left: 176px;
+
             cursor: pointer;
             &:hover {
               opacity: 0.8;
@@ -835,9 +838,11 @@ export default {
       }
     }
     .book-comments-box {
+      display: block;
       width: 1200px;
+      height: auto;
       box-sizing: border-box;
-      padding: 30px 0px 0px 0px;
+      padding: 30px 0px 30px 0px;
       background: #ffffff;
       margin-top: 30px;
       border-radius: 8px;
@@ -851,20 +856,21 @@ export default {
         line-height: 18px;
         margin-bottom: 30px;
       }
+      #page {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
       .comment-top {
         box-sizing: border-box;
         widows: 100%;
-        padding: 0px 30px 30px 30px;
+        padding: 0px 30px 0px 30px;
         display: flex;
         flex-direction: column;
-        #page {
-          width: 100%;
-          margin: 0 auto;
-          margin-top: 20px;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-        }
         .comment-item {
           widows: 100%;
           display: flex;

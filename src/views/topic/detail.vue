@@ -45,7 +45,7 @@
                   <div
                     class="vip-buy-button"
                     @click="buyVip"
-                    v-if="(topic.is_vip_free = 1)"
+                    v-if="topic.is_vip_free === 1"
                   >
                     会员免费看
                   </div>
@@ -421,6 +421,7 @@ export default {
         for (let key in res.data.users) {
           this.comment.users[key] = res.data.users[key];
         }
+
         // 评论
         this.comment.list = res.data.data.data;
         this.total = res.data.data.total;
@@ -430,6 +431,10 @@ export default {
       this.comment.loading = false;
       this.comment.pagination.page = 1;
       this.comment.list = [];
+      this.configkey = [];
+      this.configInput = [];
+      this.configInput2 = [];
+      this.replyAnswers = [];
       this.comment.content = "";
     },
     submitComment() {
@@ -517,10 +522,11 @@ export default {
       this.$api.Topic.Vote(this.topic.id)
         .then((res) => {
           this.isVote = res.data.ok === 1;
-          this.topic.vote_count = res.data.count;
           if (this.isVote) {
+            this.topic.vote_count++;
             this.$message.success("已点赞");
           } else {
+            this.topic.vote_count--;
             this.$message.success("取消点赞");
           }
         })
@@ -554,7 +560,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .box {

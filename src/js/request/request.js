@@ -76,6 +76,14 @@ const Api = {
       return get(`/addons/templateOne/api/v1/user/detail`);
     },
   },
+  Sign: {
+    User() {
+      return get("/addons/DaySignIn/api/v1/user");
+    },
+    SignIn(params) {
+      return post(`/addons/DaySignIn/api/v1/signIn`, params);
+    },
+  },
   User: {
     Detail() {
       return get(`/api/v2/member/detail`);

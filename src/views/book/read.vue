@@ -2,15 +2,17 @@
   <div class="content">
     <div class="navheader">
       <div class="top">
-        <div class="top-left">
+        <div
+          class="top-left"
+          @click="
+            $router.push({
+              name: 'bookDetail',
+              query: { id: book.id },
+            })
+          "
+        >
           <img
             v-if="book"
-            @click="
-              $router.push({
-                name: 'bookDetail',
-                query: { id: book.id },
-              })
-            "
             class="icon-back"
             src="../../assets/img/commen/icon-back-h.png"
           />{{ book.name }}
@@ -56,7 +58,9 @@
                     <div class="text">{{ articleItem.title }}</div>
                     <div
                       class="free"
-                      v-if="book.charge > 0 && articleItem.charge === 0"
+                      v-if="
+                        !isBuy && book.charge > 0 && articleItem.charge === 0
+                      "
                     >
                       试读
                     </div>
@@ -80,7 +84,9 @@
                     <div class="text">{{ articleItem.title }}</div>
                     <div
                       class="free"
-                      v-if="book.charge > 0 && articleItem.charge === 0"
+                      v-if="
+                        !isBuy && book.charge > 0 && articleItem.charge === 0
+                      "
                     >
                       试读
                     </div>
@@ -113,7 +119,7 @@
           </div>
           <div
             class="role-button"
-            v-if="book.is_vip_free === 1"
+            v-if="book.charge > 0 && book.is_vip_free === 1"
             @click="goRole()"
           >
             会员免费看
@@ -128,7 +134,7 @@
           active: this.indexStaus,
         }"
       >
-        <div v-if="isLogin && isBuy" class="replybox">
+        <div v-if="isLogin && canSee" class="replybox">
           <div class="reply">
             <img class="user-avatar" :src="user.avatar" />
             <input
@@ -173,7 +179,7 @@
                   <div
                     :class="{ trans: configInput[index] === true }"
                     class="reply-answer"
-                    v-if="isBuy"
+                    v-if="canSee"
                     @click="showReply(index)"
                   >
                     回复
@@ -244,7 +250,7 @@
                           <div v-html="replyItem.content"></div>
                         </div>
                         <div
-                          v-if="isBuy"
+                          v-if="canSee"
                           class="answer-item"
                           @click="showReply2(index2)"
                         >
@@ -283,14 +289,14 @@
             </div>
           </template>
           <none v-else type="white"></none>
-          <div id="page" v-show="comment.list.length > 0 && total > 20">
-            <page-box
-              :totals="total"
-              @current-change="changepage"
-              :pageSize="comment.pagination.size"
-              :tab="false"
-            ></page-box>
-          </div>
+        </div>
+        <div id="page" v-show="comment.list.length > 0 && total > 20">
+          <page-box
+            :totals="total"
+            @current-change="changepage"
+            :pageSize="comment.pagination.size"
+            :tab="false"
+          ></page-box>
         </div>
       </div>
     </div>
@@ -378,7 +384,15 @@ export default {
         return;
       }
       this.id = item.id;
+      history.replaceState(
+        null,
+        null,
+        document.location.href.split("?")[0] + "?id=" + item.id
+      );
       this.getData();
+      this.resetComments();
+      this.getComments();
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
       // this.$router.push({
       //   name: "bookRead",
       //   query: { id: item.id },
@@ -441,8 +455,16 @@ export default {
         return;
       }
       this.id = articleId;
+      history.replaceState(
+        null,
+        null,
+        document.location.href.split("?")[0] + "?id=" + articleId
+      );
       this.getData();
+      this.resetComments();
+      this.getComments();
       document.body.scrollTop = document.documentElement.scrollTop = 0;
+
       // this.$router.push({
       //   name: "bookRead",
       //   query: { id: articleId },
@@ -457,7 +479,18 @@ export default {
         return;
       }
       this.id = articleId;
+      history.replaceState(
+        null,
+        null,
+        document.location.href.split("?")[0] + "?id=" + articleId
+      );
       this.getData();
+      this.replyAnswers = [];
+      this.configkey = [];
+      this.configInput = [];
+      this.configInput2 = [];
+      this.resetComments();
+      this.getComments();
       document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
     buyBook() {
@@ -498,6 +531,7 @@ export default {
       this.comment.loading = true;
       this.$api.Book.Comments(this.id, this.comment.pagination)
         .then((res) => {
+          this.comment.loading = false;
           let list = res.data.data.data;
           if (list.length > 0) {
             this.comment.list = list;
@@ -517,6 +551,10 @@ export default {
       this.comment.loading = false;
       this.comment.pagination.page = 1;
       this.comment.list = [];
+      this.configkey = [];
+      this.configInput = [];
+      this.configInput2 = [];
+      this.replyAnswers = [];
       this.comment.content = "";
       this.reply.content = "";
     },
@@ -600,7 +638,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .navheader {
@@ -626,11 +664,11 @@ export default {
         display: flex;
         flex-direction: row;
         align-items: center;
+        cursor: pointer;
         .icon-back {
           width: 24px;
           height: 24px;
           margin-right: 10px;
-          cursor: pointer;
         }
       }
       .top-right {
@@ -757,7 +795,7 @@ export default {
     }
     .right-box {
       width: 866px;
-      min-height: 581px;
+      height: auto;
       background: #ffffff;
       border-radius: 8px;
       box-sizing: border-box;
@@ -765,9 +803,11 @@ export default {
       .read {
         width: 100%;
         height: auto;
+        float: left;
         .title {
+          display: block;
           width: 100%;
-          height: 48px;
+          height: auto;
           font-size: 30px;
           font-weight: 600;
           color: #333333;
@@ -808,6 +848,10 @@ export default {
         justify-content: center;
         margin-bottom: 50px;
         margin-top: 150px;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
       }
       .role-button {
         width: 440px;
@@ -822,6 +866,10 @@ export default {
         align-items: center;
         justify-content: center;
         margin-bottom: 50px;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
       }
     }
   }
@@ -832,7 +880,7 @@ export default {
       width: 866px;
       margin: 0 auto;
       box-sizing: border-box;
-      padding: 30px 0px 0px 0px;
+      padding: 30px 0px 30px 0px;
       background: #ffffff;
       margin-top: 30px;
       border-radius: 8px;
@@ -856,20 +904,20 @@ export default {
         margin: 0 auto;
         margin-bottom: 30px;
       }
+      #page {
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
       .comment-top {
         box-sizing: border-box;
         widows: 100%;
-        padding: 0px 30px 30px 30px;
+        padding: 0px 30px 0px 30px;
         display: flex;
         flex-direction: column;
-        #page {
-          width: 100%;
-          margin: 0 auto;
-          margin-top: 20px;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-        }
         .comment-item {
           widows: 100%;
           display: flex;

@@ -130,11 +130,9 @@ export default {
       this.pagination.cid = cid;
       this.resetData();
       this.getData();
-      this.getHotData();
     },
     resetData() {
       this.list = [];
-      this.hotList = [];
       this.pagination.page = 1;
     },
     changepage(item) {

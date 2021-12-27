@@ -16,6 +16,10 @@
     <router-view v-if="config && !this.$route.meta.keepAlive"></router-view>
 
     <back-top v-show="backTopStatus"></back-top>
+    <sign
+      @change="reloadSignStatus"
+      v-if="signStatus && this.$route.meta.sign"
+    ></sign>
   </div>
 </template>
 <script>
@@ -25,17 +29,20 @@ import { mapState, mapMutations } from "vuex";
 import NavHeader from "./components/navheader.vue";
 import LoginDialog from "./components/logindialog.vue";
 import BackTop from "./components/back-top.vue";
+import Sign from "./components/sign.vue";
 
 export default {
   components: {
     NavHeader,
     LoginDialog,
     BackTop,
+    Sign,
   },
   data() {
     return {
       cancelStatus: false,
       backTopStatus: false,
+      signStatus: false,
     };
   },
   watch: {
@@ -52,10 +59,17 @@ export default {
     },
     $route(to, from) {
       this.backTopStatus = false;
+      this.signStatus = false;
+      if (this.isLogin && this.configFunc.daySignIn) {
+        this.getSignStatus();
+      }
     },
     isLogin(val) {
       if (val) {
         this.msvBind();
+        if (this.configFunc.daySignIn) {
+          this.getSignStatus();
+        }
       }
     },
   },
@@ -95,6 +109,23 @@ export default {
         document.body.scrollTop;
 
       this.backTopStatus = scrollTop >= 2000;
+    },
+    getSignStatus() {
+      this.$api.Sign.User()
+        .then((res) => {
+          let is_submit = res.data.is_submit;
+          if (is_submit === 0) {
+            this.signStatus = true;
+          } else {
+            this.signStatus = false;
+          }
+        })
+        .catch((e) => {
+          console.log(e.message);
+        });
+    },
+    reloadSignStatus() {
+      this.getSignStatus();
     },
     MeEduInit() {
       this.getConfig();
@@ -165,6 +196,8 @@ export default {
       funcTable["ke"] = _.indexOf(config.enabled_addons, "XiaoBanKe") !== -1;
       funcTable["promoCode"] =
         _.indexOf(config.enabled_addons, "MultiLevelShare") === -1;
+      funcTable["daySignIn"] =
+        _.indexOf(config.enabled_addons, "DaySignIn") !== -1;
 
       this.updateFuncConfig(funcTable);
       if (this.$utils.isMobile() && config.h5_url !== "") {

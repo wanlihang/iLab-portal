@@ -61,7 +61,7 @@
                       <div class="book-title">{{ item.name }}</div>
                       <div class="book-info">
                         <span class="read-count"
-                          >{{ item.user_count }}人已订阅</span
+                          >{{ item.user_count }}订阅</span
                         >
                       </div>
                       <div class="book-charge">
@@ -132,11 +132,9 @@ export default {
       this.pagination.cid = cid;
       this.resetData();
       this.getData();
-      this.getHotData();
     },
     resetData() {
       this.list = [];
-      this.HotList = [];
       this.pagination.page = 1;
     },
     changepage(item) {
@@ -179,7 +177,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .contanier {

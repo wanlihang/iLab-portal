@@ -244,7 +244,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .mask {
@@ -462,7 +462,7 @@ export default {
           font-weight: 500;
           color: #333333;
           line-height: 16px;
-          margin-bottom: 30px;
+          margin-bottom: 10px;
         }
         .project-item {
           width: 100%;
@@ -471,11 +471,12 @@ export default {
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 20px;
-          &:last-child {
-            margin-bottom: 0px;
+          margin-top: 20px;
+          &:first-child {
+            margin-top: 0px;
           }
           .title {
+            width: 60%;
             height: 14px;
             font-size: 14px;
             font-weight: 400;
@@ -483,6 +484,7 @@ export default {
             line-height: 14px;
           }
           .price {
+            width: 20%;
             height: 14px;
             font-size: 14px;
             font-weight: 400;
@@ -490,6 +492,7 @@ export default {
             line-height: 14px;
           }
           .info {
+            width: 20%;
             height: 14px;
             font-size: 14px;
             font-weight: 400;
