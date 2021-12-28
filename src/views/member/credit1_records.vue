@@ -21,6 +21,10 @@
         </div>
       </div>
     </div>
+    <edit-address
+      :status="dialogStatus"
+      @hideDialog="hideDialog"
+    ></edit-address>
     <div class="box">
       <nav-member :cid="16"></nav-member>
       <div class="right-box">
@@ -255,6 +259,7 @@ import NavFooter from "../../components/footer.vue";
 import NavMember from "../../components/navmember.vue";
 import PageBox from "../../components/page.vue";
 import None from "../../components/none.vue";
+import EditAddress from "../../components/editAddress.vue";
 
 export default {
   components: {
@@ -262,6 +267,7 @@ export default {
     NavMember,
     PageBox,
     None,
+    EditAddress,
   },
   data() {
     return {
@@ -282,6 +288,7 @@ export default {
       loading: false,
       goodStatus: false,
       openmask: false,
+      dialogStatus: false,
       tabs: [
         {
           name: "积分商城",
@@ -475,6 +482,9 @@ export default {
     cancel() {
       this.openmask = false;
     },
+    hideDialog() {
+      this.dialogStatus = false;
+    },
     submitHandle() {
       if (this.is_v === 0) {
         let form = {
@@ -509,7 +519,9 @@ export default {
           });
       }
     },
-    changeAddress() {},
+    changeAddress() {
+      this.dialogStatus = true;
+    },
   },
 };
 </script>
