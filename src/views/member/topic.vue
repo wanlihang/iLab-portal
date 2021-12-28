@@ -21,56 +21,60 @@
         </template>
         <div class="project-content" v-if="!loading && currentTab === 1">
           <template v-if="list.length > 0">
-            <div
-              class="project-item"
-              v-for="item in list"
-              :key="item.id"
-              @click="goItem(item.id)"
-            >
-              <div class="item-thumb">
-                <img :src="item.thumb" />
-              </div>
-              <div class="item-info">
-                <div class="item-top">
-                  <div class="item-name">
-                    {{ item.title }}
+            <template v-for="item in list">
+              <div
+                class="project-item"
+                :key="item.topic.id"
+                v-if="item.topic && item.topic.id"
+                @click="goItem(item.topic.id)"
+              >
+                <div class="item-thumb">
+                  <img :src="item.topic.thumb" />
+                </div>
+                <div class="item-info">
+                  <div class="item-top">
+                    <div class="item-name">
+                      {{ item.topic.title }}
+                    </div>
+                  </div>
+                  <div class="item-bottom">
+                    <div class="item-progress">
+                      订阅时间：{{ item.topic.created_at | changeTime }}
+                    </div>
                   </div>
                 </div>
-                <div class="item-bottom">
-                  <div class="item-progress">
-                    订阅时间：{{ item.created_at | changeTime }}
-                  </div>
-                </div>
               </div>
-            </div>
+            </template>
           </template>
           <none type="white" v-else></none>
         </div>
 
         <div class="project-content" v-if="!loading && currentTab === 3">
           <template v-if="collects.length > 0">
-            <div
-              class="project-item"
-              v-for="item in collects"
-              :key="item.id"
-              @click="goItem(item.id)"
-            >
-              <div class="item-thumb">
-                <img :src="item.thumb" />
-              </div>
-              <div class="item-info">
-                <div class="item-top">
-                  <div class="item-name">
-                    {{ item.title }}
+            <template v-for="item in collects">
+              <div
+                class="project-item"
+                v-if="item.topic && item.topic.id"
+                :key="item.id"
+                @click="goItem(item.topic.id)"
+              >
+                <div class="item-thumb">
+                  <img :src="item.topic.thumb" />
+                </div>
+                <div class="item-info">
+                  <div class="item-top">
+                    <div class="item-name">
+                      {{ item.topic.title }}
+                    </div>
+                  </div>
+                  <div class="item-bottom">
+                    <div class="item-progress">
+                      订阅时间：{{ item.created_at | changeTime }}
+                    </div>
                   </div>
                 </div>
-                <div class="item-bottom">
-                  <!-- <div class="item-progress">
-                    订阅时间：{{ item.created_at }}
-                  </div> -->
-                </div>
               </div>
-            </div>
+            </template>
           </template>
           <none type="white" v-else></none>
         </div>
@@ -78,7 +82,7 @@
           <page-box
             :totals="total1"
             @current-change="changepage"
-            :pageSize="pagination.page_size"
+            :pageSize="pagination.size"
             :tab="false"
           ></page-box>
         </div>
@@ -86,7 +90,7 @@
           <page-box
             :totals="total2"
             @current-change="changepage"
-            :pageSize="pagination.page_size"
+            :pageSize="pagination.size"
             :tab="false"
           ></page-box>
         </div>
@@ -119,9 +123,8 @@ export default {
       total1: null,
       total2: null,
       pagination: {
-        type: "topic",
         page: 1,
-        page_size: 10,
+        size: 10,
       },
       currentTab: 1,
       loading: false,
@@ -163,11 +166,11 @@ export default {
       this.list = [];
       this.collects = [];
       this.total = null;
-      this.pagination.page_size = 10;
+      this.paginationpage_size = 10;
       this.pagination.page = 1;
     },
     changepage(item) {
-      this.pagination.page_size = item.pageSize;
+      this.pagination.size = item.pageSize;
       this.pagination.page = item.currentPage;
       if (this.currentTab === 1) {
         this.getCourses();
@@ -189,10 +192,10 @@ export default {
         return;
       }
       this.loading = true;
-      this.$api.TemplateOne.User.Courses(this.pagination).then((res) => {
+      this.$api.Topic.UserBuyTopics(this.pagination).then((res) => {
         this.loading = false;
-        this.list = res.data.data;
-        this.total1 = res.data.total;
+        this.list = res.data.data.data;
+        this.total1 = res.data.data.total;
       });
     },
     getCollects() {
@@ -200,16 +203,16 @@ export default {
         return;
       }
       this.loading = true;
-      this.$api.TemplateOne.LikeCourses(this.pagination).then((res) => {
+      this.$api.Topic.LikeCourses(this.pagination).then((res) => {
         this.loading = false;
-        this.collects = res.data.data;
-        this.total2 = res.data.total;
+        this.collects = res.data.data.data;
+        this.total2 = res.data.data.total;
       });
     },
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .box {
