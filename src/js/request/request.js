@@ -701,6 +701,9 @@ const Api = {
     UserBuyTopics(params) {
       return get("/addons/MeeduTopics/api/v1/user/buyTopics", params);
     },
+    LikeCourses(params) {
+      return get("/addons/MeeduTopics/api/v1/user/collect", params);
+    },
   },
   TuanGou: {
     List(params) {
