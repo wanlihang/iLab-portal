@@ -15,6 +15,15 @@ export default new Vuex.Store({
     dialogMobile: null,
     freshUnread: false,
     sucbind: false,
+    //收货地址信息
+    addressForm: {
+      name: null,
+      mobile: null,
+      province: null,
+      city: null,
+      area: null,
+      street: null,
+    },
     configFunc: {
       vip: true,
       live: false,
@@ -78,6 +87,9 @@ export default new Vuex.Store({
     },
     updateFuncConfig(state, func) {
       state.configFunc = func;
+    },
+    setNewAddress(state, val) {
+      state.addressForm = val;
     },
   },
   actions: {},

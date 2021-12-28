@@ -1,5 +1,26 @@
 <template>
   <div class="content">
+    <div class="mask" v-if="openmask">
+      <div class="popup borderbox">
+        <div class="tabs">
+          <div class="item-tab">确认信息</div>
+          <img
+            class="btn-close"
+            @click="cancel()"
+            src="../../assets/img/commen/icon-close.png"
+          />
+        </div>
+        <div class="text">确认要兑换吗？</div>
+        <div class="button">
+          <div class="confirm" style="cursor: pointer" @click="submitHandle()">
+            确定
+          </div>
+          <div class="cancel" style="cursor: pointer" @click="cancel()">
+            取消
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="box">
       <nav-member :cid="16"></nav-member>
       <div class="right-box">
@@ -22,26 +43,28 @@
             <div class="credit">{{ user.credit1 }}积分</div>
           </div>
         </div>
-        <div class="goods-box" v-if="currentTab === 1">
+        <div class="goods-box" v-if="!goodStatus && currentTab === 1">
           <template v-if="list.length > 0">
-            <div
-              class="goods-item"
-              v-for="(item, index) in list"
-              :key="index"
-              @click="goDetail(item)"
-            >
+            <div class="goods-list">
               <div
-                class="item-thumb"
-                :style="{ 'background-image': 'url(' + item.thumb + ')' }"
-              ></div>
-              <div class="item-body">
-                <div class="item-title">{{ item.title }}</div>
-                <div class="item-info">
-                  <div class="item-value">{{ item.charge }}积分</div>
-                  <div class="item-type">
-                    <span class="type">{{
-                      statusType(item.is_v, item.v_type)
-                    }}</span>
+                class="goods-item"
+                v-for="(item, index) in list"
+                :key="index"
+                @click="showDetail(item)"
+              >
+                <div
+                  class="item-thumb"
+                  :style="{ 'background-image': 'url(' + item.thumb + ')' }"
+                ></div>
+                <div class="item-body">
+                  <div class="item-title">{{ item.title }}</div>
+                  <div class="item-info">
+                    <div class="item-value">{{ item.charge }}积分</div>
+                    <div class="item-type">
+                      <span class="type">{{
+                        statusType(item.is_v, item.v_type)
+                      }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -57,7 +80,7 @@
             ></page-box>
           </div>
         </div>
-        <div class="rules" v-if="currentTab === 2">
+        <div class="rules" v-if="!goodStatus && currentTab === 2">
           <div class="project-box">
             <div class="btn-title">积分明细</div>
             <template v-if="list.length > 0">
@@ -93,7 +116,7 @@
             </div>
           </div>
         </div>
-        <div class="orders-box" v-if="currentTab === 3">
+        <div class="orders-box" v-if="!goodStatus && currentTab === 3">
           <template v-if="list.length > 0">
             <div class="item" v-for="item in list" :key="item.id">
               <div class="top">
@@ -162,6 +185,65 @@
             ></page-box>
           </div>
         </div>
+        <div class="goodsDetail-box" v-if="goodStatus && goods">
+          <div class="btn-title" @click="backGoodsList()">
+            <img class="back" src="../../assets/img/back@2x.png" />
+            <span>更多商品</span>
+          </div>
+          <div class="body">
+            <div
+              class="goods-thumb"
+              :style="{ 'background-image': 'url(' + goods.thumb + ')' }"
+            ></div>
+            <div class="right">
+              <div class="goods-title">{{ goods.title }}</div>
+              <div class="goods-content">
+                <div class="goods-value">{{ goods.charge }}积分</div>
+                <div class="goods-type">
+                  <template v-if="is_v === 0">
+                    <span>商品类型:发实物</span>
+                  </template>
+                  <template v-else-if="is_v === 1">
+                    <span
+                      v-if="
+                        goods.v_type === 'vod' ||
+                          goods.v_type === 'live' ||
+                          goods.v_type === 'book'
+                      "
+                      >商品类型:换课程</span
+                    >
+                    <span v-else-if="goods.v_type === 'vip'"
+                      >商品类型:换会员</span
+                    >
+                  </template>
+                </div>
+              </div>
+              <div class="goods-info">
+                <div class="goods-button" @click="exchange()">
+                  立即兑换
+                </div>
+                <template v-if="is_v === 0">
+                  <div class="address-bar">
+                    <div class="address-item">
+                      <div class="address-name">收货人信息</div>
+                      <div class="address-button" @click="changeAddress">
+                        编辑地址
+                      </div>
+                    </div>
+                    <div class="address-value">{{ address }}</div>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+          <div class="bottom">
+            <div class="name">
+              <i></i>
+              商品介绍
+            </div>
+            <div class="desc" v-html="goods.desc"></div>
+          </div>
+        </div>
       </div>
     </div>
     <nav-footer></nav-footer>
@@ -184,6 +266,7 @@ export default {
   data() {
     return {
       list: [],
+      goods: [],
       total: null,
       pagination: {
         page: 1,
@@ -194,7 +277,11 @@ export default {
         page_size: 10,
       },
       currentTab: 1,
+      is_v: null,
+      id: null,
       loading: false,
+      goodStatus: false,
+      openmask: false,
       tabs: [
         {
           name: "积分商城",
@@ -229,10 +316,12 @@ export default {
           value: "6.可以回答积分悬赏问题获取积分",
         },
       ],
+      address_id: null,
+      address: null,
     };
   },
   computed: {
-    ...mapState(["isLogin", "user"]),
+    ...mapState(["isLogin", "user", "addressForm"]),
   },
   mounted() {
     this.getMall();
@@ -311,12 +400,227 @@ export default {
       document.body.removeChild(input);
       this.$message.success("复制成功");
     },
+    backGoodsList() {
+      this.id = null;
+      this.is_v = null;
+      this.goods = [];
+      this.goodStatus = false;
+    },
+    showDetail(item) {
+      this.id = item.id;
+      this.is_v = item.is_v;
+      this.$api.CreditMall.Detail(this.id).then((res) => {
+        this.goods = res.data.data;
+        this.goodStatus = true;
+        if (this.is_v === 0) {
+          this.getAddress();
+        }
+      });
+    },
+    getAddress() {
+      this.$api.CreditMall.Address().then((res) => {
+        let address = res.data;
+        if (
+          this.addressForm &&
+          this.addressForm.name &&
+          this.addressForm.mobile &&
+          this.addressForm.province &&
+          this.addressForm.city &&
+          this.addressForm.area &&
+          this.addressForm.street
+        ) {
+          this.address =
+            this.addressForm.name +
+            " " +
+            this.addressForm.mobile +
+            " " +
+            this.addressForm.province +
+            " " +
+            this.addressForm.city +
+            " " +
+            this.addressForm.area +
+            " " +
+            this.addressForm.street;
+        } else if (
+          address &&
+          address[address.length - 1].name !== "" &&
+          address[address.length - 1].mobile !== "" &&
+          address[address.length - 1].province !== "" &&
+          address[address.length - 1].city !== "" &&
+          address[address.length - 1].area !== "" &&
+          address[address.length - 1].street != ""
+        ) {
+          this.address =
+            address[address.length - 1].name +
+            " " +
+            address[address.length - 1].mobile +
+            " " +
+            address[address.length - 1].province +
+            " " +
+            address[address.length - 1].city +
+            " " +
+            address[address.length - 1].area +
+            " " +
+            address[address.length - 1].street;
+          this.address_id = address[address.length - 1].id;
+        } else {
+          this.address_id = null;
+          this.address = "未填写信息";
+        }
+      });
+    },
+    exchange() {
+      this.openmask = true;
+    },
+    cancel() {
+      this.openmask = false;
+    },
+    submitHandle() {
+      if (this.is_v === 0) {
+        let form = {
+          address_id: this.address_id,
+          name: this.addressForm.name,
+          mobile: this.addressForm.mobile,
+          province: this.addressForm.province,
+          city: this.addressForm.city,
+          area: this.addressForm.area,
+          street: this.addressForm.street,
+        };
+        this.$api.CreditMall.Exchange(this.id, form)
+          .then((data) => {
+            this.$message.success("兑换成功");
+            setTimeout(() => {
+              this.tabChange(3);
+            }, 500);
+          })
+          .catch((e) => {
+            this.$message.error(e.message);
+          });
+      } else if (this.is_v === 1) {
+        this.$api.CreditMall.Exchange(this.id, {})
+          .then((data) => {
+            this.$message.success("兑换成功");
+            setTimeout(() => {
+              this.tabChange(3);
+            }, 500);
+          })
+          .catch((e) => {
+            this.$message.error(e.message);
+          });
+      }
+    },
+    changeAddress() {},
   },
 };
 </script>
 <style lang="less" scoped>
 .content {
   width: 100%;
+  .mask {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    .popup {
+      width: 400px;
+      height: auto;
+      background: #ffffff;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      animation: scaleBig 0.3s;
+      .tabs {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        padding: 23px 23px 0px 30px;
+        overflow: hidden;
+        .item-tab {
+          width: 72px;
+          height: 18px;
+          font-size: 18px;
+          font-weight: 500;
+          color: #333333;
+          line-height: 18px;
+          margin-top: 7px;
+        }
+        .btn-close {
+          width: 19px;
+          height: 19px;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+            animation: rotate360 1s;
+          }
+        }
+      }
+      .text {
+        width: 100%;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 400;
+        color: #333333;
+        line-height: 18px;
+      }
+      .button {
+        width: 100%;
+        height: 74px;
+        background: #ffffff;
+        box-shadow: 0px -1px 5px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 0px 0px 8px 8px;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        justify-content: center;
+        .cancel {
+          width: 88px;
+          height: 44px;
+          border-radius: 4px;
+          border: 1px solid #cccccc;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 400;
+          color: #666666;
+          cursor: pointer;
+          margin-right: 60px;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+        .confirm {
+          width: 88px;
+          height: 44px;
+          background: #3ca7fa;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          font-weight: 400;
+          color: #ffffff;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+    }
+  }
   .box {
     width: 1200px;
     margin: 0 auto;
@@ -501,84 +805,282 @@ export default {
         }
       }
       .goods-box {
-        display: grid;
         width: 999px;
         height: auto;
+        float: left;
         background: #ffffff;
         border-radius: 8px;
         box-sizing: border-box;
         padding: 30px;
-        gap: 26px;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        overflow: hidden;
-        .goods-item {
+        .goods-list {
           width: 100%;
-          height: 261px;
-          border-radius: 6px;
-          border: 1px solid #e5e5e5;
+          height: auto;
+          display: grid;
+          gap: 26px;
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+          overflow: hidden;
+          .goods-item {
+            width: 100%;
+            height: 261px;
+            border-radius: 6px;
+            border: 1px solid #e5e5e5;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            &:hover {
+              opacity: 0.8;
+            }
+            .item-thumb {
+              width: 100%;
+              height: 168px;
+              background-repeat: no-repeat;
+              background-size: contain;
+              background-position: center center;
+            }
+            .item-body {
+              width: 100%;
+              height: 93px;
+              display: flex;
+              flex-direction: column;
+              box-sizing: border-box;
+              padding: 10px;
+              .item-title {
+                width: 100%;
+                height: 40px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                font-size: 15px;
+                font-weight: 500;
+                color: #171923;
+                line-height: 20rpx;
+              }
+              .item-info {
+                width: 100%;
+                height: 20px;
+                margin-top: 12px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                .item-value {
+                  display: inline-block;
+                  width: auto;
+                  height: 14px;
+                  font-size: 14px;
+                  font-weight: 600;
+                  color: #ff5068;
+                  line-height: 14px;
+                }
+                .item-type {
+                  display: inline-block;
+                  width: auto;
+                  height: auto;
+                  background: #ff5068;
+                  border-radius: 2px;
+                  padding: 4px;
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #ffffff;
+                  line-height: 12px;
+                }
+              }
+            }
+          }
+        }
+      }
+      .goodsDetail-box {
+        width: 999px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        background: #ffffff;
+        border-radius: 8px;
+        box-sizing: border-box;
+        padding: 30px;
+        .btn-title {
+          width: 100px;
+          height: 24px;
           display: flex;
-          flex-direction: column;
+          flex-direction: row;
+          align-items: center;
+          margin-bottom: 30px;
           cursor: pointer;
           &:hover {
             opacity: 0.8;
           }
-          .item-thumb {
-            width: 100%;
-            height: 168px;
+          .back {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+          }
+          span {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333333;
+          }
+        }
+        .body {
+          width: 100%;
+          height: 200px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          .goods-thumb {
+            width: 200px;
+            height: 200px;
+            margin-right: 30px;
             background-repeat: no-repeat;
             background-size: contain;
             background-position: center center;
           }
-          .item-body {
-            width: 100%;
-            height: 93px;
+          .right {
+            flex: 1;
+            height: 200px;
             display: flex;
             flex-direction: column;
-            box-sizing: border-box;
-            padding: 10px;
-            .item-title {
+            .goods-title {
               width: 100%;
-              height: 40px;
+              height: 30px;
+              font-size: 20px;
+              font-weight: 500;
+              color: #333333;
+              line-height: 30px;
+              margin-top: 15px;
+              margin-bottom: 30px;
+              white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
-              display: -webkit-box;
-              -webkit-line-clamp: 2;
-              -webkit-box-orient: vertical;
-              font-size: 15px;
-              font-weight: 500;
-              color: #171923;
-              line-height: 20rpx;
             }
-            .item-info {
+            .goods-content {
               width: 100%;
               height: 20px;
-              margin-top: 12px;
               display: flex;
               flex-direction: row;
               align-items: center;
-              justify-content: space-between;
-              .item-value {
-                display: inline-block;
-                width: auto;
-                height: 14px;
-                font-size: 14px;
+              margin-bottom: 30px;
+              .goods-value {
+                height: 20px;
+                font-size: 20px;
                 font-weight: 600;
-                color: #ff5068;
-                line-height: 14px;
+                color: #ff4d4f;
+                line-height: 20px;
+                margin-right: 30px;
               }
-              .item-type {
-                display: inline-block;
-                width: auto;
-                height: auto;
-                background: #ff5068;
-                border-radius: 2px;
-                padding: 4px;
-                font-size: 12px;
+              .goods-type {
+                height: 20px;
+                font-size: 14px;
                 font-weight: 400;
-                color: #ffffff;
-                line-height: 12px;
+                color: #666666;
+                line-height: 20px;
               }
             }
+            .goods-info {
+              width: 100%;
+              height: auto;
+              float: left;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              .goods-button {
+                width: 104px;
+                height: 56px;
+                background: linear-gradient(90deg, #fbc74b 0%, #fcdc54 100%);
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                font-weight: 500;
+                color: #613400;
+                margin-right: 30px;
+                cursor: pointer;
+                &:hover {
+                  opacity: 0.8;
+                }
+              }
+              .address-bar {
+                flex: 1;
+                min-height: 56px;
+                float: left;
+                display: flex;
+                flex-direction: column;
+                .address-item {
+                  width: 100%;
+                  height: auto;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  margin-top: 5px;
+                  margin-bottom: 18px;
+                  .address-name {
+                    height: 14px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #333333;
+                    line-height: 14px;
+                    margin-right: 15px;
+                  }
+                  .address-button {
+                    height: 14px;
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #ff5068;
+                    line-height: 14px;
+                    cursor: pointer;
+                    &:hover {
+                      opacity: 0.8;
+                    }
+                  }
+                }
+                .address-value {
+                  width: 100%;
+                  height: auto;
+                  float: left;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: #666666;
+                  line-height: 18px;
+                }
+              }
+            }
+          }
+        }
+        .bottom {
+          width: 100%;
+          float: left;
+          height: auto;
+          margin-top: 50px;
+          display: flex;
+          flex-direction: column;
+          .name {
+            width: 100%;
+            height: 14px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 30px;
+            i {
+              width: 4px;
+              height: 14px;
+              background: linear-gradient(90deg, #fbc74b 0%, #fcdc54 100%);
+              border-radius: 2px;
+              margin-right: 5px;
+            }
+          }
+          .desc {
+            width: 100%;
+            float: left;
+            height: auto;
+            font-size: 14px;
+            font-weight: 400;
+            color: #333333;
+            line-height: 24px;
           }
         }
       }
