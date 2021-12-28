@@ -40,6 +40,7 @@ export default new Vuex.Store({
       ke: false,
       promoCode: false,
       daySignIn: false,
+      credit1Mall: false,
     },
   },
   mutations: {

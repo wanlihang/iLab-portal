@@ -316,9 +316,17 @@ const routes = [
     path: "/member/credit1_records",
     name: "MemberCredit1Records",
     meta: {
-      title: "我的积分",
+      title: "积分商城",
     },
     component: () => import("../views/member/credit1_records.vue"),
+  },
+  {
+    path: "/member/credit1_free",
+    name: "MemberCredit1Free",
+    meta: {
+      title: "我的积分",
+    },
+    component: () => import("../views/member/credit1_free.vue"),
   },
   {
     path: "/exam",

@@ -75,7 +75,7 @@
             </div>
           </template>
           <none type="white" v-else></none>
-          <div id="page" v-show="list.length > 0">
+          <div id="page" v-show="total > pagination.size && list.length > 0">
             <page-box
               :totals="total"
               @current-change="changepage"
@@ -104,7 +104,10 @@
               </div>
             </template>
             <none type="white" v-else></none>
-            <div id="page" v-show="list.length > 0">
+            <div
+              id="page"
+              v-show="total > pagination2.page_size && list.length > 0"
+            >
               <page-box
                 :totals="total"
                 @current-change="changepage"
@@ -113,10 +116,34 @@
               ></page-box>
             </div>
           </div>
-          <div class="rules-content">
+          <div class="rules-content" v-if="config">
             <div class="btn-title">积分获取</div>
-            <div class="rules-item" v-for="(item, index) in rules" :key="index">
-              <p>{{ item.value }}</p>
+            <div class="rules-item">
+              <p>1.注册登录 +{{ config.credit1_reward.register }} 积分</p>
+            </div>
+            <div class="rules-item">
+              <p>
+                2.看完视频 +{{ config.credit1_reward.watched_videoregister }}
+                积分
+              </p>
+            </div>
+            <div class="rules-item">
+              <p>
+                3.看完课程 +{{ config.credit1_reward.watched_vod_course }} 积分
+              </p>
+            </div>
+            <div class="rules-item">
+              <p>
+                4.下单成功 +金额*{{
+                  parseInt(config.credit1_reward.paid_order / 100)
+                }}% 积分
+              </p>
+            </div>
+            <div class="rules-item">
+              <p>5.邀请好友注册 +{{ config.credit1_reward.invite }} 积分</p>
+            </div>
+            <div class="rules-item">
+              <p>6.可以回答积分悬赏问题获取积分</p>
             </div>
           </div>
         </div>
@@ -180,7 +207,7 @@
             </div>
           </template>
           <none type="white" v-else></none>
-          <div id="page" v-show="list.length > 0">
+          <div id="page" v-show="total > pagination.size && list.length > 0">
             <page-box
               :totals="total"
               @current-change="changepage"
@@ -211,8 +238,8 @@
                     <span
                       v-if="
                         goods.v_type === 'vod' ||
-                          goods.v_type === 'live' ||
-                          goods.v_type === 'book'
+                        goods.v_type === 'live' ||
+                        goods.v_type === 'book'
                       "
                       >商品类型:换课程</span
                     >
@@ -223,9 +250,7 @@
                 </div>
               </div>
               <div class="goods-info">
-                <div class="goods-button" @click="exchange()">
-                  立即兑换
-                </div>
+                <div class="goods-button" @click="exchange()">立即兑换</div>
                 <template v-if="is_v === 0">
                   <div class="address-bar">
                     <div class="address-item">
@@ -303,32 +328,12 @@ export default {
           id: 3,
         },
       ],
-      rules: [
-        {
-          value: "1.注册登录 +2 积分",
-        },
-        {
-          value: "2.看完视频 +3 积分",
-        },
-        {
-          value: "3.看完课程 +4 积分",
-        },
-        {
-          value: "4.下单成功 +20 积分",
-        },
-        {
-          value: "5.邀请好友注册 +10 积分",
-        },
-        {
-          value: "6.可以回答积分悬赏问题获取积分",
-        },
-      ],
       address_id: null,
       address: null,
     };
   },
   computed: {
-    ...mapState(["isLogin", "user", "addressForm"]),
+    ...mapState(["isLogin", "user", "config", "addressForm"]),
   },
   mounted() {
     this.getMall();
@@ -846,6 +851,12 @@ export default {
             }
           }
         }
+        #page {
+          width: 100%;
+          margin-top: 30px;
+          display: flex;
+          justify-content: center;
+        }
       }
       .goods-box {
         width: 999px;
@@ -932,6 +943,12 @@ export default {
               }
             }
           }
+        }
+        #page {
+          width: 100%;
+          margin-top: 30px;
+          display: flex;
+          justify-content: center;
         }
       }
       .goodsDetail-box {
@@ -1190,6 +1207,7 @@ export default {
           }
           #page {
             width: 100%;
+            margin-top: 30px;
             display: flex;
             justify-content: center;
           }
