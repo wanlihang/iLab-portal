@@ -117,9 +117,12 @@ export default {
   computed: {
     ...mapState(["addressForm"]),
   },
-  mounted() {
-    this.initData();
+  watch: {
+    status() {
+      this.initData();
+    },
   },
+  mounted() {},
   methods: {
     ...mapMutations(["setNewAddress"]),
     initData() {

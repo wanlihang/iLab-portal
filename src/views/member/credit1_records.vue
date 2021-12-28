@@ -334,7 +334,7 @@ export default {
     this.getMall();
   },
   methods: {
-    ...mapMutations(["showLoginDialog", "changeDialogType"]),
+    ...mapMutations(["showLoginDialog", "changeDialogType", "setNewAddress"]),
     statusType(is_v, type) {
       if (is_v === 0) {
         return "发实物";
@@ -450,26 +450,27 @@ export default {
             this.addressForm.street;
         } else if (
           address &&
-          address[address.length - 1].name !== "" &&
-          address[address.length - 1].mobile !== "" &&
-          address[address.length - 1].province !== "" &&
-          address[address.length - 1].city !== "" &&
-          address[address.length - 1].area !== "" &&
-          address[address.length - 1].street != ""
+          address[0].name !== "" &&
+          address[0].mobile !== "" &&
+          address[0].province !== "" &&
+          address[0].city !== "" &&
+          address[0].area !== "" &&
+          address[0].street != ""
         ) {
           this.address =
-            address[address.length - 1].name +
+            address[0].name +
             " " +
-            address[address.length - 1].mobile +
+            address[0].mobile +
             " " +
-            address[address.length - 1].province +
+            address[0].province +
             " " +
-            address[address.length - 1].city +
+            address[0].city +
             " " +
-            address[address.length - 1].area +
+            address[0].area +
             " " +
-            address[address.length - 1].street;
-          this.address_id = address[address.length - 1].id;
+            address[0].street;
+          this.address_id = address[0].id;
+          this.setNewAddress(address[0]);
         } else {
           this.address_id = null;
           this.address = "未填写信息";
@@ -521,6 +522,32 @@ export default {
     },
     changeAddress() {
       this.dialogStatus = true;
+    },
+    goDetail(type, id) {
+      if (type === "vip") {
+        this.$router.push({ name: "Member" });
+      } else if (type === "vod") {
+        this.$router.push({
+          name: "coursesDetail",
+          query: {
+            id: id,
+          },
+        });
+      } else if (type === "live") {
+        this.$router.push({
+          name: "liveDetail",
+          query: {
+            id: id,
+          },
+        });
+      } else if (type === "book") {
+        this.$router.push({
+          name: "bookDetail",
+          query: {
+            id: id,
+          },
+        });
+      }
     },
   },
 };
