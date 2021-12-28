@@ -122,10 +122,7 @@
               <p>1.注册登录 +{{ config.credit1_reward.register }} 积分</p>
             </div>
             <div class="rules-item">
-              <p>
-                2.看完视频 +{{ config.credit1_reward.watched_videoregister }}
-                积分
-              </p>
+              <p>2.看完视频 +{{ config.credit1_reward.watched_video }} 积分</p>
             </div>
             <div class="rules-item">
               <p>
