@@ -694,6 +694,12 @@ const Api = {
     Vote(id, params) {
       return post("/addons/MeeduTopics/api/v1/topic/" + id + "/vote", params);
     },
+    Collect(id, params) {
+      return post(
+        "/addons/MeeduTopics/api/v1/topic/" + id + "/collect",
+        params
+      );
+    },
     CreateOrder(id, params) {
       return post("/addons/MeeduTopics/api/v1/topic/" + id + "/buy", params);
     },

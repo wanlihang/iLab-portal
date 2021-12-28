@@ -343,7 +343,6 @@ export default {
   mounted() {
     this.getData();
     this.getComments();
-    this.getLikeStatus();
   },
   methods: {
     ...mapMutations(["showLoginDialog", "changeDialogType"]),
@@ -351,23 +350,12 @@ export default {
       this.changeDialogType(1);
       this.showLoginDialog();
     },
-    getLikeStatus() {
-      this.$api.TemplateOne.LikeStatus({
-        id: this.id,
-        type: "topic",
-      }).then((res) => {
-        this.isLike = res.data.like;
-      });
-    },
     likeHit() {
       if (!this.isLogin) {
         this.goLogin();
         return;
       }
-      this.$api.TemplateOne.LikeHit({
-        id: this.id,
-        type: "topic",
-      }).then((res) => {
+      this.$api.Topic.Collect(this.id).then((res) => {
         this.isLike = !this.isLike;
         if (this.isLike) {
           this.$message.success("已收藏");
@@ -401,6 +389,7 @@ export default {
         this.isBuy = res.data.is_buy;
         this.isVote = res.data.is_vote;
         this.topic = res.data.topic;
+        this.isLike = res.data.is_collect;
         document.title = res.data.topic.title;
       });
     },
