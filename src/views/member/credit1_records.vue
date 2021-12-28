@@ -347,6 +347,7 @@ export default {
       }
     },
     tabChange(key) {
+      this.backGoodsList();
       this.currentTab = key;
       if (this.currentTab === 1) {
         this.resetData();
@@ -485,6 +486,7 @@ export default {
     },
     hideDialog() {
       this.dialogStatus = false;
+      this.getAddress();
     },
     submitHandle() {
       if (this.is_v === 0) {
