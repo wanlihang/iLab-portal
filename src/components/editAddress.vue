@@ -33,30 +33,38 @@
         </div>
         <div class="label">收件地址</div>
         <div class="input-item">
-          <input
-            type="text"
-            placeholder="请选择省"
-            autocomplete="off"
+          <select
+            class="input-short"
             v-model="form.province"
+            @change="changeCity"
+          >
+            <option
+              v-for="(val, index) in provinceData"
+              :key="index"
+              :value="val.label"
+              >{{ val.label }}</option
+            >
+          </select>
+          <select
             class="input-short"
-            required=""
-          />
-          <input
-            type="text"
-            placeholder="请选择市"
-            autocomplete="off"
             v-model="form.city"
-            class="input-short"
-            required=""
-          />
-          <input
-            type="text"
-            placeholder="请选择区"
-            autocomplete="off"
-            v-model="form.area"
-            class="input-short"
-            required=""
-          />
+            @change="changeCounty"
+          >
+            <option
+              v-for="(name, index) in cityData"
+              :key="index"
+              :value="name.label"
+              >{{ name.label }}</option
+            >
+          </select>
+          <select class="input-short" v-model="form.area">
+            <option
+              v-for="(area, index) in areaData"
+              :key="index"
+              :value="area.label"
+              >{{ area.label }}</option
+            >
+          </select>
         </div>
         <div class="label">详细地址</div>
         <div class="input-item">
@@ -85,6 +93,7 @@
 </template>
 <script>
 import { mapState, mapMutations } from "vuex";
+import CityData from "@/js/address";
 export default {
   props: ["status"],
   data() {
@@ -98,6 +107,8 @@ export default {
         city: "",
         province: "",
       },
+      cityData: [],
+      areaData: [],
     };
   },
   created() {
@@ -116,15 +127,38 @@ export default {
   },
   computed: {
     ...mapState(["addressForm"]),
+    provinceData() {
+      return CityData.data;
+    },
   },
   watch: {
     status() {
       this.initData();
     },
+    "form.province"() {
+      this.changeCity();
+    },
+    "form.city"() {
+      this.changeCounty();
+    },
   },
   mounted() {},
   methods: {
     ...mapMutations(["setNewAddress"]),
+    changeCity() {
+      for (var item in this.provinceData) {
+        if (this.provinceData[item].label == this.form.province) {
+          this.cityData = this.provinceData[item].children;
+        }
+      }
+    },
+    changeCounty() {
+      for (var item in this.cityData) {
+        if (this.cityData[item].label == this.form.city) {
+          this.areaData = this.cityData[item].children;
+        }
+      }
+    },
     initData() {
       if (
         this.addressForm &&
