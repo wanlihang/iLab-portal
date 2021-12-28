@@ -42,8 +42,9 @@
               v-for="(val, index) in provinceData"
               :key="index"
               :value="val.label"
-              >{{ val.label }}</option
             >
+              {{ val.label }}
+            </option>
           </select>
           <select
             class="input-short"
@@ -54,16 +55,18 @@
               v-for="(name, index) in cityData"
               :key="index"
               :value="name.label"
-              >{{ name.label }}</option
             >
+              {{ name.label }}
+            </option>
           </select>
           <select class="input-short" v-model="form.area">
             <option
               v-for="(area, index) in areaData"
               :key="index"
               :value="area.label"
-              >{{ area.label }}</option
             >
+              {{ area.label }}
+            </option>
           </select>
         </div>
         <div class="label">详细地址</div>
@@ -74,16 +77,12 @@
             autocomplete="off"
             v-model="form.street"
             class="input"
-            required=""
+            required
+            @keyup.enter="submitValidate"
           />
         </div>
         <div class="btn-box" style="margin-bottom: 0px !important">
-          <button
-            type="submit"
-            class="submit"
-            @keyup.enter="submitValidate"
-            @click="submitValidate"
-          >
+          <button type="submit" class="submit" @click="submitValidate">
             保存地址
           </button>
         </div>
@@ -109,20 +108,6 @@ export default {
       },
       cityData: [],
       areaData: [],
-    };
-  },
-  created() {
-    var t = this;
-    document.onkeydown = function(e) {
-      var key;
-      if (window.event == undefined) {
-        key = e.keyCode;
-      } else {
-        key = window.event.keyCode;
-      }
-      if (key == 13) {
-        t.submitValidate();
-      }
     };
   },
   computed: {
