@@ -500,6 +500,7 @@ export default {
         this.$api.CreditMall.Exchange(this.id, form)
           .then((data) => {
             this.$message.success("兑换成功");
+            this.cancel();
             setTimeout(() => {
               this.tabChange(3);
             }, 500);
@@ -511,6 +512,7 @@ export default {
         this.$api.CreditMall.Exchange(this.id, {})
           .then((data) => {
             this.$message.success("兑换成功");
+            this.cancel();
             setTimeout(() => {
               this.tabChange(3);
             }, 500);
