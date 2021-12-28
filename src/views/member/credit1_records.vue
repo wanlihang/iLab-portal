@@ -144,7 +144,7 @@
                   </div>
                   <div class="info">
                     <div class="date">
-                      {{ item.created_at | diffForHumans }}
+                      {{ item.created_at | changeTime }}
                     </div>
                     <div class="value">{{ item.total_charge }}积分</div>
                   </div>
@@ -302,6 +302,15 @@ export default {
         this.total = res.data.total;
       });
     },
+    copy(url) {
+      var input = document.createElement("input");
+      input.value = url;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand("Copy");
+      document.body.removeChild(input);
+      this.$message.success("复制成功");
+    },
   },
 };
 </script>
@@ -399,10 +408,95 @@ export default {
           padding: 20px 30px;
           .top {
             width: 100%;
+            height: auto;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
+            margin-bottom: 20px;
+            .id {
+              height: 14px;
+              font-size: 12px;
+              font-weight: 400;
+              color: #999999;
+              line-height: 14px;
+            }
+            .button {
+              height: auto;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              .orderId {
+                height: 14px;
+                font-size: 14px;
+                font-weight: 400;
+                color: #333333;
+                line-height: 14px;
+              }
+              .showDetail {
+                height: 14px;
+                font-size: 14px;
+                font-weight: 400;
+                color: #3ca7fa;
+                line-height: 14px;
+                margin-left: 30px;
+                cursor: pointer;
+                &:hover {
+                  opacity: 0.8;
+                }
+              }
+            }
+          }
+          .body {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            flex-direction: row;
+            box-sizing: border-box;
+            .left {
+              width: 80px;
+              height: 80px;
+              margin-right: 30px;
+              background-repeat: no-repeat;
+              background-size: contain;
+              background-position: center center;
+            }
+            .right {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              .title {
+                width: 100%;
+                height: 20px;
+                font-size: 15px;
+                font-weight: 500;
+                color: #333333;
+                line-height: 20px;
+                margin-top: 5px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+              .info {
+                width: 100%;
+                height: 12px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin-top: 38px;
+                .date {
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #333333;
+                  margin-right: 30px;
+                }
+                .value {
+                  font-size: 12px;
+                  font-weight: 400;
+                  color: #333333;
+                }
+              }
+            }
           }
         }
       }
