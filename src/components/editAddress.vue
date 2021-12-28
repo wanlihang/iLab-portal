@@ -178,6 +178,30 @@ export default {
       }
     },
     submitValidate() {
+      if (!this.form.name) {
+        this.$message.error("请填写收货人姓名");
+        return;
+      }
+      if (!this.form.mobile) {
+        this.$message.error("请填写收货人手机号码");
+        return;
+      }
+      if (!this.form.province) {
+        this.$message.error("请选择省");
+        return;
+      }
+      if (!this.form.city) {
+        this.$message.error("请选择市");
+        return;
+      }
+      if (!this.form.area) {
+        this.$message.error("请选择区");
+        return;
+      }
+      if (!this.form.street) {
+        this.$message.error("请填写详细地址");
+        return;
+      }
       this.setNewAddress(this.form);
       this.$message.success("保存成功");
       setTimeout(() => {
