@@ -467,6 +467,7 @@ export default {
             this.addressForm.area +
             " " +
             this.addressForm.street;
+          this.address_id = null;
         } else if (
           address[0] &&
           address[0].name !== "" &&
