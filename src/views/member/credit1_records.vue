@@ -256,7 +256,9 @@
                         编辑地址
                       </div>
                     </div>
-                    <div class="address-value">{{ address }}</div>
+                    <div class="address-value">
+                      {{ address }}
+                    </div>
                   </div>
                 </template>
               </div>
@@ -452,7 +454,7 @@ export default {
             " " +
             this.addressForm.street;
         } else if (
-          address &&
+          address[0] &&
           address[0].name !== "" &&
           address[0].mobile !== "" &&
           address[0].province !== "" &&
@@ -476,11 +478,15 @@ export default {
           this.setNewAddress(address[0]);
         } else {
           this.address_id = null;
-          this.address = "未填写信息";
+          this.address = "请输入地址";
         }
       });
     },
     exchange() {
+      if (this.address === "请输入地址") {
+        this.$message.error("请填写地址");
+        return;
+      }
       this.openmask = true;
     },
     cancel() {
