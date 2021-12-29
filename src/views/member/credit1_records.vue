@@ -483,7 +483,11 @@ export default {
       });
     },
     exchange() {
-      if (this.address === "请输入地址") {
+      if (this.user.credit1 < this.goods.charge) {
+        this.$message.error("积分余额不足");
+        return;
+      }
+      if (this.is_v === 0 && this.address === "请输入地址") {
         this.$message.error("请填写地址");
         return;
       }
