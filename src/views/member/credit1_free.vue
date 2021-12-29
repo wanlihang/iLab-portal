@@ -288,6 +288,7 @@ export default {
               height: 14px;
               font-size: 14px;
               font-weight: 600;
+              line-height: 14px;
               color: #ff5068;
             }
             .info {
