@@ -848,7 +848,7 @@ export default {
               display: flex;
               flex-direction: column;
               .title {
-                width: 100%;
+                width: 829px;
                 height: 20px;
                 font-size: 15px;
                 font-weight: 500;
@@ -1032,7 +1032,7 @@ export default {
             display: flex;
             flex-direction: column;
             .goods-title {
-              width: 100%;
+              width: 709px;
               height: 30px;
               font-size: 20px;
               font-weight: 500;
