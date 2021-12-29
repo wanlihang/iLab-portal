@@ -28,7 +28,7 @@
             autocomplete="off"
             v-model="passwordForm.mobile"
             class="input"
-            required=""
+            required
           />
         </div>
         <div class="input-item">
@@ -38,16 +38,12 @@
             autocomplete="off"
             v-model="passwordForm.password"
             class="input"
-            required=""
+            required
+            @keyup.enter="passwordFormValidate"
           />
         </div>
         <div class="btn-box">
-          <button
-            type="submit"
-            class="submit"
-            @keyup.enter="passwordFormValidate"
-            @click="passwordFormValidate"
-          >
+          <button type="submit" class="submit" @click="passwordFormValidate">
             立即登录
           </button>
         </div>
@@ -100,7 +96,7 @@
             autocomplete="off"
             v-model="messageForm.mobile"
             class="input"
-            required=""
+            required
           />
         </div>
         <div class="input-item">
@@ -110,7 +106,7 @@
             autocomplete="off"
             v-model="messageForm.captcha"
             class="input-short"
-            required=""
+            required
           />
           <div class="captcha">
             <img
@@ -128,7 +124,8 @@
             autocomplete="off"
             v-model="messageForm.sms"
             class="input-short"
-            required=""
+            required
+            @keyup.enter="messageFormValidate"
           />
           <div class="buttons">
             <span class="send-sms-button" @click="sendSms()">
@@ -138,12 +135,7 @@
           </div>
         </div>
         <div class="btn-box">
-          <button
-            type="submit"
-            class="submit"
-            @keyup.enter="messageFormValidate"
-            @click="messageFormValidate"
-          >
+          <button type="submit" class="submit" @click="messageFormValidate">
             立即登录
           </button>
         </div>
@@ -197,7 +189,7 @@
             autocomplete="off"
             v-model="messageForm.mobile"
             class="input"
-            required=""
+            required
           />
         </div>
         <div class="input-item">
@@ -207,7 +199,7 @@
             autocomplete="off"
             v-model="messageForm.captcha"
             class="input-short"
-            required=""
+            required
           />
           <div class="captcha">
             <img
@@ -225,7 +217,7 @@
             autocomplete="off"
             v-model="messageForm.sms"
             class="input-short"
-            required=""
+            required
           />
           <div class="buttons">
             <span class="send-sms-button" @click="sendSms()">
@@ -241,7 +233,8 @@
             autocomplete="off"
             v-model="messageForm.password"
             class="input"
-            required=""
+            required
+            @keyup.enter="registerFormValidate"
           />
         </div>
         <div class="mb-50 flex items-center">
@@ -251,14 +244,7 @@
                 id="remember"
                 type="checkbox"
                 v-model="messageForm.agree_protocol"
-                class="
-                  focus:ring-indigo-500
-                  h-20
-                  w-20
-                  text-indigo-600
-                  border-gray-300
-                  rounded
-                "
+                class="focus:ring-indigo-500 h-20 w-20 text-indigo-600 border-gray-300 rounded"
               />
             </div>
             <div class="ml-10 text-sm">
@@ -279,12 +265,7 @@
           </div>
         </div>
         <div class="btn-box" style="margin-bottom: 0px !important">
-          <button
-            type="submit"
-            class="submit"
-            @keyup.enter="registerFormValidate"
-            @click="registerFormValidate"
-          >
+          <button type="submit" class="submit" @click="registerFormValidate">
             立即注册
           </button>
         </div>
@@ -308,7 +289,7 @@
             autocomplete="off"
             v-model="messageForm.mobile"
             class="input"
-            required=""
+            required
           />
         </div>
         <div class="input-item">
@@ -318,7 +299,7 @@
             autocomplete="off"
             v-model="messageForm.captcha"
             class="input-short"
-            required=""
+            required
           />
           <div class="captcha">
             <img
@@ -336,7 +317,7 @@
             autocomplete="off"
             v-model="messageForm.sms"
             class="input-short"
-            required=""
+            required
           />
           <div class="buttons">
             <span class="send-sms-button" @click="sendSms()">
@@ -352,7 +333,7 @@
             autocomplete="off"
             v-model="messageForm.password"
             class="input"
-            required=""
+            required
           />
         </div>
         <div class="btn-box" style="margin-bottom: 0px !important">
@@ -407,7 +388,7 @@
             autocomplete="off"
             v-model="messageForm.captcha"
             class="input-short"
-            required=""
+            required
           />
           <div class="captcha">
             <img
@@ -425,7 +406,7 @@
             autocomplete="off"
             v-model="messageForm.sms"
             class="input-short"
-            required=""
+            required
           />
           <div class="buttons">
             <span class="send-sms-button" @click="sendSms()">
@@ -462,7 +443,7 @@
             autocomplete="off"
             v-model="messageForm.mobile"
             class="input"
-            required=""
+            required
           />
         </div>
         <div class="input-item">
@@ -472,7 +453,7 @@
             autocomplete="off"
             v-model="messageForm.captcha"
             class="input-short"
-            required=""
+            required
           />
           <div class="captcha">
             <img
@@ -490,7 +471,7 @@
             autocomplete="off"
             v-model="messageForm.sms"
             class="input-short"
-            required=""
+            required
           />
           <div class="buttons">
             <span class="send-sms-button" @click="sendSms()">
@@ -543,7 +524,7 @@
             autocomplete="off"
             v-model="messageForm.mobile"
             class="input"
-            required=""
+            required
           />
         </div>
         <div class="input-item">
@@ -553,7 +534,7 @@
             autocomplete="off"
             v-model="messageForm.captcha"
             class="input-short"
-            required=""
+            required
           />
           <div class="captcha">
             <img
@@ -571,7 +552,7 @@
             autocomplete="off"
             v-model="messageForm.sms"
             class="input-short"
-            required=""
+            required
           />
           <div class="buttons">
             <span class="send-sms-button" @click="sendSms()">
@@ -608,7 +589,7 @@
             autocomplete="off"
             v-model="messageForm.mobile"
             class="input"
-            required=""
+            required
           />
         </div>
         <div class="input-item">
@@ -618,7 +599,7 @@
             autocomplete="off"
             v-model="messageForm.captcha"
             class="input-short"
-            required=""
+            required
           />
           <div class="captcha">
             <img
@@ -636,7 +617,7 @@
             autocomplete="off"
             v-model="messageForm.sms"
             class="input-short"
-            required=""
+            required
           />
           <div class="buttons">
             <span class="send-sms-button" @click="sendSms()">
@@ -652,16 +633,12 @@
             autocomplete="off"
             v-model="messageForm.password"
             class="input"
-            required=""
+            required
+            @keyup.enter="editValidate"
           />
         </div>
         <div class="btn-box" style="margin-bottom: 0px !important">
-          <button
-            type="submit"
-            class="submit"
-            @keyup.enter="editValidate"
-            @click="editValidate"
-          >
+          <button type="submit" class="submit" @click="editValidate">
             重置密码
           </button>
         </div>
@@ -719,7 +696,7 @@ export default {
     };
   },
   watch: {
-    dialogType: function() {
+    dialogType: function () {
       this.dialogStatus = this.dialogType;
       if (this.dialogStatus !== 0 && this.dialogStatus !== 5) {
         this.getCaptcha();
@@ -728,23 +705,9 @@ export default {
         this.getBindQrode();
       }
     },
-    mobile: function() {
+    mobile: function () {
       this.messageForm.mobile = this.mobile;
     },
-  },
-  created() {
-    var t = this;
-    document.onkeydown = function(e) {
-      var key;
-      if (window.event == undefined) {
-        key = e.keyCode;
-      } else {
-        key = window.event.keyCode;
-      }
-      if (key == 13) {
-        t.formValidate();
-      }
-    };
   },
   computed: {
     ...mapState(["config"]),
