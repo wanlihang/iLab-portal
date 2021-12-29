@@ -118,29 +118,38 @@
           </div>
           <div class="rules-content" v-if="config">
             <div class="btn-title">积分获取</div>
-            <div class="rules-item">
-              <p>1.注册登录 +{{ config.credit1_reward.register }} 积分</p>
+            <div class="rules-item" v-if="config.credit1_reward.register !== 0">
+              <p>• 注册登录 +{{ config.credit1_reward.register }} 积分</p>
             </div>
-            <div class="rules-item">
-              <p>2.看完视频 +{{ config.credit1_reward.watched_video }} 积分</p>
+            <div
+              class="rules-item"
+              v-if="config.credit1_reward.watched_video !== 0"
+            >
+              <p>• 看完视频 +{{ config.credit1_reward.watched_video }} 积分</p>
             </div>
-            <div class="rules-item">
+            <div
+              class="rules-item"
+              v-if="config.credit1_reward.watched_vod_course !== 0"
+            >
               <p>
-                3.看完课程 +{{ config.credit1_reward.watched_vod_course }} 积分
+                • 看完课程 +{{ config.credit1_reward.watched_vod_course }} 积分
               </p>
             </div>
-            <div class="rules-item">
+            <div
+              class="rules-item"
+              v-if="config.credit1_reward.paid_order !== 0"
+            >
               <p>
-                4.下单成功 +金额*{{
+                • 下单成功 +金额*{{
                   parseInt(config.credit1_reward.paid_order / 100)
                 }}% 积分
               </p>
             </div>
-            <div class="rules-item">
-              <p>5.邀请好友注册 +{{ config.credit1_reward.invite }} 积分</p>
+            <div class="rules-item" v-if="config.credit1_reward.invite !== 0">
+              <p>• 邀请好友注册 +{{ config.credit1_reward.invite }} 积分</p>
             </div>
             <div class="rules-item">
-              <p>6.可以回答积分悬赏问题获取积分</p>
+              <p>• 可以回答积分悬赏问题获取积分</p>
             </div>
           </div>
         </div>
