@@ -338,7 +338,12 @@ export default {
     this.getMall();
   },
   methods: {
-    ...mapMutations(["showLoginDialog", "changeDialogType", "setNewAddress"]),
+    ...mapMutations([
+      "showLoginDialog",
+      "changeDialogType",
+      "setNewAddress",
+      "loginHandle",
+    ]),
     statusType(is_v, type) {
       if (is_v === 0) {
         return "发实物";
@@ -500,6 +505,22 @@ export default {
       this.dialogStatus = false;
       this.getAddress();
     },
+    resetUserDetail() {
+      this.$api.User.Detail()
+        .then((res) => {
+          this.loginHandle(res.data);
+        })
+        .catch((e) => {
+          if (e.code === 401) {
+            this.$utils.clearToken();
+            this.$router.replace({
+              name: "index",
+            });
+          } else {
+            this.$message.error(e.message);
+          }
+        });
+    },
     submitHandle() {
       if (this.is_v === 0) {
         let form = {
@@ -514,6 +535,7 @@ export default {
         this.$api.CreditMall.Exchange(this.id, form)
           .then((data) => {
             this.$message.success("兑换成功");
+            this.resetUserDetail();
             this.cancel();
             setTimeout(() => {
               this.tabChange(3);
@@ -526,6 +548,7 @@ export default {
         this.$api.CreditMall.Exchange(this.id, {})
           .then((data) => {
             this.$message.success("兑换成功");
+            this.resetUserDetail();
             this.cancel();
             setTimeout(() => {
               this.tabChange(3);
