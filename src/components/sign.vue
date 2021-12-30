@@ -25,6 +25,7 @@ export default {
           this.$emit("change", true);
         })
         .catch((e) => {
+          this.loading = false;
           this.$message.error(e.message);
         });
     },
