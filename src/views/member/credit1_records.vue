@@ -87,10 +87,10 @@
         <div class="rules" v-if="!goodStatus && currentTab === 2">
           <div class="project-box">
             <div class="btn-title">积分明细</div>
-            <template v-if="list.length > 0">
+            <template v-if="creditList.length > 0">
               <div
                 class="project-item"
-                v-for="(item, index) in list"
+                v-for="(item, index) in creditList"
                 :key="index"
               >
                 <div class="title">{{ item.remark }}</div>
@@ -106,7 +106,7 @@
             <none type="white" v-else></none>
             <div
               id="page"
-              v-show="total > pagination2.page_size && list.length > 0"
+              v-show="total > pagination2.page_size && creditList.length > 0"
             >
               <page-box
                 :totals="total"
@@ -154,8 +154,8 @@
           </div>
         </div>
         <div class="orders-box" v-if="!goodStatus && currentTab === 3">
-          <template v-if="list.length > 0">
-            <div class="item" v-for="item in list" :key="item.id">
+          <template v-if="orderList.length > 0">
+            <div class="item" v-for="item in orderList" :key="item.id">
               <div class="top">
                 <div class="id">兑换流水号：{{ item.id }}</div>
                 <div class="button">
@@ -213,7 +213,10 @@
             </div>
           </template>
           <none type="white" v-else></none>
-          <div id="page" v-show="total > pagination.size && list.length > 0">
+          <div
+            id="page"
+            v-show="total > pagination.size && orderList.length > 0"
+          >
             <page-box
               :totals="total"
               @current-change="changepage"
@@ -305,6 +308,8 @@ export default {
   data() {
     return {
       list: [],
+      creditList: [],
+      orderList: [],
       goods: [],
       total: null,
       pagination: {
@@ -380,6 +385,8 @@ export default {
     },
     resetData() {
       this.list = [];
+      this.creditList = [];
+      this.orderList = [];
       this.total = null;
       this.pagination.size = 10;
       this.pagination.page = 1;
@@ -407,13 +414,13 @@ export default {
     },
     getData() {
       this.$api.Member.Credit1Records(this.pagination2).then((res) => {
-        this.list = res.data.data;
+        this.creditList = res.data.data;
         this.total = res.data.total;
       });
     },
     getOrders() {
       this.$api.CreditMall.Orders(this.pagination).then((res) => {
-        this.list = res.data.data;
+        this.orderList = res.data.data;
         this.total = res.data.total;
       });
     },
