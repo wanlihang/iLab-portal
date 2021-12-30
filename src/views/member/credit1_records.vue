@@ -384,9 +384,6 @@ export default {
       }
     },
     resetData() {
-      this.list = [];
-      this.creditList = [];
-      this.orderList = [];
       this.total = null;
       this.pagination.size = 10;
       this.pagination.page = 1;
