@@ -644,12 +644,15 @@ export default {
         if (this.isWatch || this.video.free_seconds > 0) {
           this.getPlayInfo();
         }
+
         //获取附件
         this.getAttach();
+
         //赋值购买视频信息
         this.dialog.videoCharge = this.video.charge;
         this.dialog.configText = this.video.title;
         this.dialog.id = this.video.id;
+
         //播放记录跳转
         if (
           this.video_watched_progress &&
