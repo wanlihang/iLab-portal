@@ -581,7 +581,7 @@ export default {
       this.showtip = true;
       setTimeout(() => {
         this.showtip = false;
-      }, 15000);
+      }, 5000);
     },
     toWatch(sec) {
       this.showtip = false;
