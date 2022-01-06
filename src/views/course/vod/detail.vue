@@ -181,7 +181,10 @@
                 <span class="text">{{ video.title }}</span>
                 <span
                   class="free"
-                  v-if="course.is_free !== 1 && video.free_seconds > 0"
+                  v-if="
+                    course.is_free !== 1 &&
+                    (video.free_seconds > 0 || video.charge === 0)
+                  "
                   >试看</span
                 >
               </div>

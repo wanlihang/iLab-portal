@@ -178,7 +178,8 @@
                       <div
                         class="free"
                         v-if="
-                          course.is_free !== 1 && videoItem.free_seconds > 0
+                          course.is_free !== 1 &&
+                          (videoItem.charge === 0 || videoItem.free_seconds > 0)
                         "
                       >
                         试看
