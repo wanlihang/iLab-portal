@@ -59,7 +59,7 @@
           </div>
         </div>
         <div class="book-desc" v-if="learn" v-show="currentTab === 2">
-          <div v-html="learn.desc"></div>
+          <div class="new-content" v-html="learn.desc"></div>
         </div>
         <div class="book-chapter-box" v-show="currentTab === 3">
           <template v-if="steps.length > 0">
@@ -236,7 +236,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .fix-nav {

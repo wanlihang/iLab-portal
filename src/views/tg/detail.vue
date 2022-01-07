@@ -103,7 +103,7 @@
           </div>
         </div>
         <div class="book-desc" v-if="goods">
-          <div v-html="goods.desc"></div>
+          <div class="new-content" v-html="goods.desc"></div>
         </div>
       </template>
     </div>
