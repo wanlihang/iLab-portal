@@ -166,11 +166,12 @@ export default {
           p {
             display: block;
             width: 100%;
-            height: 16px;
+            float: left;
+            height: auto;
             font-size: 16px;
             font-weight: 500;
             color: #572f1d;
-            line-height: 16px;
+            line-height: 24px;
             margin-bottom: 30px;
           }
         }
