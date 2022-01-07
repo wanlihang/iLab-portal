@@ -6,5 +6,5 @@ if (typeof window.meedu_app_url !== "undefined" && window.meedu_app_url) {
 
 export default {
   url: url,
-  version: "v4.5.4",
+  version: "v4.5.5",
 };
