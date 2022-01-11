@@ -49,6 +49,8 @@ export default {
     "$route.query.token"(val) {
       if (val) {
         this.$utils.saveToken(val);
+        let newUrl = this.$utils.removeTokenParams(window.location.href);
+        window.location.href = newUrl;
         this.getUser();
       }
     },
