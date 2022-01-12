@@ -100,14 +100,14 @@
     ></remote-script>
 
     <template v-if="video.status === 1">
-      <remote-script src="/js/xg/index.js"></remote-script>
-      <template v-if="isWebrtc">
+      <template v-if="webrtc_play_url">
         <remote-script
           src="https://web.sdk.qcloud.com/player/tcplayerlite/release/v2.4.1/TcPlayer-2.4.1.js"
           @load="initLiveTencentPlayer"
         ></remote-script>
       </template>
       <template v-else>
+        <remote-script src="/js/xg/index.js"></remote-script>
         <remote-script
           src="/js/xg/hls.min.js"
           @load="initLivePlayer"
@@ -233,11 +233,6 @@ export default {
           this.record_exists = resData.record_exists;
           this.record_duration = resData.record_duration;
           this.webrtc_play_url = resData.web_rtc_play_url;
-          if (this.webrtc_play_url) {
-            this.isWebrtc = true;
-          } else {
-            this.isWebrtc = false;
-          }
 
           // 聊天记录
           this.getChatRecords();
