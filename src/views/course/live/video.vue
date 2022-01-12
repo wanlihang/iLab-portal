@@ -6,7 +6,8 @@
           @click="$router.back()"
           class="icon-back"
           src="../../../assets/img/commen/icon-back-h.png"
-        />直播间
+        />
+        <span @click="$router.back()">{{ video.title }}</span>
       </div>
     </div>
     <div class="live-banner">
@@ -100,10 +101,18 @@
 
     <template v-if="video.status === 1">
       <remote-script src="/js/xg/index.js"></remote-script>
-      <remote-script
-        src="/js/xg/hls.min.js"
-        @load="initLivePlayer"
-      ></remote-script>
+      <template v-if="isWebrtc">
+        <remote-script
+          src="https://web.sdk.qcloud.com/player/tcplayerlite/release/v2.4.1/TcPlayer-2.4.1.js"
+          @load="initLiveTencentPlayer"
+        ></remote-script>
+      </template>
+      <template v-else>
+        <remote-script
+          src="/js/xg/hls.min.js"
+          @load="initLivePlayer"
+        ></remote-script>
+      </template>
     </template>
   </div>
 </template>
@@ -115,6 +124,7 @@ export default {
     return {
       id: this.$route.query.id,
       playUrl: null,
+      webrtc_play_url: null,
       message: {
         content: null,
       },
@@ -141,6 +151,7 @@ export default {
           avatar: null,
         },
       },
+      isWebrtc: false,
       vodPlayerStatus: false,
       record_exists: 0,
       record_duration: 0,
@@ -221,6 +232,12 @@ export default {
           this.playUrl = resData.play_url;
           this.record_exists = resData.record_exists;
           this.record_duration = resData.record_duration;
+          this.webrtc_play_url = resData.web_rtc_play_url;
+          if (this.webrtc_play_url) {
+            this.isWebrtc = true;
+          } else {
+            this.isWebrtc = false;
+          }
 
           // 聊天记录
           this.getChatRecords();
@@ -290,6 +307,18 @@ export default {
         closeVideoClick: true,
       });
 
+      this.recordInterval = setInterval(() => {
+        this.playRecord();
+      }, 10000);
+    },
+    initLiveTencentPlayer() {
+      this.livePlayer = new window.TcPlayer("meedu-live-player", {
+        m3u8: this.webrtc_play_url,
+        autoplay: true,
+        poster: this.course.poster || this.config.player.cover,
+        width: 950,
+        height: 535,
+      });
       this.recordInterval = setInterval(() => {
         this.playRecord();
       }, 10000);
@@ -470,6 +499,9 @@ export default {
         width: 24px;
         height: 24px;
         margin-right: 10px;
+        cursor: pointer;
+      }
+      span {
         cursor: pointer;
       }
     }
