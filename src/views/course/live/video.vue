@@ -23,7 +23,12 @@
               <span v-else-if="video.status === 2">已结束</span>
             </span>
           </div>
-          <div class="live-item-video">
+          <div
+            class="live-item-video"
+            :style="{
+              'background-image': 'url(' + course.poster + ')',
+            }"
+          >
             <div class="play" v-if="video.status === 1">
               <div
                 id="meedu-live-player"
