@@ -45,18 +45,20 @@
             <div class="info">
               <div class="course-info-title">{{ course.title }}</div>
               <p class="desc">{{ course.short_desc }}</p>
-              <template v-if="!isBuy && course.charge !== 0">
-                <div
-                  class="buy-button"
-                  v-if="course.charge > 0"
-                  @click="buyCourse()"
-                >
-                  订阅课程￥{{ course.charge }}
-                </div>
-              </template>
-              <template v-else>
-                <div class="has-button">课程已购买</div>
-              </template>
+              <div class="btn-box">
+                <template v-if="!isBuy && course.charge !== 0">
+                  <div
+                    class="buy-button"
+                    v-if="course.charge > 0"
+                    @click="buyCourse()"
+                  >
+                    订阅课程￥{{ course.charge }}
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="has-button">课程已购买</div>
+                </template>
+              </div>
             </div>
           </div>
           <div class="tabs" id="NavBar">
@@ -458,52 +460,54 @@ export default {
             line-height: 30px;
             overflow: hidden;
           }
-          .has-button {
+          .btn-box {
             position: absolute;
-            background: #f4fafe;
-            border-radius: 4px;
-            padding: 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #999999;
-            line-height: 16px;
-            box-sizing: border-box;
             bottom: 0;
             left: 0;
-            cursor: pointer;
-          }
-          .buy-button {
-            position: absolute;
-            background: #ff5068;
-            border-radius: 4px;
-            padding: 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
-            bottom: 0;
-            left: 0;
-            cursor: pointer;
-            &:hover {
-              opacity: 0.8;
+            width: 100%;
+            height: auto;
+            float: left;
+            display: flex;
+            flex-direction: row;
+            .has-button {
+              background: #f4fafe;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #999999;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
             }
-          }
-          .role-button {
-            position: absolute;
-            background: #e1a500;
-            border-radius: 4px;
-            padding: 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
-            bottom: 0;
-            left: 176px;
-            cursor: pointer;
-            &:hover {
-              opacity: 0.8;
+            .buy-button {
+              background: #ff5068;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+            .role-button {
+              background: #e1a500;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              margin-left: 20px;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
             }
           }
         }

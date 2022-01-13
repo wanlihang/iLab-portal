@@ -387,7 +387,7 @@ export default {
             position: absolute;
             background: #3ca7fa;
             border-radius: 4px;
-            padding: 12px 20px;
+            padding: 20px;
             font-size: 16px;
             font-weight: 400;
             color: #ffffff;
@@ -404,7 +404,7 @@ export default {
             position: absolute;
             background: #ff5068;
             border-radius: 4px;
-            padding: 12px 20px;
+            padding: 20px;
             font-size: 16px;
             font-weight: 400;
             color: #ffffff;

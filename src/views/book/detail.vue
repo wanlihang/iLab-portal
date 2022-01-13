@@ -54,26 +54,27 @@
                 />
               </div>
               <p class="desc">{{ book.short_desc }}</p>
-
-              <template v-if="isBuy">
-                <div class="see-button" @click="startLearn">开始阅读</div>
-              </template>
-              <template v-else>
-                <div
-                  class="buy-button"
-                  v-if="book.charge > 0"
-                  @click="buyBook()"
-                >
-                  订阅电子书￥{{ book.charge }}
-                </div>
-                <div
-                  class="role-button"
-                  v-if="book.charge > 0 && book.is_vip_free === 1"
-                  @click="goRole()"
-                >
-                  会员免费看
-                </div>
-              </template>
+              <div class="btn-box">
+                <template v-if="isBuy">
+                  <div class="see-button" @click="startLearn">开始阅读</div>
+                </template>
+                <template v-else>
+                  <div
+                    class="buy-button"
+                    v-if="book.charge > 0"
+                    @click="buyBook()"
+                  >
+                    订阅电子书￥{{ book.charge }}
+                  </div>
+                  <div
+                    class="role-button"
+                    v-if="book.charge > 0 && book.is_vip_free === 1"
+                    @click="goRole()"
+                  >
+                    会员免费看
+                  </div>
+                </template>
+              </div>
             </div>
           </div>
           <div class="tabs" id="NavBar">
@@ -608,56 +609,58 @@ export default {
               overflow: hidden;
             }
           }
-          .see-button {
-            position: absolute;
-            background: #3ca7fa;
-            border-radius: 4px;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
-            bottom: 0;
-            left: 0;
-            cursor: pointer;
-            &:hover {
-              opacity: 0.8;
-            }
-          }
-          .buy-button {
-            position: absolute;
-            background: #ff5068;
-            border-radius: 4px;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
-            bottom: 0;
-            left: 0;
-            cursor: pointer;
-            &:hover {
-              opacity: 0.8;
-            }
-          }
-          .role-button {
-            position: absolute;
-            background: #e1a500;
-            border-radius: 4px;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
-            bottom: 0;
-            left: 176px;
 
-            cursor: pointer;
-            &:hover {
-              opacity: 0.8;
+          .btn-box {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            float: left;
+            display: flex;
+            flex-direction: row;
+            .see-button {
+              background: #3ca7fa;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+            .buy-button {
+              background: #ff5068;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+            .role-button {
+              background: #e1a500;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              margin-left: 20px;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
             }
           }
         }
