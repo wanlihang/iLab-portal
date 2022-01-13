@@ -304,7 +304,7 @@ export default {
         closeVideoTouch: true,
         closeVideoClick: true,
       });
-      this.livePlayer.on("timeupdate", function () {
+      this.livePlayer.on("timeupdate", () => {
         this.playRecord(parseInt(this.livePlayer.currentTime));
       });
       this.livePlayer.on("ended", () => {
