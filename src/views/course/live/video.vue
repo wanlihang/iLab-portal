@@ -321,9 +321,9 @@ export default {
         height: 535,
         listener: function (msg) {
           if (msg.type == "timeupdate") {
-            that.playLiveRecord(parseInt(msg.timeStamp));
+            that.playRecord(parseInt(msg.timeStamp / 1000));
           } else if (msg.type == "ended") {
-            that.playLiveRecord(parseInt(msg.timeStamp), true);
+            that.playRecord(parseInt(msg.timeStamp / 1000), true);
           }
         },
       });
@@ -442,14 +442,6 @@ export default {
     },
     playRecord(duration, isEnd) {
       if (duration - this.timeValue >= 10 || isEnd === true) {
-        this.timeValue = duration;
-        this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {
-          // todo
-        });
-      }
-    },
-    playLiveRecord(duration, isEnd) {
-      if (duration - this.timeValue >= 10000 || isEnd === true) {
         this.timeValue = duration;
         this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {
           // todo
