@@ -443,17 +443,17 @@ export default {
     playRecord(duration, isEnd) {
       if (duration - this.timeValue >= 10 || isEnd === true) {
         this.timeValue = duration;
-        this.$api.Live.Record(this.video.course_id, this.video.id).then(
-          () => {}
-        );
+        this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {
+          // todo
+        });
       }
     },
     playLiveRecord(duration, isEnd) {
       if (duration - this.timeValue >= 10000 || isEnd === true) {
         this.timeValue = duration;
-        this.$api.Live.Record(this.video.course_id, this.video.id).then(
-          () => {}
-        );
+        this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {
+          // todo
+        });
       }
     },
     getChatRecords() {
