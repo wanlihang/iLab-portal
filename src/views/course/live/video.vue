@@ -27,7 +27,7 @@
             class="live-item-video"
             :style="{
               'background-image': 'url(' + course.poster + ')',
-              'background-size':'100% 100%';
+              'background-size':'100% 100%',
             }"
           >
             <div class="play" v-if="video.status === 1">
