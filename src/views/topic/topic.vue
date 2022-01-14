@@ -294,9 +294,11 @@ export default {
                 border-radius: 8px;
                 overflow: hidden;
                 margin-right: 20px;
+                display: flex;
+                align-items: center;
                 img {
                   width: 133px;
-                  height: 100px;
+                  height: auto;
                   border-radius: 8px;
                   transition: all 0.4s;
                 }

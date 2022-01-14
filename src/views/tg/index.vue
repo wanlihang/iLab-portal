@@ -166,7 +166,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .contanier {
@@ -210,9 +210,11 @@ export default {
           height: 198px;
           border-radius: 8px 8px 0px 0px;
           overflow: hidden;
+          display: flex;
+          align-items: center;
           img {
             width: 100%;
-            height: 100%;
+            height: auto;
             border-radius: 8px 8px 0px 0px;
             transition: all 0.5s;
           }

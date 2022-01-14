@@ -71,6 +71,8 @@ export default {
     height: 198px;
     border-radius: 8px 8px 0px 0px;
     overflow: hidden;
+    display: flex;
+    align-items: center;
     img {
       width: 100%;
       height: auto;

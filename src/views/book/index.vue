@@ -311,8 +311,11 @@ export default {
                 border-radius: 8px;
                 overflow: hidden;
                 margin-right: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 img {
-                  width: 90px;
+                  width: auto;
                   height: 120px;
                   border-radius: 8px;
                   transition: all 0.3s;
