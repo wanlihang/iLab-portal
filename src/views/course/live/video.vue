@@ -26,7 +26,7 @@
           <div
             class="live-item-video"
             :style="{
-              'background-image': 'url(' + course.poster + ') no-repeat',
+              'background-image': 'url(' + course.poster + ')',
               'background-size': '100% 100%',
             }"
           >
