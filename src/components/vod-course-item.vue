@@ -83,7 +83,7 @@ export default {
   .vod-course-body {
     box-sizing: border-box;
     width: 100%;
-    height: 75px;
+    height: auto;
     background-color: #fff;
     border-radius: 0px 0px 8px 8px;
     flex: 1;
@@ -100,7 +100,7 @@ export default {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      margin-bottom: 9px;
+      margin-bottom: 20px;
     }
 
     .vod-course-info {
