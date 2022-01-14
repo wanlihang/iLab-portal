@@ -601,6 +601,7 @@ export default {
                     height: 100%;
                     z-index: 10;
                     border-radius: 4px;
+                     overflow: hidden;
                   }
                   .active {
                     width: 75px;
