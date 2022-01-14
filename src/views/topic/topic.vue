@@ -56,7 +56,13 @@
                 <div class="topic-item" v-for="item in hotList" :key="item.id">
                   <div class="topic-item-comp" @click="goDetail(item.id)">
                     <div class="topic-thumb">
-                      <img :src="item.thumb" />
+                      <div class="thumb-bar">
+                        <thumb-bar
+                          :value="item.thumb"
+                          :width="133"
+                          :height="100"
+                        ></thumb-bar>
+                      </div>
                     </div>
                     <div class="topic-body">
                       <div class="topic-title">{{ item.title }}</div>
@@ -237,7 +243,7 @@ export default {
               box-sizing: border-box;
               &:hover {
                 .topic-thumb {
-                  img {
+                  .thumb-bar {
                     transform: scale(1.1, 1.1);
                   }
                 }
@@ -294,13 +300,10 @@ export default {
                 border-radius: 8px;
                 overflow: hidden;
                 margin-right: 20px;
-                display: flex;
-                align-items: center;
-                img {
-                  width: 133px;
-                  height: auto;
-                  border-radius: 8px;
-                  transition: all 0.4s;
+                .thumb-bar {
+                  width: 100%;
+                  height: 100%;
+                  transition: all 0.3s;
                 }
               }
             }

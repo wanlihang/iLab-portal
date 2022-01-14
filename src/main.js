@@ -20,13 +20,14 @@ import "@/js/remote-js.js";
 import "@/js/directives";
 // 全局样式
 import "./assets/commen/variable.less";
+// 全局组件
+import ThumbBar from "@/components/thumb-bar";
 
 Vue.config.productionTip = false;
 
 Vue.prototype.$api = api;
 Vue.prototype.$config = config;
 Vue.prototype.$utils = utils;
-
 Vue.prototype.$message = Message;
 Vue.use(VueAwesomeSwiper);
 Vue.use(VCharts);
@@ -36,6 +37,7 @@ Vue.use(highlight, {
   style: "color: #FF5068",
   caseSensitive: false,
 });
+Vue.component("ThumbBar", ThumbBar);
 
 utils.copyright();
 

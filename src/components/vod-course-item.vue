@@ -1,7 +1,9 @@
 <template>
   <div class="vod-course-item-comp" @click="goShow">
     <div class="vod-course-thumb">
-      <img :src="thumb" />
+      <div class="thumb-bar">
+        <thumb-bar :value="thumb" :width="264" :height="198"></thumb-bar>
+      </div>
     </div>
     <div class="vod-course-body">
       <div class="vod-course-title">
@@ -61,7 +63,7 @@ export default {
   &:hover {
     box-shadow: 0px 4px 8px 0px rgba(102, 102, 102, 0.1);
     .vod-course-thumb {
-      img {
+      .thumb-bar {
         transform: scale(1.1, 1.1);
       }
     }
@@ -71,13 +73,10 @@ export default {
     height: 198px;
     border-radius: 8px 8px 0px 0px;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    img {
+    .thumb-bar {
       width: 100%;
-      height: auto;
-      border-radius: 8px 8px 0px 0px;
-      transition: all 0.5s;
+      height: 100%;
+      transition: all 0.3s;
     }
   }
 
