@@ -178,7 +178,7 @@
                       <div
                         class="free"
                         v-if="
-                          !isBuy &&
+                          showTry &&
                           course.is_free !== 1 &&
                           (videoItem.charge === 0 || videoItem.free_seconds > 0)
                         "
@@ -262,7 +262,7 @@
                   <div
                     class="free"
                     v-if="
-                      !isBuy &&
+                      showTry &&
                       course.is_free !== 1 &&
                       (video.charge === 0 || video.free_seconds > 0)
                     "
@@ -431,6 +431,7 @@ export default {
       },
       isIframe: false,
       isBuy: false,
+      showTry: false,
     };
   },
   watch: {
@@ -581,6 +582,7 @@ export default {
       this.$api.Course.Detail(this.course.id).then((res) => {
         this.attach = res.data.attach;
         this.isBuy = res.data.isBuy;
+        this.showTry = !this.isBuy;
       });
     },
     showLink() {
