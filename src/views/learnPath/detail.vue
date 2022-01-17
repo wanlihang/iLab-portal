@@ -1,20 +1,5 @@
 <template>
   <div class="content">
-    <div class="fix-nav" v-show="isfixTab">
-      <div class="tabs">
-        <div
-          class="item-tab"
-          v-for="(item, index) in tabs"
-          :key="index"
-          :class="{ active: currentTab === item.id }"
-          @click="tabChange(item.id)"
-          :is-scroll="false"
-        >
-          {{ item.name }}
-          <div class="actline" v-if="currentTab === item.id"></div>
-        </div>
-      </div>
-    </div>
     <div class="box">
       <template v-if="loading">
         <skeletonDetail></skeletonDetail>
@@ -52,21 +37,8 @@
               </div>
             </div>
           </div>
-          <div class="tabs" id="NavBar">
-            <div
-              class="item-tab"
-              v-for="(item, index) in tabs"
-              :key="index"
-              :class="{ active: currentTab === item.id }"
-              @click="tabChange(item.id)"
-              :is-scroll="false"
-            >
-              {{ item.name }}
-              <div class="actline" v-if="currentTab === item.id"></div>
-            </div>
-          </div>
         </div>
-        <div class="book-chapter-box" v-show="currentTab === 3">
+        <div class="book-chapter-box">
           <template v-if="steps.length > 0">
             <div class="steps-box">
               <div class="step-item" v-for="item in steps" :key="item.id">
@@ -155,50 +127,22 @@ export default {
       learn: [],
       currentTab: 3,
       steps: [],
-      tabs: [
-        {
-          name: "套餐课程",
-          id: 3,
-        },
-      ],
-      isBuy: false,
 
-      isfixTab: false,
+      isBuy: false,
     };
   },
   computed: {
     ...mapState(["isLogin", "user"]),
   },
   mounted() {
-    window.addEventListener("scroll", this.handleTabFix, true);
     this.getDetail();
   },
-  beforeDestroy() {
-    window.removeEventListener("scroll", this.handleTabFix, true);
-  },
+  beforeDestroy() {},
   methods: {
     ...mapMutations(["showLoginDialog", "changeDialogType"]),
     goLogin() {
       this.changeDialogType(1);
       this.showLoginDialog();
-    },
-
-    handleTabFix() {
-      let scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-      let navbar = document.querySelector("#NavBar");
-      if (navbar) {
-        let offsetTop = navbar.offsetTop;
-        scrollTop > offsetTop
-          ? (this.isfixTab = true)
-          : (this.isfixTab = false);
-      }
-    },
-
-    tabChange(key) {
-      this.currentTab = key;
     },
     buy() {
       if (!this.isLogin) {
@@ -242,7 +186,7 @@ export default {
       this.$router.push({
         name: page,
         query: {
-          id: item.other_id,
+          id: item.id,
         },
       });
     },
@@ -342,7 +286,7 @@ export default {
     }
     .book-info {
       width: 1200px;
-      height: 372px;
+      height: 300px;
       background: #ffffff;
       border-radius: 8px;
       .book-info-box {
