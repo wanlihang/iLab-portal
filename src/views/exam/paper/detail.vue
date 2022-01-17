@@ -24,7 +24,7 @@
             </div>
             <div class="info-item" v-else>剩余可考试次数：{{ surplus }}</div>
           </div>
-          <div class="btn-box">
+          <div class="btn-box" v-if="surplus !== 0">
             <div
               v-if="!can_join && list.is_vip_free === 1"
               class="button vip-free"
@@ -104,7 +104,7 @@ export default {
       questions: [],
       loading: false,
       can_join: false,
-      surplus: null,
+      surplus: 99999,
     };
   },
   computed: {
@@ -266,11 +266,12 @@ export default {
     overflow: hidden;
     .banner-box {
       width: 100%;
-      height: 262px;
+      height: auto;
       background: linear-gradient(315deg, #33baf7 0%, #1784ed 100%);
       box-shadow: 0px 4px 8px 0px rgba(102, 102, 102, 0.1);
       border-radius: 8px;
       margin-bottom: 30px;
+      padding-bottom: 50px;
       display: flex;
       flex-direction: column;
       .title {
@@ -290,7 +291,6 @@ export default {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        margin-bottom: 50px;
         .info-item {
           height: 14px;
           font-size: 14px;
@@ -311,6 +311,7 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: center;
+        margin-top: 50px;
         .button {
           display: flex;
           align-items: center;
