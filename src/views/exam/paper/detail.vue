@@ -22,9 +22,7 @@
             <div class="info-item" v-if="list.try_times === 0">
               可考试次数：不限
             </div>
-            <div class="info-item" v-else>
-              剩余可考试次数：{{ list.try_times - join_count }}
-            </div>
+            <div class="info-item" v-else>剩余可考试次数：{{ surplus }}</div>
           </div>
           <div class="btn-box">
             <div
@@ -41,7 +39,11 @@
             >
               购买试卷 ￥{{ list.charge }}
             </div>
-            <div v-if="can_join" class="button join" @click="join()">
+            <div
+              v-if="can_join && surplus && surplus !== 0"
+              class="button join"
+              @click="join()"
+            >
               立即考试
             </div>
           </div>
@@ -102,6 +104,7 @@ export default {
       questions: [],
       loading: false,
       can_join: false,
+      surplus: null,
     };
   },
   computed: {
@@ -137,6 +140,9 @@ export default {
         this.can_join = res.data.can_join;
         this.join_count = res.data.join_count;
         this.requiredCourses = res.data.required_courses;
+        if (this.list.try_times !== 0) {
+          this.surplus = this.list.try_times - this.join_count;
+        }
       });
     },
     join(userPaper) {
@@ -219,7 +225,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .nav {
