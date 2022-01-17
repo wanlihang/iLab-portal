@@ -397,6 +397,7 @@ export default {
         display: flex;
         flex-direction: row;
         align-items: center;
+        cursor: pointer;
         .icon-back {
           width: 24px;
           height: 24px;
