@@ -178,6 +178,7 @@
                       <div
                         class="free"
                         v-if="
+                          !isBuy &&
                           course.is_free !== 1 &&
                           (videoItem.charge === 0 || videoItem.free_seconds > 0)
                         "
@@ -261,6 +262,7 @@
                   <div
                     class="free"
                     v-if="
+                      !isBuy &&
                       course.is_free !== 1 &&
                       (video.charge === 0 || video.free_seconds > 0)
                     "
