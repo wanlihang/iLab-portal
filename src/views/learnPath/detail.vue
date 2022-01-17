@@ -186,7 +186,7 @@ export default {
       this.$router.push({
         name: page,
         query: {
-          id: item.id,
+          id: item.other_id,
         },
       });
     },
