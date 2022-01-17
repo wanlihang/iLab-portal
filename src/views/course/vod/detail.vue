@@ -142,7 +142,7 @@
                     <span
                       class="free"
                       v-if="
-                        !isBuy &&
+                        showTry &&
                         course.is_free !== 1 &&
                         (video.free_seconds > 0 || video.charge === 0)
                       "
@@ -185,7 +185,7 @@
                 <span
                   class="free"
                   v-if="
-                    !isBuy &&
+                    showTry &&
                     course.is_free !== 1 &&
                     (video.free_seconds > 0 || video.charge === 0)
                   "
@@ -334,6 +334,7 @@ export default {
         content: "",
       },
       isfixTab: false,
+      showTry: false,
     };
   },
   computed: {
@@ -509,6 +510,7 @@ export default {
           this.attach = res.data.attach;
           this.chapters = res.data.chapters;
           this.isBuy = res.data.isBuy;
+          this.showTry = !this.isBuy;
           document.title = res.data.course.title;
           this.isCollect = res.data.isCollect;
           this.videoWatchedProgress = res.data.videoWatchedProgress;
