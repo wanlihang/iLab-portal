@@ -84,7 +84,6 @@ export default {
   },
   methods: {
     filterChange3(cid1, cid2) {
-      console.log(cid1 + "," + cid2);
       if (cid2 !== 0) {
         this.pagination.category_id = cid2;
       } else {
