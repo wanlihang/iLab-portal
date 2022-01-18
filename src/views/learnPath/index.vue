@@ -1,5 +1,16 @@
 <template>
   <div class="content">
+    <filter-box3
+      v-show="!navLoading"
+      :categories="categories"
+      :cid1="pagination.category_id"
+      :cid2="pagination.category_id"
+      @change="filterChange3"
+    ></filter-box3>
+    <template v-if="navLoading">
+      <skeletonNav></skeletonNav>
+      <skeletonNav2></skeletonNav2>
+    </template>
     <template v-if="loading">
       <div style="margin-top: 30px">
         <skeletonCourseList></skeletonCourseList>
@@ -38,7 +49,9 @@ import None from "../../components/none.vue";
 import PageBox from "../../components/page.vue";
 import LearnPathItem from "../../components/learn-path-item.vue";
 import NavFooter from "../../components/footer.vue";
+import FilterBox3 from "../../components/filter-box3.vue";
 import SkeletonCourseList from "../../components/skeleton/skeletonCourseList.vue";
+import SkeletonNav from "../../components/skeleton/skeletonNav.vue";
 
 export default {
   components: {
@@ -47,6 +60,8 @@ export default {
     LearnPathItem,
     None,
     SkeletonCourseList,
+    FilterBox3,
+    SkeletonNav,
   },
   data() {
     return {
@@ -55,18 +70,27 @@ export default {
       pagination: {
         page: 1,
         size: 16,
+        category_id: 0,
       },
       steps: [],
       loading: false,
+      navLoading: false,
+      categories: [],
     };
   },
   mounted() {
+    this.navLoading = true;
+    this.params();
     this.getData();
   },
   methods: {
-    filterChange(scene, cid) {
-      this.pagination.scene = scene;
-      this.pagination.cid = cid;
+    filterChange3(cid1, cid2) {
+      console.log(cid1 + "," + cid2);
+      if (cid2 !== 0) {
+        this.pagination.category_id = cid2;
+      } else {
+        this.pagination.category_id = cid1;
+      }
       this.resetData();
       this.getData();
     },
@@ -79,6 +103,12 @@ export default {
       this.pagination.page = item.currentPage;
       this.getData();
       window.scrollTo(0, 0);
+    },
+    params() {
+      this.$api.LearnPath.Create().then((res) => {
+        this.navLoading = false;
+        this.categories = res.data;
+      });
     },
     getData() {
       if (this.loading) {
@@ -110,7 +140,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .contanier {

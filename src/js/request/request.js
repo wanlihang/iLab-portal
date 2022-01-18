@@ -657,6 +657,9 @@ const Api = {
     List(params) {
       return get("/addons/LearnPaths/api/v1/all", params);
     },
+    Create(params) {
+      return get("/addons/LearnPaths/api/v1/categories", params);
+    },
     Detail(id) {
       return get("/addons/LearnPaths/api/v1/path/" + id);
     },
