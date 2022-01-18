@@ -23,6 +23,9 @@
                   <div class="see-button">已购买</div>
                 </template>
                 <template v-else>
+                  <div class="has-button" v-if="learn.charge === 0">
+                    本路径免费
+                  </div>
                   <div
                     class="buy-button"
                     v-if="learn.charge > 0"
@@ -362,6 +365,17 @@ export default {
             float: left;
             display: flex;
             flex-direction: row;
+            .has-button {
+              background: #f4fafe;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #999999;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
+            }
             .see-button {
               background: #3ca7fa;
               border-radius: 4px;

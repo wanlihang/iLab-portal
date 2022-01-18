@@ -118,6 +118,7 @@ export default {
       .green-free {
         height: 20px;
         font-size: 14px;
+        font-weight: 600;
         color: #04c877;
         line-height: 20px;
       }
