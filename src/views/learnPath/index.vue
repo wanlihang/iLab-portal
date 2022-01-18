@@ -9,7 +9,6 @@
     ></filter-box3>
     <template v-if="navLoading">
       <skeletonNav></skeletonNav>
-      <skeletonNav2></skeletonNav2>
     </template>
     <template v-if="loading">
       <div style="margin-top: 30px">
