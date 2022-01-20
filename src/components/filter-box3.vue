@@ -22,7 +22,7 @@
         class="box2"
         v-if="categories[setIndex] && categories[setIndex].children.length > 0"
       >
-        <div class="label">标签：</div>
+        <div class="label">细分：</div>
         <div class="item-box">
           <div
             class="item"
@@ -96,7 +96,7 @@ export default {
         font-weight: 400;
         color: #666666;
         line-height: 14px;
-        margin-right: 30px;
+        margin-right: 15px;
         margin-top: 10px;
       }
       .item-box {
@@ -133,12 +133,12 @@ export default {
       margin-top: 10px;
       .label {
         width: 42px;
-        height: 14px;
+        height: 24px;
         font-size: 14px;
         font-weight: 400;
         color: #666666;
-        line-height: 14px;
-        margin-right: 45px;
+        line-height: 24px;
+        margin-right: 20px;
       }
       .item-box {
         width: 1053px;
@@ -147,11 +147,11 @@ export default {
         align-items: center;
         flex-direction: row;
         .item {
-          height: 14px;
+          padding: 4px 9px;
           display: flex;
           justify-content: center;
           align-items: center;
-          margin-right: 50px;
+          margin-right: 30px;
           font-size: 14px;
           font-weight: 400;
           color: #333333;
@@ -160,6 +160,8 @@ export default {
           margin-bottom: 10px;
           &.active {
             color: #3ca7fa;
+            border-radius: 13px;
+            border: 1px solid #3ca7fa;
           }
         }
       }
