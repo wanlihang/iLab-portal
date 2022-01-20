@@ -82,7 +82,7 @@ export default {
     width: 1200px;
     height: auto;
     margin: 0 auto;
-    padding: 15px 30px 5px 0px;
+    padding: 15px 30px 10px 0px;
     box-sizing: border-box;
     .box {
       width: 100%;
@@ -130,7 +130,7 @@ export default {
       height: auto;
       display: flex;
       flex-direction: row;
-      margin-top: 10px;
+      margin-top: 25px;
       .label {
         width: 42px;
         height: 24px;
