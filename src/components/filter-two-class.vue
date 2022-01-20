@@ -24,6 +24,9 @@
       >
         <div class="label">细分：</div>
         <div class="item-box">
+          <div class="item" :class="{ active: id2 === 0 }" @click="setCid2(0)">
+            全部
+          </div>
           <div
             class="item"
             :class="{ active: id2 === item2.id }"
