@@ -1,12 +1,12 @@
 <template>
   <div class="content">
-    <filter-box3
+    <filter-two-class
       v-show="!navLoading"
       :categories="categories"
       :cid1="pagination.category_id"
       :cid2="pagination.category_id"
       @change="filterChange3"
-    ></filter-box3>
+    ></filter-two-class>
     <template v-if="navLoading">
       <skeletonNav></skeletonNav>
     </template>
@@ -48,7 +48,7 @@ import None from "../../components/none.vue";
 import PageBox from "../../components/page.vue";
 import LearnPathItem from "../../components/learn-path-item.vue";
 import NavFooter from "../../components/footer.vue";
-import FilterBox3 from "../../components/filter-box3.vue";
+import FilterTwoClass from "../../components/filter-two-class.vue";
 import SkeletonCourseList from "../../components/skeleton/skeletonCourseList.vue";
 import SkeletonNav from "../../components/skeleton/skeletonNav.vue";
 
@@ -59,7 +59,7 @@ export default {
     LearnPathItem,
     None,
     SkeletonCourseList,
-    FilterBox3,
+    FilterTwoClass,
     SkeletonNav,
   },
   data() {
