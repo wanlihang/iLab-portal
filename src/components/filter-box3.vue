@@ -82,7 +82,7 @@ export default {
     width: 1200px;
     height: auto;
     margin: 0 auto;
-    padding: 15px 30px 10px 0px;
+    padding: 15px 30px 5px 0px;
     box-sizing: border-box;
     .box {
       width: 100%;
@@ -146,6 +146,7 @@ export default {
         flex-wrap: wrap;
         align-items: center;
         flex-direction: row;
+        margin-bottom: 5px;
         .item {
           padding: 4px 9px;
           display: flex;
@@ -156,6 +157,7 @@ export default {
           font-weight: 400;
           color: #333333;
           line-height: 14px;
+          border: 1px solid #fff;
           cursor: pointer;
           margin-bottom: 10px;
           &.active {
