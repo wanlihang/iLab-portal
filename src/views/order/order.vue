@@ -379,6 +379,7 @@ export default {
               payment: this.payment,
               type: this.goods.type,
               id: this.goods.id,
+              course_id: this.$route.query.course_id,
             },
           });
         } else {

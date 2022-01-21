@@ -216,6 +216,7 @@ export default {
           goods_id: this.goods.id,
           goods_thumb: this.goods.goods_thumb,
           tg_gid: gid,
+          course_id: this.goods.id,
         },
       });
     },
