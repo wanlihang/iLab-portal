@@ -389,7 +389,6 @@ export default {
               .countdown {
                 display: flex;
                 flex-direction: row;
-                width: 240px;
                 height: 14px;
                 font-size: 14px;
                 font-weight: 400;
