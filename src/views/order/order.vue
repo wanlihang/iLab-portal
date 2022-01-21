@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="tit">支付方式</div>
-      <div class="credit2-box">
+      <div class="credit2-box" v-if="payments">
         <div
           class="payment-item"
           @click="setPayment(item.sign)"
@@ -79,20 +79,7 @@ export default {
       },
       configTip: false,
       discount: 0,
-      payments: [
-        {
-          name: "支付宝",
-          sign: "alipay",
-        },
-        {
-          name: "微信支付",
-          sign: "wechat",
-        },
-        {
-          name: "手动打款",
-          sign: "handPay",
-        },
-      ],
+      payments: [],
       payment: "alipay",
       total: parseInt(this.$route.query.goods_charge),
       promoCode: null,
@@ -173,6 +160,14 @@ export default {
       } else if (this.goods_type === "paper") {
         this.hasThumb = false;
       }
+      this.params();
+    },
+    params() {
+      this.$api.Order.Payments({
+        scene: "pc",
+      }).then((res) => {
+        this.payments = res.data;
+      });
     },
     payHandler() {
       if (!this.payment) {
