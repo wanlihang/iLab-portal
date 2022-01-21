@@ -91,7 +91,7 @@
                     <div class="text">还差{{ item.over_people_num }}人</div>
                   </div>
                   <div class="countdown">
-                    距拼团有效期结束剩余
+                    距离结束
                     <count-down :timestamp="item.count_down"></count-down>
                   </div>
                   <div class="join-button" @click="goPay(item.id)">
@@ -387,6 +387,7 @@ export default {
                 line-height: 14px;
               }
               .countdown {
+                width: 300px;
                 display: flex;
                 flex-direction: row;
                 height: 14px;
