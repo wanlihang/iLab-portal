@@ -69,6 +69,7 @@ export default {
       text: null,
       goods_type: this.$route.query.type,
       id: this.$route.query.id,
+      course_id: this.$route.query.course_id,
     };
   },
   computed: {
@@ -192,14 +193,14 @@ export default {
         this.$router.push({
           name: "tgDetail",
           query: {
-            id: this.id,
+            id: this.course_id,
           },
         });
       } else if (this.goods_type === "ms") {
         this.$router.push({
           name: "msDetail",
           query: {
-            id: this.id,
+            id: this.course_id,
           },
         });
       } else if (this.goods_type === "paper") {

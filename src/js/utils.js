@@ -13,6 +13,39 @@ export default {
   clearToken() {
     window.localStorage.removeItem(TOKEN_NAME);
   },
+  removeTokenParams(url) {
+    let parseUrl = new URL(url);
+    let hash = parseUrl.hash;
+    let querystring = hash.split("?");
+    if (querystring.length <= 1) {
+      return url;
+    }
+
+    let params = querystring[1].split("&");
+    if (params.length === 0) {
+      return url;
+    }
+
+    let data = [];
+    for (let i = 0; i < params.length; i++) {
+      if (params[i].indexOf("token=") === -1) {
+        data.push(params[i]);
+      }
+    }
+
+    let newUrl =
+      parseUrl.protocol +
+      "//" +
+      parseUrl.host +
+      parseUrl.pathname +
+      querystring[0];
+
+    if (data.length > 0) {
+      newUrl += "?" + data.join("&");
+    }
+
+    return newUrl;
+  },
   saveMsv(msv) {
     window.localStorage.setItem(MSV_NAME, msv);
   },
@@ -33,7 +66,7 @@ export default {
 
     return host;
   },
-  isPoneAvailable: function(pone) {
+  isPoneAvailable: function (pone) {
     var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
     if (!myreg.test(pone)) {
       return false;
@@ -78,7 +111,7 @@ export default {
   },
   copyright() {
     let outs = [];
-    let fi = function() {
+    let fi = function () {
       return {
         msg: "",
         style: "",
@@ -95,7 +128,7 @@ export default {
     oi.msg = `\r\n官网：\nhttps://meedu.vip\r\n\r\nGitHub：\nhttps://github.com/qsnh/meedu\r\n\r\n使用手册：\nhttps://www.yuque.com/meedu/fvvkbf\r\n\r\n当前版本：${config.version}\r\n`;
     outs.push(oi);
 
-    outs.map(function(x) {
+    outs.map(function (x) {
       console.log("%c" + x.msg, x.style);
     });
   },

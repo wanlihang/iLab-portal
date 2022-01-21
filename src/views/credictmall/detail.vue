@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="book-desc" v-if="goods">
-          <div v-html="goods.free_content_render"></div>
+          <div class="new-content" v-html="goods.free_content_render"></div>
         </div>
       </template>
     </div>

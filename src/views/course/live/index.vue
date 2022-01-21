@@ -24,7 +24,13 @@
           @click="goLiveDetail(course)"
         >
           <div class="live-course-thumb">
-            <img :src="course.thumb" />
+            <div class="thumb-bar">
+              <thumb-bar
+                :value="course.thumb"
+                :width="264"
+                :height="198"
+              ></thumb-bar>
+            </div>
           </div>
           <div class="live-course-body">
             <div class="live-course-title">
@@ -153,7 +159,7 @@ export default {
       &:hover {
         box-shadow: 0px 4px 8px 0px rgba(102, 102, 102, 0.1);
         .live-course-thumb {
-          img {
+          .thumb-bar {
             transform: scale(1.1, 1.1);
           }
         }
@@ -163,18 +169,17 @@ export default {
         height: 198px;
         border-radius: 8px 8px 0px 0px;
         overflow: hidden;
-        img {
+        .thumb-bar {
           width: 100%;
           height: 100%;
-          border-radius: 8px 8px 0px 0px;
-          transition: all 0.5s;
+          transition: all 0.3s;
         }
       }
 
       .live-course-body {
         box-sizing: border-box;
         width: 100%;
-        height: 75px;
+        height: auto;
         background-color: #fff;
         border-radius: 0px 0px 8px 8px;
         padding: 15px 15px 15px 10px;
@@ -190,7 +195,7 @@ export default {
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
-          margin-bottom: 9px;
+          margin-bottom: 20px;
         }
 
         .live-course-info {

@@ -91,7 +91,7 @@
                     <div class="text">还差{{ item.over_people_num }}人</div>
                   </div>
                   <div class="countdown">
-                    距拼团有效期结束剩余
+                    距离结束
                     <count-down :timestamp="item.count_down"></count-down>
                   </div>
                   <div class="join-button" @click="goPay(item.id)">
@@ -103,7 +103,7 @@
           </div>
         </div>
         <div class="book-desc" v-if="goods">
-          <div v-html="goods.desc"></div>
+          <div class="new-content" v-html="goods.desc"></div>
         </div>
       </template>
     </div>
@@ -216,6 +216,7 @@ export default {
           goods_id: this.goods.id,
           goods_thumb: this.goods.goods_thumb,
           tg_gid: gid,
+          course_id: this.goods.id,
         },
       });
     },
@@ -387,9 +388,9 @@ export default {
                 line-height: 14px;
               }
               .countdown {
+                width: 300px;
                 display: flex;
                 flex-direction: row;
-                width: 240px;
                 height: 14px;
                 font-size: 14px;
                 font-weight: 400;

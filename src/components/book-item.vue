@@ -1,7 +1,9 @@
 <template>
   <div class="book-item-comp" @click="goDetail">
     <div class="book-thumb">
-      <img :src="thumb" />
+      <div class="thumb-bar">
+        <thumb-bar :value="thumb" :width="120" :height="160"></thumb-bar>
+      </div>
     </div>
     <div class="book-body">
       <div class="book-info">
@@ -63,7 +65,7 @@ export default {
   &:hover {
     box-shadow: 0px 4px 8px 0px rgba(102, 102, 102, 0.1);
     .book-thumb {
-      img {
+      .thumb-bar {
         transform: scale(1.1, 1.1);
       }
     }
@@ -75,10 +77,9 @@ export default {
     overflow: hidden;
     border-radius: 8px;
     margin-right: 20px;
-    img {
-      width: 120px;
-      height: 160px;
-      border-radius: 8px;
+    .thumb-bar {
+      width: 100%;
+      height: 100%;
       transition: all 0.3s;
     }
   }

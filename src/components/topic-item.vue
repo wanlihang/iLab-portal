@@ -1,7 +1,9 @@
 <template>
   <div class="topic-item-comp" @click="goDetail">
     <div class="topic-thumb">
-      <img :src="thumb" />
+      <div class="thumb-bar">
+        <thumb-bar :value="thumb" :width="133" :height="100"></thumb-bar>
+      </div>
     </div>
     <div class="topic-body">
       <div class="topic-title">{{ title }}</div>
@@ -57,7 +59,7 @@ export default {
   &:hover {
     box-shadow: 0px 4px 8px 0px rgba(102, 102, 102, 0.1);
     .topic-thumb {
-      img {
+      .thumb-bar {
         transform: scale(1.1, 1.1);
       }
     }
@@ -117,11 +119,10 @@ export default {
     border-radius: 8px;
     overflow: hidden;
     margin-right: 20px;
-    img {
-      width: 133px;
-      height: 100px;
-      border-radius: 8px;
-      transition: all 0.4s;
+    .thumb-bar {
+      width: 100%;
+      height: 100%;
+      transition: all 0.3s;
     }
   }
 }

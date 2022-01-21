@@ -1,14 +1,8 @@
 <template>
   <div class="skeleton">
-    <div class="item">
-      <div class="text"></div>
-    </div>
-    <div class="item">
-      <div class="text"></div>
-    </div>
-    <div class="item">
-      <div class="text"></div>
-    </div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item"></div>
   </div>
 </template>
 <style lang="less" scoped>
@@ -28,18 +22,16 @@
   flex-direction: column;
   .item {
     width: 1200px;
-    height: 86px;
+    margin-top: 30px;
+    height: 116px;
+    border-radius: 8px;
     display: flex;
     box-sizing: border-box;
     margin-bottom: 10px;
     align-items: center;
-    .text {
-      width: 100%;
-      height: 40px;
-      background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
-      background-size: 400% 100%;
-      animation: el-skeleton-loading 1.4s ease infinite;
-    }
+    background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+    background-size: 400% 100%;
+    animation: el-skeleton-loading 1.4s ease infinite;
   }
 }
 </style>

@@ -77,27 +77,29 @@
                   <div class="ms-time">库存剩余{{ ms.over_num }}件</div>
                 </div>
               </div>
-              <div class="isOver" v-if="ms.is_over">已售罄</div>
-              <div
-                class="buy-button"
-                v-if="!order && !ms.is_over"
-                @click="goOrder()"
-              >
-                立即抢购￥{{ ms.charge }}
-              </div>
+              <div class="btn-box">
+                <div class="isOver" v-if="ms.is_over">已售罄</div>
+                <div
+                  class="buy-button"
+                  v-if="!order && !ms.is_over"
+                  @click="goOrder()"
+                >
+                  立即抢购￥{{ ms.charge }}
+                </div>
 
-              <div
-                class="unpaid"
-                @click="goPay(order.id)"
-                v-if="order && order.status === 0"
-              >
-                已获得资格，请尽快支付
+                <div
+                  class="unpaid"
+                  @click="goPay(order.id)"
+                  v-if="order && order.status === 0"
+                >
+                  已获得资格，请尽快支付
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div class="book-desc" v-if="ms" v-show="currentTab === 2">
-          <div v-html="ms.desc"></div>
+          <div class="new-content" v-html="ms.desc"></div>
         </div>
       </template>
     </div>
@@ -214,6 +216,7 @@ export default {
       this.$router.push({
         name: "order",
         query: {
+          course_id: this.ms.id,
           goods_type: "ms",
           goods_charge: this.ms.charge,
           goods_label: "秒杀",
@@ -646,61 +649,59 @@ export default {
             line-height: 30px;
             overflow: hidden;
           }
-          .see-button {
+          .btn-box {
             position: absolute;
-            background: #3ca7fa;
-            border-radius: 4px;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
             bottom: 0;
             left: 0;
-            cursor: pointer;
-          }
-          .isOver {
-            position: absolute;
-            background: #999999;
-            border-radius: 4px;
-            padding: 20px 55px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
-            bottom: 0;
-            left: 0;
-            cursor: pointer;
-          }
-          .buy-button {
-            position: absolute;
-            background: #ff5068;
-            border-radius: 4px;
-            padding: 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
-            bottom: 0;
-            left: 0;
-            cursor: pointer;
-          }
-          .unpaid {
-            position: absolute;
-            background: #ff5068;
-            border-radius: 4px;
-            padding: 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
-            bottom: 0;
-            left: 100px;
-            cursor: pointer;
+            width: 100%;
+            height: auto;
+            float: left;
+            display: flex;
+            flex-direction: row;
+            .see-button {
+              background: #3ca7fa;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
+            }
+            .isOver {
+              background: #999999;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
+            }
+            .buy-button {
+              background: #ff5068;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
+            }
+            .unpaid {
+              background: #ff5068;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
+            }
           }
         }
       }

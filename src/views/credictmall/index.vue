@@ -23,7 +23,11 @@
               @click="goDetail(item.id)"
             >
               <div class="thumb">
-                <img :src="item.thumb" />
+                <thumb-bar
+                  :value="item.thumb"
+                  :width="216"
+                  :height="162"
+                ></thumb-bar>
                 <div class="status">发实物</div>
               </div>
               <div class="body">
@@ -80,7 +84,13 @@
                   @click="goDetail(hisItem.id)"
                 >
                   <div class="thumb">
-                    <img :src="hisItem.thumb" />
+                    <div class="thumb-bar">
+                      <thumb-bar
+                        :value="hisItem.thumb"
+                        :width="107"
+                        :height="80"
+                      ></thumb-bar>
+                    </div>
                   </div>
                   <div class="body">
                     <div class="name">{{ hisItem.title }}</div>
@@ -269,7 +279,7 @@ export default {
           background: #fff;
           &:hover {
             .thumb {
-              img {
+              .thumb-bar {
                 transform: scale(1.1, 1.1);
               }
             }
@@ -295,10 +305,10 @@ export default {
               bottom: 10px;
               right: 10px;
             }
-            img {
-              width: auto;
-              height: 162px;
-              transition: all 0.5s;
+            .thumb-bar {
+              width: 100%;
+              height: 100%;
+              transition: all 0.3s;
             }
           }
 
@@ -414,7 +424,7 @@ export default {
             }
             &:hover {
               .thumb {
-                img {
+                .thumb-bar {
                   transform: scale(1.1, 1.1);
                 }
               }
@@ -428,11 +438,10 @@ export default {
               background: #f4fafe;
               display: flex;
               justify-content: center;
-              img {
-                width: auto;
-                height: 80px;
-                border-radius: 4px;
-                transition: all 0.5s;
+              .thumb-bar {
+                width: 100%;
+                height: 100%;
+                transition: all 0.3s;
               }
             }
             .body {

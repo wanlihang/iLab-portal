@@ -1,12 +1,12 @@
 <template>
   <div class="content">
-    <filter-box3
+    <filter-two-class
       v-show="!navLoading"
       :categories="categories"
       :cid1="pagination.cid1"
       :cid2="pagination.cid2"
       @change="filterChange3"
-    ></filter-box3>
+    ></filter-two-class>
     <filter-box
       v-show="!navLoading"
       :categories1="scenes"
@@ -52,7 +52,7 @@
 import None from "../../../components/none.vue";
 import K12CourseItem from "../../../components/k12-course-item.vue";
 import FilterBox from "../../../components/filter-box.vue";
-import FilterBox3 from "../../../components/filter-box3.vue";
+import FilterTwoClass from "../../../components/filter-two-class.vue";
 import PageBox from "../../../components/page.vue";
 import NavFooter from "../../../components/footer.vue";
 import SkeletonCourseList from "../../../components/skeleton/skeletonCourseList.vue";
@@ -63,7 +63,7 @@ export default {
   components: {
     K12CourseItem,
     FilterBox,
-    FilterBox3,
+    FilterTwoClass,
     PageBox,
     NavFooter,
     None,

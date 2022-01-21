@@ -84,6 +84,23 @@ const Api = {
       return post(`/addons/DaySignIn/api/v1/signIn`, params);
     },
   },
+  CreditMall: {
+    List(params) {
+      return get(`/addons/Credit1Mall/api/v1/goods`, params);
+    },
+    Detail(id) {
+      return get(`/addons/Credit1Mall/api/v1/goods/${id}`);
+    },
+    Exchange(id, params) {
+      return post(`/addons/Credit1Mall/api/v1/goods/${id}/exchange`, params);
+    },
+    Address() {
+      return get(`/addons/Credit1Mall/api/v1/user/address`);
+    },
+    Orders(params) {
+      return get(`/addons/Credit1Mall/api/v1/user/orders`, params);
+    },
+  },
   User: {
     Detail() {
       return get(`/api/v2/member/detail`);
@@ -640,6 +657,9 @@ const Api = {
     List(params) {
       return get("/addons/LearnPaths/api/v1/all", params);
     },
+    Create(params) {
+      return get("/addons/LearnPaths/api/v1/categories", params);
+    },
     Detail(id) {
       return get("/addons/LearnPaths/api/v1/path/" + id);
     },
@@ -677,6 +697,12 @@ const Api = {
     Vote(id, params) {
       return post("/addons/MeeduTopics/api/v1/topic/" + id + "/vote", params);
     },
+    Collect(id, params) {
+      return post(
+        "/addons/MeeduTopics/api/v1/topic/" + id + "/collect",
+        params
+      );
+    },
     CreateOrder(id, params) {
       return post("/addons/MeeduTopics/api/v1/topic/" + id + "/buy", params);
     },
@@ -694,6 +720,9 @@ const Api = {
     },
     UserBuyTopics(params) {
       return get("/addons/MeeduTopics/api/v1/user/buyTopics", params);
+    },
+    LikeCourses(params) {
+      return get("/addons/MeeduTopics/api/v1/user/collect", params);
     },
   },
   TuanGou: {

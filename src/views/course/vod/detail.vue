@@ -64,28 +64,30 @@
                 />
               </div>
               <p class="desc">{{ course.short_description }}</p>
-              <template v-if="!isBuy && course.charge !== 0">
-                <div
-                  class="buy-button"
-                  v-if="course.charge > 0"
-                  @click="buyCourse()"
-                >
-                  订阅课程￥{{ course.charge }}
-                </div>
-                <div
-                  class="role-button"
-                  v-if="course.vip_can_view === 1"
-                  @click="goRole()"
-                >
-                  会员免费看
-                </div>
-              </template>
-              <template v-if="course.is_free === 1">
-                <div class="has-button">本课程免费</div>
-              </template>
-              <template v-if="course.is_free !== 1 && isBuy">
-                <div class="has-button">课程已购买</div>
-              </template>
+              <div class="btn-box">
+                <template v-if="!isBuy && course.charge !== 0">
+                  <div
+                    class="buy-button"
+                    v-if="course.charge > 0"
+                    @click="buyCourse()"
+                  >
+                    订阅课程￥{{ course.charge }}
+                  </div>
+                  <div
+                    class="role-button"
+                    v-if="course.vip_can_view === 1"
+                    @click="goRole()"
+                  >
+                    会员免费看
+                  </div>
+                </template>
+                <template v-if="course.is_free === 1">
+                  <div class="has-button">本课程免费</div>
+                </template>
+                <template v-if="course.is_free !== 1 && isBuy">
+                  <div class="has-button">课程已购买</div>
+                </template>
+              </div>
             </div>
           </div>
           <div class="tabs" id="NavBar">
@@ -103,7 +105,7 @@
           </div>
         </div>
         <div class="coursr-desc" v-if="course" v-show="currentTab === 2">
-          <div v-html="course.render_desc"></div>
+          <div class="new-content" v-html="course.render_desc"></div>
         </div>
         <div class="course-chapter-box" v-show="currentTab === 3">
           <template v-if="chapters.length > 0">
@@ -139,7 +141,11 @@
                     <span class="text">{{ video.title }}</span>
                     <span
                       class="free"
-                      v-if="course.is_free !== 1 && video.free_seconds > 0"
+                      v-if="
+                        showTry &&
+                        course.is_free !== 1 &&
+                        (video.free_seconds > 0 || video.charge === 0)
+                      "
                       >试看</span
                     >
                   </div>
@@ -178,7 +184,11 @@
                 <span class="text">{{ video.title }}</span>
                 <span
                   class="free"
-                  v-if="course.is_free !== 1 && video.free_seconds > 0"
+                  v-if="
+                    showTry &&
+                    course.is_free !== 1 &&
+                    (video.free_seconds > 0 || video.charge === 0)
+                  "
                   >试看</span
                 >
               </div>
@@ -324,6 +334,7 @@ export default {
         content: "",
       },
       isfixTab: false,
+      showTry: false,
     };
   },
   computed: {
@@ -499,6 +510,7 @@ export default {
           this.attach = res.data.attach;
           this.chapters = res.data.chapters;
           this.isBuy = res.data.isBuy;
+          this.showTry = !this.isBuy;
           document.title = res.data.course.title;
           this.isCollect = res.data.isCollect;
           this.videoWatchedProgress = res.data.videoWatchedProgress;
@@ -564,7 +576,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .fix-nav {
@@ -711,52 +723,54 @@ export default {
             line-height: 30px;
             overflow: hidden;
           }
-          .has-button {
+          .btn-box {
             position: absolute;
-            background: #f4fafe;
-            border-radius: 4px;
-            padding: 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #999999;
-            line-height: 16px;
-            box-sizing: border-box;
             bottom: 0;
             left: 0;
-            cursor: pointer;
-          }
-          .buy-button {
-            position: absolute;
-            background: #ff5068;
-            border-radius: 4px;
-            padding: 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
-            bottom: 0;
-            left: 0;
-            cursor: pointer;
-            &:hover {
-              opacity: 0.8;
+            width: 100%;
+            height: auto;
+            float: left;
+            display: flex;
+            flex-direction: row;
+            .has-button {
+              background: #f4fafe;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #999999;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
             }
-          }
-          .role-button {
-            position: absolute;
-            background: #e1a500;
-            border-radius: 4px;
-            padding: 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
-            bottom: 0;
-            left: 176px;
-            cursor: pointer;
-            &:hover {
-              opacity: 0.8;
+            .buy-button {
+              background: #ff5068;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+            .role-button {
+              background: #e1a500;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              margin-left: 20px;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
             }
           }
         }

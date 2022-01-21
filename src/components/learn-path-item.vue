@@ -1,7 +1,9 @@
 <template>
   <div class="learnPath-item-comp" @click="goDetail">
     <div class="learnPath-thumb">
-      <img :src="thumb" />
+      <div class="thumb-bar">
+        <thumb-bar :value="thumb" :width="264" :height="198"></thumb-bar>
+      </div>
     </div>
     <div class="learnPath-body">
       <div class="learnPath-title">{{ name }}</div>
@@ -54,7 +56,7 @@ export default {
   &:hover {
     box-shadow: 0px 4px 8px 0px rgba(102, 102, 102, 0.1);
     .learnPath-thumb {
-      img {
+      .thumb-bar {
         transform: scale(1.1, 1.1);
       }
     }
@@ -64,16 +66,15 @@ export default {
     height: 198px;
     border-radius: 8px 8px 0px 0px;
     overflow: hidden;
-    img {
+    .thumb-bar {
       width: 100%;
-      height: 198px;
-      border-radius: 8px 8px 0px 0px;
-      transition: all 0.5s;
+      height: 100%;
+      transition: all 0.3s;
     }
   }
   .learnPath-body {
     width: 100%;
-    height: 75px;
+    height: auto;
     background: #ffffff;
     border-radius: 0px 0px 8px 8px;
     box-sizing: border-box;
@@ -88,7 +89,7 @@ export default {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      margin-bottom: 9px;
+      margin-bottom: 20px;
     }
     .learnPath-count {
       width: 100%;
@@ -117,6 +118,7 @@ export default {
       .green-free {
         height: 20px;
         font-size: 14px;
+        font-weight: 600;
         color: #04c877;
         line-height: 20px;
       }

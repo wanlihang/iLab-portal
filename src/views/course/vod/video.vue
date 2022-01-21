@@ -178,7 +178,9 @@
                       <div
                         class="free"
                         v-if="
-                          course.is_free !== 1 && videoItem.free_seconds > 0
+                          showTry &&
+                          course.is_free !== 1 &&
+                          (videoItem.charge === 0 || videoItem.free_seconds > 0)
                         "
                       >
                         试看
@@ -259,7 +261,11 @@
                   </div>
                   <div
                     class="free"
-                    v-if="course.is_free !== 1 && video.free_seconds > 0"
+                    v-if="
+                      showTry &&
+                      course.is_free !== 1 &&
+                      (video.charge === 0 || video.free_seconds > 0)
+                    "
                   >
                     试看
                   </div>
@@ -425,6 +431,7 @@ export default {
       },
       isIframe: false,
       isBuy: false,
+      showTry: false,
     };
   },
   watch: {
@@ -474,7 +481,7 @@ export default {
         this.goLogin();
         return;
       }
-      if (this.isWatch || item.charge === 0 || item.free_seconds > 0) {
+      if (this.isBuy || item.charge === 0 || item.free_seconds > 0) {
         this.$router.push({
           name: "coursesVideo",
           query: {
@@ -575,13 +582,14 @@ export default {
       this.$api.Course.Detail(this.course.id).then((res) => {
         this.attach = res.data.attach;
         this.isBuy = res.data.isBuy;
+        this.showTry = !this.isBuy;
       });
     },
     showLink() {
       this.showtip = true;
       setTimeout(() => {
         this.showtip = false;
-      }, 15000);
+      }, 5000);
     },
     toWatch(sec) {
       this.showtip = false;
@@ -640,8 +648,15 @@ export default {
         if (this.isWatch || this.video.free_seconds > 0) {
           this.getPlayInfo();
         }
+
         //获取附件
         this.getAttach();
+
+        //赋值购买视频信息
+        this.dialog.videoCharge = this.video.charge;
+        this.dialog.configText = this.video.title;
+        this.dialog.id = this.video.id;
+
         //播放记录跳转
         if (
           this.video_watched_progress &&
@@ -796,7 +811,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .fix-nav {

@@ -6,7 +6,8 @@
           @click="$router.back()"
           class="icon-back"
           src="../../../assets/img/commen/icon-back-h.png"
-        />直播间
+        />
+        <span @click="$router.back()">{{ video.title }}</span>
       </div>
     </div>
     <div class="live-banner">
@@ -22,7 +23,13 @@
               <span v-else-if="video.status === 2">已结束</span>
             </span>
           </div>
-          <div class="live-item-video">
+          <div
+            class="live-item-video"
+            :style="{
+              'background-image': 'url(' + course.poster + ')',
+              'background-size': '100% 100%',
+            }"
+          >
             <div class="play" v-if="video.status === 1">
               <div
                 id="meedu-live-player"
@@ -99,11 +106,19 @@
     ></remote-script>
 
     <template v-if="video.status === 1">
-      <remote-script src="/js/xg/index.js"></remote-script>
-      <remote-script
-        src="/js/xg/hls.min.js"
-        @load="initLivePlayer"
-      ></remote-script>
+      <template v-if="webrtc_play_url">
+        <remote-script
+          src="https://web.sdk.qcloud.com/player/tcplayerlite/release/v2.4.1/TcPlayer-2.4.1.js"
+          @load="initLiveTencentPlayer"
+        ></remote-script>
+      </template>
+      <template v-else>
+        <remote-script src="/js/xg/index.js"></remote-script>
+        <remote-script
+          src="/js/xg/hls.min.js"
+          @load="initLivePlayer"
+        ></remote-script>
+      </template>
     </template>
   </div>
 </template>
@@ -115,6 +130,7 @@ export default {
     return {
       id: this.$route.query.id,
       playUrl: null,
+      webrtc_play_url: null,
       message: {
         content: null,
       },
@@ -127,7 +143,6 @@ export default {
       second: "00",
       livePlayer: null,
       vodPlayer: null,
-      recordInterval: null,
       chatRecords: [],
       chatChannel: null,
       chatUser: null,
@@ -141,9 +156,11 @@ export default {
           avatar: null,
         },
       },
+      isWebrtc: false,
       vodPlayerStatus: false,
       record_exists: 0,
       record_duration: 0,
+      timeValue: 0,
     };
   },
   computed: {
@@ -187,9 +204,6 @@ export default {
     if (window.ROP) {
       window.ROP.Leave();
     }
-    if (this.recordInterval) {
-      window.clearInterval(this.recordInterval);
-    }
   },
   methods: {
     getData() {
@@ -221,6 +235,7 @@ export default {
           this.playUrl = resData.play_url;
           this.record_exists = resData.record_exists;
           this.record_duration = resData.record_duration;
+          this.webrtc_play_url = resData.web_rtc_play_url;
 
           // 聊天记录
           this.getChatRecords();
@@ -289,10 +304,29 @@ export default {
         closeVideoTouch: true,
         closeVideoClick: true,
       });
-
-      this.recordInterval = setInterval(() => {
-        this.playRecord();
-      }, 10000);
+      this.livePlayer.on("timeupdate", () => {
+        this.playRecord(parseInt(this.livePlayer.currentTime));
+      });
+      this.livePlayer.on("ended", () => {
+        this.playRecord(parseInt(this.livePlayer.currentTime), true);
+      });
+    },
+    initLiveTencentPlayer() {
+      const that = this;
+      this.livePlayer = new window.TcPlayer("meedu-live-player", {
+        m3u8: this.webrtc_play_url,
+        autoplay: true,
+        poster: this.course.poster || this.config.player.cover,
+        width: 950,
+        height: 535,
+        listener: function (msg) {
+          if (msg.type == "timeupdate") {
+            that.playRecord(parseInt(msg.timeStamp / 1000));
+          } else if (msg.type == "ended") {
+            that.playRecord(parseInt(msg.timeStamp / 1000), true);
+          }
+        },
+      });
     },
     initADY() {
       let pubKey = this.ADYParams.pub_key;
@@ -399,9 +433,20 @@ export default {
           color: "red",
         },
       });
+      this.vodPlayer.on("timeupdate", () => {
+        this.playRecord(parseInt(this.vodPlayer.video.currentTime));
+      });
+      this.vodPlayer.on("ended", () => {
+        this.playRecord(parseInt(this.vodPlayer.video.currentTime), true);
+      });
     },
-    playRecord() {
-      this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {});
+    playRecord(duration, isEnd) {
+      if (duration - this.timeValue >= 10 || isEnd === true) {
+        this.timeValue = duration;
+        this.$api.Live.Record(this.video.course_id, this.video.id).then(() => {
+          // todo
+        });
+      }
     },
     getChatRecords() {
       this.$api.Live.ChatRecords(this.course.id, this.video.id, {
@@ -470,6 +515,9 @@ export default {
         width: 24px;
         height: 24px;
         margin-right: 10px;
+        cursor: pointer;
+      }
+      span {
         cursor: pointer;
       }
     }

@@ -1,20 +1,5 @@
 <template>
   <div class="content">
-    <div class="fix-nav" v-show="isfixTab">
-      <div class="tabs">
-        <div
-          class="item-tab"
-          v-for="(item, index) in tabs"
-          :key="index"
-          :class="{ active: currentTab === item.id }"
-          @click="tabChange(item.id)"
-          :is-scroll="false"
-        >
-          {{ item.name }}
-          <div class="actline" v-if="currentTab === item.id"></div>
-        </div>
-      </div>
-    </div>
     <div class="box">
       <template v-if="loading">
         <skeletonDetail></skeletonDetail>
@@ -33,68 +18,88 @@
             <div class="info">
               <div class="book-info-title">{{ learn.name }}</div>
               <p class="desc" v-html="learn.desc"></p>
-
-              <template v-if="isBuy">
-                <div class="see-button">已购买</div>
-              </template>
-              <template v-else>
-                <div class="buy-button" v-if="learn.charge > 0" @click="buy()">
-                  购买套餐￥{{ learn.charge }}
-                </div>
-              </template>
-            </div>
-          </div>
-          <div class="tabs" id="NavBar">
-            <div
-              class="item-tab"
-              v-for="(item, index) in tabs"
-              :key="index"
-              :class="{ active: currentTab === item.id }"
-              @click="tabChange(item.id)"
-              :is-scroll="false"
-            >
-              {{ item.name }}
-              <div class="actline" v-if="currentTab === item.id"></div>
+              <div class="btn-box">
+                <template v-if="isBuy">
+                  <div class="see-button">已购买</div>
+                </template>
+                <template v-else>
+                  <div class="has-button" v-if="learn.charge === 0">
+                    本路径免费
+                  </div>
+                  <div
+                    class="buy-button"
+                    v-if="learn.charge > 0"
+                    @click="buy()"
+                  >
+                    购买套餐￥{{ learn.charge }}（共{{
+                      learn.courses_count
+                    }}课程）
+                  </div>
+                  <div class="original">原价:￥{{ learn.original_charge }}</div>
+                </template>
+              </div>
             </div>
           </div>
         </div>
-        <div class="book-desc" v-if="learn" v-show="currentTab === 2">
-          <div v-html="learn.desc"></div>
-        </div>
-        <div class="book-chapter-box" v-show="currentTab === 3">
+        <div class="book-chapter-box">
           <template v-if="steps.length > 0">
             <div class="steps-box">
               <div class="step-item" v-for="item in steps" :key="item.id">
-                <div class="step-title">
-                  {{ item.name }}
+                <div class="left-item">
+                  <img
+                    class="icon"
+                    src="../../assets/img/commen/icon-guidepost.png"
+                  />
+                  <div class="column"></div>
                 </div>
-                <div class="step-desc">{{ item.desc }}</div>
-                <div
-                  class="courses-box"
-                  :scroll-x="true"
-                  v-if="item.courses.length > 0"
-                >
+                <div class="right-item">
+                  <div class="step-title">
+                    {{ item.name }}
+                  </div>
+                  <div class="step-desc">{{ item.desc }}</div>
                   <div
-                    class="course-item"
-                    @click="goDetail(courseItem)"
-                    v-for="courseItem in item.courses"
-                    :key="courseItem.id"
+                    class="courses-box"
+                    :scroll-x="true"
+                    v-if="item.courses.length > 0"
                   >
-                    <div class="course-thumb">
-                      <div class="spback"></div>
-                      <img
-                        :class="{ active: courseItem.type === 'book' }"
-                        :src="courseItem.thumb"
-                      />
-                    </div>
-                    <div class="course-body">
-                      <div class="course-type">{{ courseItem.type_text }}</div>
-                      <div class="course-name">{{ courseItem.name }}</div>
-                      <div class="course-free" v-if="courseItem.charge === 0">
-                        免费
+                    <div
+                      class="course-item"
+                      @click="goDetail(courseItem)"
+                      v-for="courseItem in item.courses"
+                      :key="courseItem.id"
+                    >
+                      <div class="course-thumb">
+                        <div class="spback"></div>
+                        <div
+                          class="thumb-bar"
+                          :class="{ active: courseItem.type === 'book' }"
+                          v-if="courseItem.type === 'book'"
+                        >
+                          <thumb-bar
+                            :value="courseItem.thumb"
+                            :width="75"
+                            :height="100"
+                          ></thumb-bar>
+                        </div>
+                        <div class="thumb-bar" v-else>
+                          <thumb-bar
+                            :value="courseItem.thumb"
+                            :width="133"
+                            :height="100"
+                          ></thumb-bar>
+                        </div>
                       </div>
-                      <div class="course-charge" v-else>
-                        ￥{{ courseItem.charge }}
+                      <div class="course-body">
+                        <div class="course-name">{{ courseItem.name }}</div>
+                        <div class="course-type">
+                          {{ courseItem.type_text }}
+                        </div>
+                        <div class="course-free" v-if="courseItem.charge === 0">
+                          免费
+                        </div>
+                        <div class="course-charge" v-else>
+                          原价:￥{{ courseItem.charge }}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -123,56 +128,24 @@ export default {
       loading: false,
       id: this.$route.query.id,
       learn: [],
-      currentTab: 2,
+      currentTab: 3,
       steps: [],
-      tabs: [
-        {
-          name: "课程详情",
-          id: 2,
-        },
-        {
-          name: "套餐课程",
-          id: 3,
-        },
-      ],
-      isBuy: false,
 
-      isfixTab: false,
+      isBuy: false,
     };
   },
   computed: {
     ...mapState(["isLogin", "user"]),
   },
   mounted() {
-    window.addEventListener("scroll", this.handleTabFix, true);
     this.getDetail();
   },
-  beforeDestroy() {
-    window.removeEventListener("scroll", this.handleTabFix, true);
-  },
+  beforeDestroy() {},
   methods: {
     ...mapMutations(["showLoginDialog", "changeDialogType"]),
     goLogin() {
       this.changeDialogType(1);
       this.showLoginDialog();
-    },
-
-    handleTabFix() {
-      let scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-      let navbar = document.querySelector("#NavBar");
-      if (navbar) {
-        let offsetTop = navbar.offsetTop;
-        scrollTop > offsetTop
-          ? (this.isfixTab = true)
-          : (this.isfixTab = false);
-      }
-    },
-
-    tabChange(key) {
-      this.currentTab = key;
     },
     buy() {
       if (!this.isLogin) {
@@ -236,7 +209,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .fix-nav {
@@ -316,7 +289,7 @@ export default {
     }
     .book-info {
       width: 1200px;
-      height: 372px;
+      height: 300px;
       background: #ffffff;
       border-radius: 8px;
       .book-info-box {
@@ -376,45 +349,70 @@ export default {
           .desc {
             margin-top: 14px;
             width: 750px;
-            height: 164px;
+            height: 90px;
             font-size: 16px;
             font-weight: 400;
             color: #666666;
             line-height: 30px;
             overflow: hidden;
           }
-          .see-button {
+          .btn-box {
             position: absolute;
-            background: #3ca7fa;
-            border-radius: 4px;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
             bottom: 0;
             left: 0;
-            cursor: pointer;
-            &:hover {
-              opacity: 0.8;
+            width: 100%;
+            height: auto;
+            float: left;
+            display: flex;
+            flex-direction: row;
+            .has-button {
+              background: #f4fafe;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #999999;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
             }
-          }
-          .buy-button {
-            position: absolute;
-            background: #ff5068;
-            border-radius: 4px;
-            padding: 12px 20px;
-            font-size: 16px;
-            font-weight: 400;
-            color: #ffffff;
-            line-height: 16px;
-            box-sizing: border-box;
-            bottom: 0;
-            left: 0;
-            cursor: pointer;
-            &:hover {
-              opacity: 0.8;
+            .see-button {
+              background: #3ca7fa;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+            .buy-button {
+              background: #ff5068;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+            .original {
+              padding: 20px 0;
+              font-size: 16px;
+              font-weight: 400;
+              color: #999999;
+              line-height: 16px;
+              box-sizing: border-box;
+              text-decoration: line-through;
+              margin-left: 30px;
             }
           }
         }
@@ -475,106 +473,143 @@ export default {
         .step-item {
           width: 100%;
           height: auto;
+          display: flex;
+          flex-direction: row;
           &:not(:last-child) {
             margin-bottom: 50px;
           }
-          .step-title {
-            width: 100%;
-            height: 20px;
-            font-size: 20px;
-            font-weight: 600;
-            color: #333333;
-            line-height: 20px;
-            margin-bottom: 15px;
-          }
-          .step-desc {
-            width: 100%;
+          .left-item {
+            width: 20px;
             height: auto;
-            font-size: 16px;
-            font-weight: 400;
-            color: #333333;
-            line-height: 28px;
-            margin-bottom: 30px;
+            float: left;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .icon {
+              width: 20px;
+              height: 20px;
+            }
+            .column {
+              width: 1px;
+              height: 100%;
+              flex: 1;
+              margin-top: 10px;
+              background: #e5e5e5;
+            }
           }
-          .courses-box {
-            width: 100%;
+          .right-item {
+            width: 1090px;
             height: auto;
-            .course-item {
+            float: left;
+            margin-left: 30px;
+            .step-title {
               width: 100%;
-              height: 100px;
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              position: relative;
-              cursor: pointer;
-              &:not(:last-child) {
-                margin-bottom: 30px;
-              }
-              .course-thumb {
-                width: 133px;
+              height: 20px;
+              font-size: 20px;
+              font-weight: 600;
+              color: #9355de;
+              line-height: 20px;
+              margin-bottom: 10px;
+            }
+            .step-desc {
+              width: 100%;
+              height: auto;
+              max-height: 56px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #333333;
+              line-height: 28px;
+              overflow: hidden;
+              margin-bottom: 30px;
+            }
+            .courses-box {
+              width: 100%;
+              height: auto;
+              .course-item {
+                width: 100%;
                 height: 100px;
-                background: #f0f0f8;
-                border-radius: 4px;
-                margin-right: 30px;
                 display: flex;
-                justify-content: center;
-                .spback {
-                  position: absolute;
-                  left: 20px;
-                  top: 10px;
-                  width: 93px;
-                  height: 80px;
-                  background: #d2e1ef;
-                  border-radius: 8px;
+                flex-direction: row;
+                align-items: center;
+                position: relative;
+                cursor: pointer;
+                &:not(:last-child) {
+                  margin-bottom: 30px;
                 }
-                img {
+                .course-thumb {
                   width: 133px;
                   height: 100px;
-                  z-index: 10;
+                  background: #f0f0f8;
                   border-radius: 4px;
-                  &.active {
+                  margin-right: 30px;
+                  display: flex;
+                  justify-content: center;
+                  overflow: hidden;
+                  .spback {
+                    position: absolute;
+                    left: 20px;
+                    top: 10px;
+                    width: 93px;
+                    height: 80px;
+                    background: #d2e1ef;
+                    border-radius: 8px;
+                  }
+                  .thumb-bar {
+                    width: 100%;
+                    height: 100%;
+                    z-index: 10;
+                    border-radius: 4px;
+                    overflow: hidden;
+                  }
+                  .active {
                     width: 75px;
                   }
                 }
-              }
-              .course-body {
-                height: 100px;
-                display: flex;
-                flex-direction: column;
-                .course-type {
-                  width: 56px;
-                  height: 22px;
-                  background: #04c877;
-                  border-radius: 2px;
+                .course-body {
+                  width: 927px;
+                  height: 100px;
                   display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  font-size: 12px;
-                  font-weight: 400;
-                  color: #ffffff;
-                  margin-bottom: 20px;
-                }
-                .course-name {
-                  height: 14px;
-                  font-size: 14px;
-                  font-weight: 600;
-                  color: #333333;
-                  line-height: 14px;
-                  margin-bottom: 20px;
-                }
-                .course-charge {
-                  height: 14px;
-                  font-size: 14px;
-                  font-weight: 500;
-                  color: #ff5068;
-                  line-height: 14px;
-                }
-                .course-free {
-                  height: 14px;
-                  font-size: 14px;
-                  font-weight: 500;
-                  color: #04c877;
-                  line-height: 14px;
+                  flex-direction: column;
+                  .course-type {
+                    width: 56px;
+                    height: 22px;
+                    background: #04c877;
+                    border-radius: 2px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 12px;
+                    font-weight: 400;
+                    color: #ffffff;
+                    margin-bottom: 18px;
+                  }
+                  .course-name {
+                    width: 100%;
+                    height: 14px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: #333333;
+                    line-height: 14px;
+                    margin-top: 10px;
+                    margin-bottom: 15px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                  }
+                  .course-charge {
+                    height: 14px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #999999;
+                    line-height: 14px;
+                  }
+                  .course-free {
+                    height: 14px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #04c877;
+                    line-height: 14px;
+                  }
                 }
               }
             }

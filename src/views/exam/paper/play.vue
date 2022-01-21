@@ -4,7 +4,11 @@
       <div class="popup borderbox" v-if="submitTip">
         <div class="tabs">
           <div class="item-tab">确认信息</div>
-          <img class="btn-close" @click="cancel()" src="../../../assets/img/commen/icon-close.png" />
+          <img
+            class="btn-close"
+            @click="cancel()"
+            src="../../../assets/img/commen/icon-close.png"
+          />
         </div>
         <div class="text">确认要交卷吗？</div>
         <div class="button">
@@ -19,7 +23,11 @@
       <div class="popup borderbox" v-if="readTip">
         <div class="tabs">
           <div class="item-tab">交卷提示</div>
-          <img class="btn-close" @click="cancel()" src="../../../assets/img/commen/icon-close.png" />
+          <img
+            class="btn-close"
+            @click="cancel()"
+            src="../../../assets/img/commen/icon-close.png"
+          />
         </div>
         <div class="text">此次在线考试包含主观题，等待老师阅卷后查看成绩</div>
         <div class="button">
@@ -29,9 +37,8 @@
     </div>
     <div class="navheader">
       <div class="top">
-        <div class="top-left">
+        <div class="top-left" @click="$router.back()">
           <img
-            @click="$router.back()"
             class="icon-back"
             src="../../../assets/img/commen/icon-back-h.png"
           />{{ paper.title }}
@@ -68,7 +75,7 @@
           <div class="item" :key="index">
             <!-- 单选 -->
             <question-choice
-              :num="index+1"
+              :num="index + 1"
               v-if="question.question.type === 1"
               :question="question.question"
               :reply="question.answer_content"
@@ -80,7 +87,7 @@
 
             <!-- 多选 -->
             <question-select
-              :num="index+1"
+              :num="index + 1"
               v-else-if="question.question.type === 2"
               :question="question.question"
               :reply="question.answer_content"
@@ -92,7 +99,7 @@
 
             <!-- 填空 -->
             <question-input
-              :num="index+1"
+              :num="index + 1"
               v-else-if="question.question.type === 3"
               :question="question.question"
               :reply="question.answer_content"
@@ -104,7 +111,7 @@
 
             <!-- 问答 -->
             <question-qa
-              :num="index+1"
+              :num="index + 1"
               v-else-if="question.question.type === 4"
               :question="question.question"
               :reply="question.answer_content"
@@ -118,7 +125,7 @@
 
             <!-- 判断 -->
             <question-judge
-              :num="index+1"
+              :num="index + 1"
               v-else-if="question.question.type === 5"
               :question="question.question"
               :score="question.score"
@@ -130,7 +137,7 @@
 
             <!-- 题帽题 -->
             <question-cap
-              :num="index+1"
+              :num="index + 1"
               v-else-if="question.question.type === 6"
               :question="question.question"
               :score="question.score"
@@ -147,7 +154,7 @@
     <snap-shot
       :cid="paper.id"
       resource-type="paper"
-      v-if="configFunc.snapshort&&userPaper && userPaper.status === 1"
+      v-if="configFunc.snapshort && userPaper && userPaper.status === 1"
       :duration="workTime"
     ></snap-shot>
     <nav-footer></nav-footer>
@@ -363,7 +370,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   height: 100%;
@@ -390,6 +397,7 @@ export default {
         display: flex;
         flex-direction: row;
         align-items: center;
+        cursor: pointer;
         .icon-back {
           width: 24px;
           height: 24px;
@@ -541,7 +549,7 @@ export default {
         .confirm {
           width: 88px;
           height: 44px;
-          background: #3CA7FA;
+          background: #3ca7fa;
           border-radius: 4px;
           display: flex;
           align-items: center;
