@@ -71,8 +71,8 @@ export default {
       pagination: {
         page: 1,
         page_size: 10,
-        cid1: 0,
-        cid2: 0,
+        cid1: this.$route.query.cid1 || 0,
+        cid2: this.$route.query.cid2 || 0,
       },
       userpapers: [],
       over: false,

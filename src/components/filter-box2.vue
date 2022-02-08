@@ -41,7 +41,7 @@ export default {
   props: ["categories", "cid1", "cid2"],
   data() {
     return {
-      setIndex: 0,
+      setIndex: this.$route.query.cateIndex,
       id1: 0,
       id2: 0,
     };
@@ -61,10 +61,39 @@ export default {
   methods: {
     setCid(id, index) {
       this.id1 = id;
+      this.id2 = 0;
       this.setIndex = index;
+      if (this.id1 === 0) {
+        this.$router.push({
+          path: this.$route.path,
+        });
+        return;
+      }
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          cid1: this.id1,
+          cid2: this.id2,
+          cateIndex: this.setIndex,
+        },
+      });
     },
     setCid2(id) {
       this.id2 = id;
+      if (this.id1 === 0) {
+        this.$router.push({
+          path: this.$route.path,
+        });
+        return;
+      }
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          cid1: this.id1,
+          cid2: this.id2,
+          cateIndex: this.setIndex,
+        },
+      });
     },
   },
 };

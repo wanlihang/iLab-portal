@@ -47,7 +47,7 @@ export default {
   props: ["categories", "cid", "child"],
   data() {
     return {
-      setIndex: this.$route.query.setIndex,
+      setIndex: this.$route.query.cateIndex,
       id1: 0,
       id2: 0,
     };
@@ -80,7 +80,7 @@ export default {
         query: {
           cid: this.id1,
           child: this.id2,
-          setIndex: this.setIndex,
+          cateIndex: this.setIndex,
         },
       });
     },
@@ -97,7 +97,7 @@ export default {
         query: {
           cid: this.id1,
           child: this.id2,
-          setIndex: this.setIndex,
+          cateIndex: this.setIndex,
         },
       });
     },
