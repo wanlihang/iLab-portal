@@ -86,7 +86,7 @@ export default {
       pagination: {
         page: 1,
         size: 16,
-        scene: "",
+        scene: this.$route.query.scene || "",
         category_id: this.$route.query.category_id || 0,
       },
       categories: [],
@@ -96,10 +96,31 @@ export default {
     };
   },
   watch: {
+    "pagination.scene"(val) {
+      if (val !== "") {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            category_id: this.$route.query.category_id,
+            scene: val,
+          },
+        });
+      } else {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            category_id: this.$route.query.category_id,
+          },
+        });
+      }
+    },
     "pagination.category_id"(val) {
       if (val === 0) {
         this.$router.push({
           path: this.$route.path,
+          query: {
+            scene: this.$route.query.scene,
+          },
         });
         return;
       }
@@ -107,6 +128,7 @@ export default {
         path: this.$route.path,
         query: {
           category_id: val,
+          scene: this.$route.query.scene,
         },
       });
     },
