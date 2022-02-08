@@ -163,6 +163,7 @@ export default {
           flex-direction: column;
           width: 100%;
           height: auto;
+          min-height: 162px;
           p {
             display: block;
             width: 100%;
