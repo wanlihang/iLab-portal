@@ -50,17 +50,16 @@
                 v-html="item.short_desc"
               ></li>
             </ul>
-
-            <div id="page" v-show="total > pagination.size">
-              <page-box
-                :totals="total"
-                @current-change="changepage"
-                :pageSize="pagination.size"
-                :tab="false"
-              ></page-box>
-            </div>
           </template>
           <none type="white" v-else></none>
+          <div id="page" v-show="list.length > 0 && total > pagination.size">
+            <page-box
+              :totals="total"
+              @current-change="changepage"
+              :pageSize="pagination.size"
+              :tab="false"
+            ></page-box>
+          </div>
         </div>
       </div>
     </div>
@@ -192,6 +191,8 @@ export default {
       }
       this.resetData();
       this.getData();
+      const newUrl = this.$route.path + `?keywords=${this.pagination.keywords}`;
+      window.history.replaceState("", "", newUrl);
     },
     goDetail(val, id) {
       if (val === "video") {
