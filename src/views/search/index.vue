@@ -126,11 +126,6 @@ export default {
       loading: false,
     };
   },
-  watch: {
-    $route(to, from) {
-      this.$router.go(0);
-    },
-  },
   mounted() {
     this.getData();
   },
@@ -190,9 +185,13 @@ export default {
         return;
       }
       this.resetData();
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          keywords: this.pagination.keywords,
+        },
+      });
       this.getData();
-      const newUrl = this.$route.path + `?keywords=${this.pagination.keywords}`;
-      window.history.replaceState("", "", newUrl);
     },
     goDetail(val, id) {
       if (val === "video") {
