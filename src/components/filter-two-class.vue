@@ -10,9 +10,9 @@
           <div
             class="item"
             :class="{ active: id1 === item.id }"
-            @click="setCid(item.id, index)"
-            v-for="(item, index) in categories"
-            :key="index"
+            @click="setCid(item.id)"
+            v-for="item in categories"
+            :key="item.id"
           >
             {{ item.name }}
           </div>
@@ -20,7 +20,9 @@
       </div>
       <div
         class="box2"
-        v-if="categories[setIndex] && categories[setIndex].children.length > 0"
+        v-if="
+          categories[cateIndex] && categories[cateIndex].children.length > 0
+        "
       >
         <div class="label">细分：</div>
         <div class="item-box">
@@ -31,7 +33,7 @@
             class="item"
             :class="{ active: id2 === item2.id }"
             @click="setCid2(item2.id)"
-            v-for="item2 in categories[setIndex].children"
+            v-for="item2 in categories[cateIndex].children"
             :key="item2.id"
           >
             {{ item2.name }}
@@ -47,10 +49,20 @@ export default {
   props: ["categories", "cid", "child"],
   data() {
     return {
-      setIndex: this.$route.query.cateIndex,
       id1: 0,
       id2: 0,
     };
+  },
+  computed: {
+    cateIndex() {
+      let index = null;
+      for (let i = 0; i < this.categories.length; i++) {
+        if (this.categories[i].id === this.id1) {
+          index = i;
+        }
+      }
+      return index;
+    },
   },
   mounted() {
     this.id1 = parseInt(this.cid);
@@ -65,10 +77,9 @@ export default {
     },
   },
   methods: {
-    setCid(id, index) {
+    setCid(id) {
       this.id1 = id;
       this.id2 = 0;
-      this.setIndex = index;
       if (this.id1 === 0) {
         this.$router.push({
           path: this.$route.path,
@@ -80,7 +91,6 @@ export default {
         query: {
           cid: this.id1,
           child: this.id2,
-          cateIndex: this.setIndex,
         },
       });
     },
@@ -97,7 +107,6 @@ export default {
         query: {
           cid: this.id1,
           child: this.id2,
-          cateIndex: this.setIndex,
         },
       });
     },
