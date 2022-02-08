@@ -44,17 +44,17 @@
 
 <script>
 export default {
-  props: ["categories", "cid1", "cid2"],
+  props: ["categories", "cid", "child"],
   data() {
     return {
-      setIndex: null,
+      setIndex: this.$route.query.setIndex,
       id1: 0,
       id2: 0,
     };
   },
   mounted() {
-    this.id1 = parseInt(this.cid1);
-    this.id2 = parseInt(this.cid2);
+    this.id1 = parseInt(this.cid);
+    this.id2 = parseInt(this.child);
   },
   watch: {
     id1() {
@@ -69,9 +69,37 @@ export default {
       this.id1 = id;
       this.id2 = 0;
       this.setIndex = index;
+      if (this.id1 === 0) {
+        this.$router.push({
+          path: this.$route.path,
+        });
+        return;
+      }
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          cid: this.id1,
+          child: this.id2,
+          setIndex: this.setIndex,
+        },
+      });
     },
     setCid2(id) {
       this.id2 = id;
+      if (this.id1 === 0) {
+        this.$router.push({
+          path: this.$route.path,
+        });
+        return;
+      }
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          cid: this.id1,
+          child: this.id2,
+          setIndex: this.setIndex,
+        },
+      });
     },
   },
 };

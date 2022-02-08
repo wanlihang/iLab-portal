@@ -87,13 +87,29 @@ export default {
       pagination: {
         page: 1,
         size: 16,
-        cid: 0,
+        cid: this.$route.query.category_id || 0,
       },
       categories: [],
       over: false,
       loading: false,
       navLoading: false,
     };
+  },
+  watch: {
+    "pagination.cid"(val) {
+      if (val === 0) {
+        this.$router.push({
+          path: this.$route.path,
+        });
+        return;
+      }
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          category_id: val,
+        },
+      });
+    },
   },
   mounted() {
     this.navLoading = true;
