@@ -52,13 +52,7 @@
                 v-if="isLogin"
                 @click="$router.push({ name: 'MemberMessages' })"
                 style="opacitiy: 0.8"
-                class="
-                  relative
-                  rounded
-                  mr-12
-                  text-gray-500 text-center
-                  hover:text-gray-900
-                "
+                class="relative rounded mr-12 text-gray-500 text-center hover:text-gray-900"
               >
                 <img
                   src="../assets/img/commen/icon-message.png"
@@ -102,58 +96,22 @@
                   class="absolute z-50 right-0 top-full pt-n10 children"
                 >
                   <div
-                    class="
-                      float-left
-                      shadow-xl
-                      bg-white
-                      border border-gray-100
-                      rounded
-                    "
+                    class="float-left shadow-xl bg-white border border-gray-100 rounded"
                   >
                     <a
-                      class="
-                        block
-                        w-32
-                        text-center
-                        float-left
-                        px-5
-                        py-2
-                        text-sm text-gray-800
-                        hover:text-blue-600 hover:font-medium
-                        rounded-tl rounded-tr
-                      "
+                      class="block w-32 text-center float-left px-5 py-2 text-sm text-gray-800 hover:text-blue-600 hover:font-medium rounded-tl rounded-tr"
                       @click="$router.push({ name: 'Member' })"
                     >
                       用户中心
                     </a>
                     <a
-                      class="
-                        block
-                        w-32
-                        text-center
-                        float-left
-                        px-5
-                        py-2
-                        text-sm text-gray-800
-                        hover:text-blue-600 hover:font-medium
-                        rounded-tl rounded-tr
-                      "
+                      class="block w-32 text-center float-left px-5 py-2 text-sm text-gray-800 hover:text-blue-600 hover:font-medium rounded-tl rounded-tr"
                       @click="$router.push({ name: 'MemberProfile' })"
                     >
                       我的资料
                     </a>
                     <a
-                      class="
-                        block
-                        w-32
-                        text-center
-                        float-left
-                        px-5
-                        py-2
-                        text-sm text-gray-800
-                        hover:text-blue-600 hover:font-medium
-                        rounded-bl rounded-br
-                      "
+                      class="block w-32 text-center float-left px-5 py-2 text-sm text-gray-800 hover:text-blue-600 hover:font-medium rounded-bl rounded-br"
                       @click="logoutSubmit()"
                     >
                       安全退出
@@ -181,16 +139,10 @@
                 <div
                   v-if="item.children"
                   v-show="menuCan && index === showKey"
-                  class="hidden-menu absolute z-50 left-1/2 -ml-24 pt-5"
+                  class="hidden-menu absolute z-50 left-1/2 -ml-24"
                 >
                   <div
-                    class="
-                      menu-item
-                      float-left
-                      shadow-xl
-                      bg-white
-                      border border-gray-100
-                    "
+                    class="menu-item float-left shadow-xl bg-white border border-gray-100"
                     v-for="child in item.children"
                     :key="child.id"
                   >
@@ -466,7 +418,7 @@ export default {
           border: none;
           background-color: #fff;
           width: 100%;
-          height: 40px;
+          height: 48px;
           display: flex;
           align-items: center;
           justify-content: center;
