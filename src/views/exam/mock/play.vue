@@ -23,9 +23,8 @@
     </div>
     <div class="navheader">
       <div class="top">
-        <div class="top-left">
+        <div class="top-left" @click="$router.back()">
           <img
-            @click="$router.back()"
             class="icon-back"
             src="../../../assets/img/commen/icon-back-h.png"
           />{{ paper.title }}
@@ -355,11 +354,11 @@ export default {
         display: flex;
         flex-direction: row;
         align-items: center;
+        cursor: pointer;
         .icon-back {
           width: 24px;
           height: 24px;
           margin-right: 10px;
-          cursor: pointer;
         }
       }
       .top-right {
