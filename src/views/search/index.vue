@@ -54,6 +54,7 @@
           <none type="white" v-else></none>
           <div id="page" v-show="list.length > 0 && total > pagination.size">
             <page-box
+              v-if="update"
               :totals="total"
               @current-change="changepage"
               :pageSize="pagination.size"
@@ -83,6 +84,7 @@ export default {
     return {
       list: [],
       total: null,
+      update: true,
       pagination: {
         page: 1,
         size: 10,
@@ -184,14 +186,18 @@ export default {
         this.$message.error("请输入关键字后再搜索");
         return;
       }
-      this.resetData();
       this.$router.push({
         path: this.$route.path,
         query: {
           keywords: this.pagination.keywords,
         },
       });
+      this.resetData();
       this.getData();
+      this.update = false;
+      this.$nextTick(() => {
+        this.update = true;
+      });
     },
     goDetail(val, id) {
       if (val === "video") {
