@@ -355,7 +355,7 @@ export default {
     }
     .records-nox {
       width: 100%;
-      min-height: 100px;
+      min-height: 360px;
       background: #ffffff;
       border-radius: 8px;
       display: flex;
