@@ -190,6 +190,7 @@ export default {
       },
       submitTip: false,
       readTip: false,
+      timer: null,
       workTime: 0,
       id: this.$route.query.id || 0,
       pid: this.$route.query.pid || 0,
@@ -204,6 +205,9 @@ export default {
         sec: 0,
       },
     };
+  },
+  beforeDestroy() {
+    this.timer && clearTimeout(this.timer);
   },
   computed: {
     ...mapState(["configFunc"]),
@@ -271,7 +275,7 @@ export default {
           that.finish();
           return;
         }
-        setTimeout(() => {
+        that.timer = window.setTimeout(() => {
           that.countdown();
         }, 1000);
       }
@@ -364,6 +368,7 @@ export default {
             this.readTip = true;
           }
           this.getData();
+          this.timer && clearTimeout(this.timer);
         })
         .catch((e) => {
           this.$message.error(e.message);

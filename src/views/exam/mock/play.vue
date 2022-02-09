@@ -165,7 +165,7 @@ export default {
         openmask: false,
         surplus: null,
       },
-
+      timer: null,
       id: this.$route.query.id || 0,
       pid: this.$route.query.pid || 0,
       paper: [],
@@ -179,6 +179,9 @@ export default {
         sec: 0,
       },
     };
+  },
+  beforeDestroy() {
+    this.timer && clearTimeout(this.timer);
   },
   mounted() {
     this.getData();
@@ -229,7 +232,7 @@ export default {
           that.finish();
           return;
         }
-        setTimeout(() => {
+        that.timer = window.setTimeout(() => {
           that.countdown();
         }, 1000);
       }
@@ -319,6 +322,7 @@ export default {
           this.results.openmask = false;
           this.$message.success("考试结束，得分：" + totalScore);
           this.getData();
+          this.timer && clearTimeout(this.timer);
         })
         .catch((e) => {
           this.$message.error(e.message);
