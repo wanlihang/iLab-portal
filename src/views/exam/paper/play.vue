@@ -362,11 +362,11 @@ export default {
           this.submitTip = false;
           if (status === 2) {
             this.$message.success("考试结束，得分：" + totalScore);
+            this.getData();
           } else {
             this.results.openmask = true;
             this.readTip = true;
           }
-          this.getData();
           this.timer && clearInterval(this.timer);
         })
         .catch((e) => {
