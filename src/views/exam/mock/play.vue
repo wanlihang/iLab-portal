@@ -304,7 +304,9 @@ export default {
             params.push(...cap);
           }
           this.questions = params;
-          this.timer = setInterval(this.countdown, 1000);
+          if (this.userPaper.status === 0) {
+            this.timer = setInterval(this.countdown, 1000);
+          }
         })
         .catch((e) => {
           this.$message.error(e.message);
