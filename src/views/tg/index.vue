@@ -15,7 +15,6 @@
             @click="goTgDetail(item.id)"
           >
             <div class="tg-course-thumb">
-              <img :src="item.goods_thumb" />
               <div class="thumb-bar">
                 <thumb-bar
                   :value="item.goods_thumb"

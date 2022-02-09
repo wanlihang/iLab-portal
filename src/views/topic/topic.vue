@@ -115,7 +115,7 @@ export default {
         page: 1,
         size: 10,
         scene: "default",
-        cid: 0,
+        cid: this.$route.query.category_id || 0,
       },
       hotList: [],
       categories: [],
@@ -124,6 +124,22 @@ export default {
       loading2: false,
       navLoading: false,
     };
+  },
+  watch: {
+    "pagination.cid"(val) {
+      if (val === 0) {
+        this.$router.push({
+          path: this.$route.path,
+        });
+        return;
+      }
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          category_id: val,
+        },
+      });
+    },
   },
   mounted() {
     this.navLoading = true;

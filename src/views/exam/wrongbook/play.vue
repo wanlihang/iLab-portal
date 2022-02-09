@@ -1,10 +1,22 @@
 <template>
   <div class="content">
+    <div class="mask" v-if="openmask">
+      <div class="popup borderbox">
+        <div class="text">是否确认删除？</div>
+        <div class="button">
+          <div class="cancel" style="cursor: pointer" @click="cancel()">
+            取消
+          </div>
+          <div class="confirm" style="cursor: pointer" @click="submitHandle()">
+            确认
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="navheader">
       <div class="top">
-        <div class="left-top">
+        <div class="left-top" @click="$router.back()">
           <img
-            @click="$router.back()"
             class="icon-back"
             src="../../../assets/img/commen/icon-back-h.png"
           />试题错题本
@@ -37,7 +49,7 @@
             <div class="question-content">
               <!-- 单选 -->
               <question-choice
-               :num="activeQid"
+                :num="activeQid"
                 v-if="question.type === 1"
                 :wrongBook="true"
                 :question="question"
@@ -50,7 +62,7 @@
 
               <!-- 多选 -->
               <question-select
-               :num="activeQid"
+                :num="activeQid"
                 v-else-if="question.type === 2"
                 :wrongBook="true"
                 :question="question"
@@ -63,7 +75,7 @@
 
               <!-- 填空 -->
               <question-input
-               :num="activeQid"
+                :num="activeQid"
                 v-else-if="question.type === 3"
                 :wrongBook="true"
                 :question="question"
@@ -76,7 +88,7 @@
 
               <!-- 问答 -->
               <question-qa
-               :num="activeQid"
+                :num="activeQid"
                 v-else-if="question.type === 4"
                 :wrongBook="true"
                 :question="question"
@@ -89,7 +101,7 @@
 
               <!-- 判断 -->
               <question-judge
-               :num="activeQid"
+                :num="activeQid"
                 v-else-if="question.type === 5"
                 :wrongBook="true"
                 :question="question"
@@ -102,7 +114,7 @@
 
               <!-- 题帽题 -->
               <question-cap
-               :num="activeQid"
+                :num="activeQid"
                 v-else-if="question.type === 6"
                 :wrongBook="true"
                 :question="question"
@@ -156,6 +168,7 @@ export default {
       showAnswer: false,
       showText: "对答案",
       loading: false,
+      openmask: false,
     };
   },
   mounted() {
@@ -249,14 +262,22 @@ export default {
           this.$message.error(e.message);
         });
     },
-    removeAnswer() {
+    cancel() {
+      this.openmask = false;
+    },
+    submitHandle() {
       this.$api.Exam.WrongBook.RemoveQuestion(this.question.id)
         .then(() => {
+          this.openmask = false;
           this.$message.success("操作成功，下次进入将不会看到该试题");
         })
         .catch((e) => {
+          this.openmask = false;
           this.$message.error(e.message);
         });
+    },
+    removeAnswer() {
+      this.openmask = true;
     },
     seeAnswer() {
       let questionId = this.qidArr[this.activeQid - 1];
@@ -276,10 +297,68 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   height: 100%;
+  .mask {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    .popup {
+      width: 295px;
+      height: 151px;
+      background: #ffffff;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      .text {
+        width: 100%;
+        height: 104px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: #333333;
+        border-bottom: 1px solid #f5f5f5;
+      }
+      .button {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: row;
+        .cancel {
+          width: 146px;
+          height: 45px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          font-weight: 400;
+          color: #171923;
+          border-right: 1px solid #f5f5f5;
+        }
+        .confirm {
+          width: 147px;
+          height: 45px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          font-weight: 400;
+          color: #3ca7fa;
+        }
+      }
+    }
+  }
   .navheader {
     position: sticky;
     top: 0;
@@ -304,11 +383,11 @@ export default {
         display: flex;
         align-items: center;
         flex-direction: row;
+        cursor: pointer;
         .icon-back {
           width: 24px;
           height: 24px;
           margin-right: 10px;
-          cursor: pointer;
         }
       }
       .right-top {

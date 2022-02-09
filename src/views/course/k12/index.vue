@@ -3,8 +3,8 @@
     <filter-two-class
       v-show="!navLoading"
       :categories="categories"
-      :cid1="pagination.cid1"
-      :cid2="pagination.cid2"
+      :cid="pagination.cid1"
+      :child="pagination.cid2"
       @change="filterChange3"
     ></filter-two-class>
     <filter-box
@@ -101,8 +101,8 @@ export default {
         page: 1,
         size: 16,
         t: "",
-        cid1: 0,
-        cid2: "",
+        cid1: this.$route.query.cid || 0,
+        cid2: this.$route.query.child || 0,
       },
       categories: [],
       over: false,

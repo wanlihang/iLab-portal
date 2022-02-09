@@ -50,17 +50,16 @@
                 v-html="item.short_desc"
               ></li>
             </ul>
-
-            <div id="page" v-show="total > pagination.size">
-              <page-box
-                :totals="total"
-                @current-change="changepage"
-                :pageSize="pagination.size"
-                :tab="false"
-              ></page-box>
-            </div>
           </template>
           <none type="white" v-else></none>
+          <div id="page" v-show="list.length > 0 && total > pagination.size">
+            <page-box
+              :totals="total"
+              @current-change="changepage"
+              :pageSize="pagination.size"
+              :tab="false"
+            ></page-box>
+          </div>
         </div>
       </div>
     </div>
@@ -127,11 +126,6 @@ export default {
       loading: false,
     };
   },
-  watch: {
-    $route(to, from) {
-      this.$router.go(0);
-    },
-  },
   mounted() {
     this.getData();
   },
@@ -191,6 +185,12 @@ export default {
         return;
       }
       this.resetData();
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          keywords: this.pagination.keywords,
+        },
+      });
       this.getData();
     },
     goDetail(val, id) {

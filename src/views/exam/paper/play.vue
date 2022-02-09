@@ -190,6 +190,7 @@ export default {
       },
       submitTip: false,
       readTip: false,
+      timer: null,
       workTime: 0,
       id: this.$route.query.id || 0,
       pid: this.$route.query.pid || 0,
@@ -204,6 +205,9 @@ export default {
         sec: 0,
       },
     };
+  },
+  beforeDestroy() {
+    this.timer && clearInterval(this.timer);
   },
   computed: {
     ...mapState(["configFunc"]),
@@ -226,7 +230,9 @@ export default {
       }, 500);
     },
     finish() {
-      this.submitHandle();
+      if (this.userPaper.status === 1) {
+        this.submitHandle();
+      }
     },
     questionUpdate(qid, answer, thumbs) {
       this.$api.Exam.PaperSubmitSingle(this.paper.id, {
@@ -269,9 +275,6 @@ export default {
           that.finish();
           return;
         }
-        setTimeout(() => {
-          that.countdown();
-        }, 1000);
       }
     },
     getData() {
@@ -340,7 +343,9 @@ export default {
             params.push(...cap);
           }
           this.questions = params;
-          this.countdown();
+          if (this.userPaper.status === 1) {
+            this.timer = setInterval(this.countdown, 1000);
+          }
         })
         .catch((e) => {
           this.$message.error(e.message);
@@ -362,6 +367,7 @@ export default {
             this.results.openmask = true;
             this.readTip = true;
           }
+          this.timer && clearInterval(this.timer);
         })
         .catch((e) => {
           this.$message.error(e.message);

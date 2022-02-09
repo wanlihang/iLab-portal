@@ -3,8 +3,8 @@
     <filter-two-class
       v-show="!navLoading"
       :categories="categories"
-      :cid1="pagination.category_id"
-      :cid2="pagination.category_id"
+      :cid="cid"
+      :child="child"
       @change="filterChange3"
     ></filter-two-class>
     <template v-if="navLoading">
@@ -71,6 +71,8 @@ export default {
         size: 16,
         category_id: 0,
       },
+      cid: this.$route.query.cid || 0,
+      child: this.$route.query.child || 0,
       steps: [],
       loading: false,
       navLoading: false,
@@ -80,7 +82,6 @@ export default {
   mounted() {
     this.navLoading = true;
     this.params();
-    this.getData();
   },
   methods: {
     filterChange3(cid1, cid2) {
@@ -106,6 +107,8 @@ export default {
       this.$api.LearnPath.Create().then((res) => {
         this.navLoading = false;
         this.categories = res.data;
+        this.filterChange3(this.cid, this.child);
+        this.getData();
       });
     },
     getData() {

@@ -2,8 +2,11 @@
   <div class="content">
     <div class="navheader">
       <div class="top">
-        <div class="left-top">
-          <img @click="$router.back()" class="icon-back" src="../../../assets/img/commen/icon-back-h.png" />{{ list.name }}
+        <div class="left-top" @click="$router.back()">
+          <img
+            class="icon-back"
+            src="../../../assets/img/commen/icon-back-h.png"
+          />{{ list.name }}
         </div>
         <div class="right-top">
           <div class="prev-button" @click="prevPage()">上一题</div>
@@ -13,7 +16,13 @@
     </div>
     <div class="project-box">
       <div class="left-box">
-        <NumberSheet v-if="qidArr" type="practice" :activeNum="activeQid" :qidArr="qidArr" @change="changeQid"></NumberSheet>
+        <NumberSheet
+          v-if="qidArr"
+          type="practice"
+          :activeNum="activeQid"
+          :qidArr="qidArr"
+          @change="changeQid"
+        ></NumberSheet>
       </div>
       <div class="right-box">
         <template v-if="loading">
@@ -21,28 +30,91 @@
         </template>
         <template v-else-if="list && question">
           <div class="delete-icon" @click="collectAnswer()">
-            <img v-if="isCollected" src="../../../assets/img/commen/icon-collect-h.png" />
+            <img
+              v-if="isCollected"
+              src="../../../assets/img/commen/icon-collect-h.png"
+            />
             <img v-else src="../../../assets/img/commen/icon-collect-n.png" />
           </div>
           <div class="practice-join-box">
             <div class="question-content">
               <!-- 单选 -->
-              <question-choice :num="activeQid" v-if="question.type === 1" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="null"></question-choice>
+              <question-choice
+                :num="activeQid"
+                v-if="question.type === 1"
+                :wrongBook="true"
+                :question="question"
+                :is-correct="false"
+                @update="questionUpdate"
+                :score="question.score"
+                :is-over="showAnswer"
+                :reply="null"
+              ></question-choice>
 
               <!-- 多选 -->
-              <question-select :num="activeQid" v-else-if="question.type === 2" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="''"></question-select>
+              <question-select
+                :num="activeQid"
+                v-else-if="question.type === 2"
+                :wrongBook="true"
+                :question="question"
+                :is-correct="false"
+                @update="questionUpdate"
+                :score="question.score"
+                :is-over="showAnswer"
+                :reply="''"
+              ></question-select>
 
               <!-- 填空 -->
-              <question-input :num="activeQid" v-else-if="question.type === 3" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :score="question.score" :is-over="showAnswer" :reply="''"></question-input>
+              <question-input
+                :num="activeQid"
+                v-else-if="question.type === 3"
+                :wrongBook="true"
+                :question="question"
+                :is-correct="false"
+                @update="questionUpdate"
+                :score="question.score"
+                :is-over="showAnswer"
+                :reply="''"
+              ></question-input>
 
               <!-- 问答 -->
-              <question-qa :num="activeQid" v-else-if="question.type === 4" :wrongBook="true" :question="question" :is-correct="false" @update="questionUpdate" :show-image="false" :score="question.score" :is-over="showAnswer"></question-qa>
+              <question-qa
+                :num="activeQid"
+                v-else-if="question.type === 4"
+                :wrongBook="true"
+                :question="question"
+                :is-correct="false"
+                @update="questionUpdate"
+                :show-image="false"
+                :score="question.score"
+                :is-over="showAnswer"
+              ></question-qa>
 
               <!-- 判断 -->
-              <question-judge :num="activeQid" v-else-if="question.type === 5" :wrongBook="true" :question="question" :is-correct="false" :score="question.score" @update="questionUpdate" :is-over="showAnswer" :reply="null"></question-judge>
+              <question-judge
+                :num="activeQid"
+                v-else-if="question.type === 5"
+                :wrongBook="true"
+                :question="question"
+                :is-correct="false"
+                :score="question.score"
+                @update="questionUpdate"
+                :is-over="showAnswer"
+                :reply="null"
+              ></question-judge>
 
               <!-- 题帽题 -->
-              <question-cap :num="activeQid" v-else-if="question.type === 6" :wrongBook="true" :question="question" :is-correct="false" :score="question.score" :show-image="false" @update="questionUpdate" :is-over="showAnswer"></question-cap>
+              <question-cap
+                :num="activeQid"
+                v-else-if="question.type === 6"
+                :wrongBook="true"
+                :question="question"
+                :is-correct="false"
+                :score="question.score"
+                :show-image="false"
+                @update="questionUpdate"
+                :is-over="showAnswer"
+              ></question-cap>
             </div>
           </div>
         </template>
@@ -221,11 +293,11 @@ export default {
         //
       });
     },
-    questionUpdate() { },
+    questionUpdate() {},
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   height: 100%;
@@ -253,11 +325,11 @@ export default {
         display: flex;
         align-items: center;
         flex-direction: row;
+        cursor: pointer;
         .icon-back {
           width: 24px;
           height: 24px;
           margin-right: 10px;
-          cursor: pointer;
         }
       }
       .right-top {

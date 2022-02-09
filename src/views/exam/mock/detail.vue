@@ -217,7 +217,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .nav {
@@ -345,7 +345,7 @@ export default {
     }
     .records-nox {
       width: 100%;
-      min-height: 100px;
+      min-height: 360px;
       background: #ffffff;
       border-radius: 8px;
       display: flex;

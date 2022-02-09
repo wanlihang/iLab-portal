@@ -102,6 +102,7 @@ export default {
       requiredCourses: [],
       joinRecords: [],
       questions: [],
+      joinLoading: false,
       loading: false,
       can_join: false,
       surplus: 99999,
@@ -150,7 +151,7 @@ export default {
         this.goLogin();
         return;
       }
-      if (this.loading) {
+      if (this.joinLoading) {
         return;
       }
       if (this.can_join === false) {
@@ -171,10 +172,10 @@ export default {
         });
         return;
       }
-      this.loading = true;
+      this.joinLoading = true;
       this.$api.Exam.PaperJoin(this.id)
         .then((res) => {
-          this.loading = false;
+          this.joinLoading = false;
           let record_id = res.data.record_id;
           this.$router.push({
             name: "ExamPapersPlay",
@@ -185,7 +186,7 @@ export default {
           });
         })
         .catch((e) => {
-          this.loading = false;
+          this.joinLoading = false;
           this.$message.error(e.message);
         });
     },
@@ -354,7 +355,7 @@ export default {
     }
     .records-nox {
       width: 100%;
-      min-height: 100px;
+      min-height: 360px;
       background: #ffffff;
       border-radius: 8px;
       display: flex;

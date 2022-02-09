@@ -73,8 +73,8 @@ export default {
       pagination: {
         page: 1,
         page_size: 10,
-        cid1: 0,
-        cid2: 0,
+        cid1: this.$route.query.cid1 || 0,
+        cid2: this.$route.query.cid2 || 0,
       },
       userpapers: [],
       over: false,
@@ -101,6 +101,7 @@ export default {
       this.pagination.page_size = item.pageSize;
       this.pagination.page = item.currentPage;
       this.getData();
+      window.scrollTo(0, 0);
     },
     getData() {
       if (this.loading) {
@@ -158,7 +159,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .nav {
