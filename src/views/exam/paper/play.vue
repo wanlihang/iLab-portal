@@ -226,7 +226,9 @@ export default {
       }, 500);
     },
     finish() {
-      this.submitHandle();
+      if (this.userPaper.status === 1) {
+        this.submitHandle();
+      }
     },
     questionUpdate(qid, answer, thumbs) {
       this.$api.Exam.PaperSubmitSingle(this.paper.id, {
@@ -357,11 +359,11 @@ export default {
           this.submitTip = false;
           if (status === 2) {
             this.$message.success("考试结束，得分：" + totalScore);
-            this.getData();
           } else {
             this.results.openmask = true;
             this.readTip = true;
           }
+          this.getData();
         })
         .catch((e) => {
           this.$message.error(e.message);

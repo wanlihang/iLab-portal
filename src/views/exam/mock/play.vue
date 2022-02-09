@@ -4,7 +4,11 @@
       <div class="popup borderbox">
         <div class="tabs">
           <div class="item-tab">确认信息</div>
-          <img class="btn-close" @click="cancel()" src="../../../assets/img/commen/icon-close.png" />
+          <img
+            class="btn-close"
+            @click="cancel()"
+            src="../../../assets/img/commen/icon-close.png"
+          />
         </div>
         <div class="text">确认要交卷吗？</div>
         <div class="button">
@@ -58,7 +62,7 @@
           <div class="item" :key="index">
             <!-- 单选 -->
             <question-choice
-              :num="index+1"
+              :num="index + 1"
               v-if="question.question.type === 1"
               :question="question.question"
               :reply="question.answer_content"
@@ -70,7 +74,7 @@
 
             <!-- 多选 -->
             <question-select
-              :num="index+1"
+              :num="index + 1"
               v-else-if="question.question.type === 2"
               :question="question.question"
               :reply="question.answer_content"
@@ -82,7 +86,7 @@
 
             <!-- 填空 -->
             <question-input
-              :num="index+1"
+              :num="index + 1"
               v-else-if="question.question.type === 3"
               :question="question.question"
               :reply="question.answer_content || ''"
@@ -94,7 +98,7 @@
 
             <!-- 问答 -->
             <question-qa
-              :num="index+1"
+              :num="index + 1"
               v-else-if="question.question.type === 4"
               :question="question.question"
               :reply="question.answer_content"
@@ -108,7 +112,7 @@
 
             <!-- 判断 -->
             <question-judge
-              :num="index+1"
+              :num="index + 1"
               v-else-if="question.question.type === 5"
               :question="question.question"
               :score="question.score"
@@ -120,7 +124,7 @@
 
             <!-- 题帽题 -->
             <question-cap
-              :num="index+1"
+              :num="index + 1"
               v-else-if="question.question.type === 6"
               :question="question.question"
               :score="question.score"
@@ -162,7 +166,7 @@ export default {
         openmask: false,
         surplus: null,
       },
-      
+
       id: this.$route.query.id || 0,
       pid: this.$route.query.pid || 0,
       paper: [],
@@ -183,10 +187,11 @@ export default {
   methods: {
     cancel() {
       this.results.openmask = false;
-     
     },
     finish() {
-      this.submitHandle();
+      if (this.userPaper.status === 0) {
+        this.submitHandle();
+      }
     },
     questionUpdate(qid, answer, thumbs) {
       this.$api.Exam.MockPaper.SubmitSingle(this.pid, {
@@ -315,7 +320,6 @@ export default {
           this.results.openmask = false;
           this.$message.success("考试结束，得分：" + totalScore);
           this.getData();
-         
         })
         .catch((e) => {
           this.$message.error(e.message);
@@ -324,7 +328,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   height: 100%;
@@ -502,7 +506,7 @@ export default {
         .confirm {
           width: 88px;
           height: 44px;
-          background: #3CA7FA;
+          background: #3ca7fa;
           border-radius: 4px;
           display: flex;
           align-items: center;
