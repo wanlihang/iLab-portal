@@ -99,6 +99,7 @@ export default {
       this.pagination.page_size = item.pageSize;
       this.pagination.page = item.currentPage;
       this.getData();
+      window.scrollTo(0, 0);
     },
     getData() {
       if (this.loading) {
