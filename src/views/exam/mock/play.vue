@@ -181,7 +181,7 @@ export default {
     };
   },
   beforeDestroy() {
-    this.timer && clearTimeout(this.timer);
+    this.timer && clearInterval(this.timer);
   },
   mounted() {
     this.getData();
@@ -232,9 +232,6 @@ export default {
           that.finish();
           return;
         }
-        that.timer = window.setTimeout(() => {
-          that.countdown();
-        }, 1000);
       }
     },
     getData() {
@@ -307,7 +304,7 @@ export default {
             params.push(...cap);
           }
           this.questions = params;
-          this.countdown();
+          this.timer = setInterval(this.countdown, 1000);
         })
         .catch((e) => {
           this.$message.error(e.message);
@@ -322,7 +319,7 @@ export default {
           this.results.openmask = false;
           this.$message.success("考试结束，得分：" + totalScore);
           this.getData();
-          this.timer && clearTimeout(this.timer);
+          this.timer && clearInterval(this.timer);
         })
         .catch((e) => {
           this.$message.error(e.message);

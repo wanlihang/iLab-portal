@@ -207,7 +207,7 @@ export default {
     };
   },
   beforeDestroy() {
-    this.timer && clearTimeout(this.timer);
+    this.timer && clearInterval(this.timer);
   },
   computed: {
     ...mapState(["configFunc"]),
@@ -275,9 +275,6 @@ export default {
           that.finish();
           return;
         }
-        that.timer = window.setTimeout(() => {
-          that.countdown();
-        }, 1000);
       }
     },
     getData() {
@@ -346,7 +343,7 @@ export default {
             params.push(...cap);
           }
           this.questions = params;
-          this.countdown();
+          this.timer = setInterval(this.countdown, 1000);
         })
         .catch((e) => {
           this.$message.error(e.message);
@@ -368,7 +365,7 @@ export default {
             this.readTip = true;
           }
           this.getData();
-          this.timer && clearTimeout(this.timer);
+          this.timer && clearInterval(this.timer);
         })
         .catch((e) => {
           this.$message.error(e.message);
