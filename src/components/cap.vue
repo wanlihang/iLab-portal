@@ -2,7 +2,7 @@
   <div class="spbackground">
     <div class="info">
       <span class="tit"
-        >{{num}}.{{ question.type_text }}（{{ question.score }}分）</span
+        >{{ num }}.{{ question.type_text }}（{{ question.score }}分）</span
       >
     </div>
     <div class="question-content">
@@ -15,6 +15,7 @@
             <!-- 单选 -->
             <question-choice
               v-if="item.type === 1"
+              :num="index + 1"
               :spcolor="true"
               :question="item"
               :reply="null"
@@ -28,6 +29,7 @@
             <!-- 多选 -->
             <question-select
               v-else-if="item.type === 2"
+              :num="index + 1"
               :spcolor="true"
               :question="item"
               :reply="null"
@@ -41,6 +43,7 @@
             <!-- 填空 -->
             <question-input
               v-else-if="item.type === 3"
+              :num="index + 1"
               :spcolor="true"
               :question="item"
               :reply="null"
@@ -54,6 +57,7 @@
             <!-- 问答 -->
             <question-qa
               v-else-if="item.type === 4"
+              :num="index + 1"
               :spcolor="true"
               :question="item"
               :reply="null"
@@ -69,6 +73,7 @@
             <!-- 判断 -->
             <question-judge
               v-else-if="item.type === 5"
+              :num="index + 1"
               :spcolor="true"
               :question="item"
               :score="item.score"
@@ -84,6 +89,7 @@
             <!-- 单选 -->
             <question-choice
               v-if="item.type === 1"
+              :num="index + 1"
               :spcolor="true"
               :question="item"
               :reply="answers[index].answer"
@@ -97,6 +103,7 @@
             <!-- 多选 -->
             <question-select
               v-else-if="item.type === 2"
+              :num="index + 1"
               :spcolor="true"
               :question="item"
               :reply="answers[index].answer"
@@ -110,6 +117,7 @@
             <!-- 填空 -->
             <question-input
               v-else-if="item.type === 3"
+              :num="index + 1"
               :spcolor="true"
               :question="item"
               :reply="answers[index].answer"
@@ -123,6 +131,7 @@
             <!-- 问答 -->
             <question-qa
               v-else-if="item.type === 4"
+              :num="index + 1"
               :spcolor="true"
               :question="item"
               :reply="answers[index].answer"
@@ -138,6 +147,7 @@
             <!-- 判断 -->
             <question-judge
               v-else-if="item.type === 5"
+              :num="index + 1"
               :spcolor="true"
               :question="item"
               :score="item.score"
@@ -249,7 +259,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .spbackground {
   background-color: #fff;
   width: 100%;
