@@ -2,9 +2,8 @@
   <div class="content">
     <div class="navheader">
       <div class="top">
-        <div class="left-top">
+        <div class="left-top" @click="$router.back()">
           <img
-            @click="$router.back()"
             class="icon-back"
             src="../../../assets/img/commen/icon-back-h.png"
           />试题错题本
@@ -37,7 +36,7 @@
             <div class="question-content">
               <!-- 单选 -->
               <question-choice
-               :num="activeQid"
+                :num="activeQid"
                 v-if="question.type === 1"
                 :wrongBook="true"
                 :question="question"
@@ -50,7 +49,7 @@
 
               <!-- 多选 -->
               <question-select
-               :num="activeQid"
+                :num="activeQid"
                 v-else-if="question.type === 2"
                 :wrongBook="true"
                 :question="question"
@@ -63,7 +62,7 @@
 
               <!-- 填空 -->
               <question-input
-               :num="activeQid"
+                :num="activeQid"
                 v-else-if="question.type === 3"
                 :wrongBook="true"
                 :question="question"
@@ -76,7 +75,7 @@
 
               <!-- 问答 -->
               <question-qa
-               :num="activeQid"
+                :num="activeQid"
                 v-else-if="question.type === 4"
                 :wrongBook="true"
                 :question="question"
@@ -89,7 +88,7 @@
 
               <!-- 判断 -->
               <question-judge
-               :num="activeQid"
+                :num="activeQid"
                 v-else-if="question.type === 5"
                 :wrongBook="true"
                 :question="question"
@@ -102,7 +101,7 @@
 
               <!-- 题帽题 -->
               <question-cap
-               :num="activeQid"
+                :num="activeQid"
                 v-else-if="question.type === 6"
                 :wrongBook="true"
                 :question="question"
@@ -276,7 +275,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   height: 100%;
@@ -304,11 +303,11 @@ export default {
         display: flex;
         align-items: center;
         flex-direction: row;
+        cursor: pointer;
         .icon-back {
           width: 24px;
           height: 24px;
           margin-right: 10px;
-          cursor: pointer;
         }
       }
       .right-top {
