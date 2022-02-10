@@ -8,6 +8,19 @@
         height="40"
         src="../assets/img/commen/icon-qq.png"
     /></a>
+    <a
+      class="wechat"
+      v-if="config && config.h5_url"
+      @mouseenter="enter()"
+      @mouseleave="leave()"
+    >
+      <img
+        class="wechat-icon"
+        width="40"
+        height="40"
+        src="../assets/img/commen/icon-weixin.png"
+      />
+    </a>
     <a class="sina" v-if="sina.url" target="_blank" :href="sina.url"
       ><img
         class="sina-icon"
@@ -21,6 +34,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import QRCode from "qrcodejs2";
 export default {
   props: ["title", "thumb", "cid"],
@@ -35,20 +49,39 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState(["config"]),
+  },
   watch: {
-    title() {
-      this.getData();
-    },
-    thumb() {
-      this.getData();
-    },
     cid() {
       this.getData();
     },
   },
-  created() {},
   mounted() {},
   methods: {
+    search() {
+      if (this.config && this.config.h5_url) {
+        let host = this.config.h5_url;
+        let url = "";
+        let link = "";
+        if (host.substr(host.length - 1, 1) !== "/") {
+          host = host + "/";
+        }
+        url = encodeURIComponent(
+          this.config.url +
+            "/addons/MeeduTopics/app-view/dist/index.html#/?id=" +
+            this.cid
+        );
+        link =
+          host + "pages/webview/webview?url=" + url + "&title=" + this.title;
+        var qrcode = new QRCode("qrcode", {
+          text: link, //表示内容，可以是地址或者是文字'55566'或者参数
+          colorDark: "#000000", //前景色
+          colorLight: "#ffffff", //背景色
+          correctLevel: QRCode.CorrectLevel.H, //容错级别
+        });
+      }
+    },
     enter() {
       this.seen = true;
     },
@@ -74,11 +107,12 @@ export default {
         this.title +
         "&pic=" +
         this.thumb;
+      this.search();
     },
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .share {
   width: 100%;
   height: 40px;
