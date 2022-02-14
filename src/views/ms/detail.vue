@@ -90,7 +90,7 @@
                 <div
                   class="unpaid"
                   @click="goPay(order.id)"
-                  v-if="order.length > 0 && order.status === 0"
+                  v-if="order&& order.status === 0"
                 >
                   已获得资格，请尽快支付
                 </div>
