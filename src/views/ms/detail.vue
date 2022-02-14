@@ -81,7 +81,7 @@
                 <div class="isOver" v-if="ms.is_over">已售罄</div>
                 <div
                   class="buy-button"
-                  v-if="!order && !ms.is_over"
+                  v-if="order.length === 0 && !ms.is_over"
                   @click="goOrder()"
                 >
                   立即抢购￥{{ ms.charge }}
@@ -90,7 +90,7 @@
                 <div
                   class="unpaid"
                   @click="goPay(order.id)"
-                  v-if="order && order.status === 0"
+                  v-if="order.length > 0 && order.status === 0"
                 >
                   已获得资格，请尽快支付
                 </div>
