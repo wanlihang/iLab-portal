@@ -12,16 +12,18 @@
         <button class="submit" @click="search()">搜索</button>
       </div>
       <div class="type-box">
-        <div
-          class="item"
-          :class="{ active: pagination.type === item.key }"
-          @click="setType(item.key)"
-          v-for="item in types"
-          :key="item.key"
-        >
-          {{ item.name }}
-          <div class="actline" v-if="pagination.type === item.key"></div>
-        </div>
+        <template v-for="item in types">
+          <div
+            class="item"
+            :class="{ active: pagination.type === item.key }"
+            @click="setType(item.key)"
+            :key="item.key"
+            v-if="item.status"
+          >
+            {{ item.name }}
+            <div class="actline" v-if="pagination.type === item.key"></div>
+          </div>
+        </template>
       </div>
     </div>
     <div class="contanier">
@@ -68,6 +70,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import None from "../../components/none.vue";
 import PageBox from "../../components/page.vue";
 import NavFooter from "../../components/footer.vue";
@@ -91,42 +94,57 @@ export default {
         type: 0,
         keywords: this.$route.query.keywords,
       },
-      types: [
+
+      loading: false,
+    };
+  },
+  computed: {
+    ...mapState(["configFunc"]),
+    types() {
+      let types = [
         {
           key: 0,
           name: "全部",
+          status: true,
         },
         {
           key: "vod",
           name: "录播课",
+          status: true,
         },
         {
           key: "video",
           name: "录播视频",
+          status: true,
         },
         {
           key: "live",
           name: "直播课",
+          status: this.configFunc["live"],
         },
         {
           key: "book",
           name: "电子书",
+          status: this.configFunc["book"],
         },
         {
           key: "topic",
           name: "图文",
+          status: this.configFunc["topic"],
         },
         {
           key: "paper",
           name: "试卷",
+          status: this.configFunc["paper"],
         },
         {
           key: "practice",
           name: "练习",
+          status: this.configFunc["practice"],
         },
-      ],
-      loading: false,
-    };
+      ];
+      return types;
+    },
   },
   mounted() {
     this.getData();
