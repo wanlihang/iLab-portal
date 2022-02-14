@@ -90,7 +90,7 @@
                 <div
                   class="unpaid"
                   @click="goPay(order.id)"
-                  v-if="order&& order.status === 0"
+                  v-if="order && order.status === 0"
                 >
                   已获得资格，请尽快支付
                 </div>
@@ -668,6 +668,9 @@ export default {
               line-height: 16px;
               box-sizing: border-box;
               cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
             }
             .isOver {
               background: #999999;
@@ -679,6 +682,9 @@ export default {
               line-height: 16px;
               box-sizing: border-box;
               cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
             }
             .buy-button {
               background: #ff5068;
@@ -690,6 +696,9 @@ export default {
               line-height: 16px;
               box-sizing: border-box;
               cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
             }
             .unpaid {
               background: #ff5068;
@@ -701,6 +710,9 @@ export default {
               line-height: 16px;
               box-sizing: border-box;
               cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
             }
           }
         }
