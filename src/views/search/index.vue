@@ -173,6 +173,10 @@ export default {
       this.pagination.type = key;
       this.resetData();
       this.getData();
+      this.update = false;
+      this.$nextTick(() => {
+        this.update = true;
+      });
     },
     changepage(item) {
       this.pagination.size = item.pageSize;
