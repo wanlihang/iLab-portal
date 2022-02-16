@@ -18,7 +18,6 @@
             :class="{ active: pagination.type === item.key }"
             @click="setType(item.key)"
             :key="item.key"
-            v-if="item.status"
           >
             {{ item.name }}
             <div class="actline" v-if="pagination.type === item.key"></div>
@@ -56,7 +55,8 @@
           <none type="white" v-else></none>
           <div id="page" v-show="list.length > 0 && total > pagination.size">
             <page-box
-              v-if="update"
+              :key="pagination.page"
+              :page="pagination.page"
               :totals="total"
               @current-change="changepage"
               :pageSize="pagination.size"
@@ -87,14 +87,12 @@ export default {
     return {
       list: [],
       total: null,
-      update: true,
       pagination: {
         page: 1,
         size: 10,
         type: 0,
         keywords: this.$route.query.keywords,
       },
-
       loading: false,
     };
   },
@@ -105,44 +103,46 @@ export default {
         {
           key: 0,
           name: "全部",
-          status: true,
         },
         {
           key: "vod",
           name: "录播课",
-          status: true,
         },
         {
           key: "video",
           name: "录播视频",
-          status: true,
-        },
-        {
-          key: "live",
-          name: "直播课",
-          status: this.configFunc["live"],
-        },
-        {
-          key: "book",
-          name: "电子书",
-          status: this.configFunc["book"],
-        },
-        {
-          key: "topic",
-          name: "图文",
-          status: this.configFunc["topic"],
-        },
-        {
-          key: "paper",
-          name: "试卷",
-          status: this.configFunc["paper"],
-        },
-        {
-          key: "practice",
-          name: "练习",
-          status: this.configFunc["practice"],
         },
       ];
+      if (this.configFunc["live"]) {
+        types.push({
+          key: "live",
+          name: "直播课",
+        });
+      }
+      if (this.configFunc["book"]) {
+        types.push({
+          key: "book",
+          name: "电子书",
+        });
+      }
+      if (this.configFunc["topic"]) {
+        types.push({
+          key: "topic",
+          name: "图文",
+        });
+      }
+      if (this.configFunc["paper"]) {
+        types.push({
+          key: "paper",
+          name: "试卷",
+        });
+      }
+      if (this.configFunc["practice"]) {
+        types.push({
+          key: "practice",
+          name: "练习",
+        });
+      }
       return types;
     },
   },
@@ -173,10 +173,6 @@ export default {
       this.pagination.type = key;
       this.resetData();
       this.getData();
-      this.update = false;
-      this.$nextTick(() => {
-        this.update = true;
-      });
     },
     changepage(item) {
       this.pagination.size = item.pageSize;
@@ -216,10 +212,6 @@ export default {
       });
       this.resetData();
       this.getData();
-      this.update = false;
-      this.$nextTick(() => {
-        this.update = true;
-      });
     },
     goDetail(val, id) {
       if (val === "video") {

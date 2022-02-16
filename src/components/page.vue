@@ -92,7 +92,7 @@
     </div> -->
   </div>
 </template>
-<style lang='less' scoped>
+<style lang="less" scoped>
 ul,
 li {
   list-style: none;
@@ -249,6 +249,10 @@ export default {
         return [12, 16];
       },
     },
+    page: {
+      default: 1,
+      type: Number,
+    },
   },
   data() {
     return {
@@ -257,7 +261,7 @@ export default {
       nextDisabled: null,
       preDisabled: "disabled",
       totalPages: 1, // 默认页数
-      currentPage: 1,
+      currentPage: this.page,
       size: this.pageSize, // 获取每页数量
     };
   },
