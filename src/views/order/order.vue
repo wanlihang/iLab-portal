@@ -86,6 +86,7 @@ export default {
       promoCodeBoxStatus: false,
       promoCodeModel: null,
       paymentScene: "pc",
+      course_id: this.$route.query.course_id,
     };
   },
   computed: {
