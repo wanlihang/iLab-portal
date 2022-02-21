@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div class="second-box">
+    <!--<div class="second-box">
       <div class="tit">试题库</div>
       <div class="model">
         <div class="normal-model questionbank" @click="goQuestionBank()">
@@ -46,7 +46,7 @@
           <img class="icon" src="../../assets/img/commen/storehouse.png" />
         </div>
       </div>
-    </div>
+    </div>-->
     <nav-footer></nav-footer>
   </div>
 </template>
