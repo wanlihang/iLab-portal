@@ -53,25 +53,6 @@
             style="background-size: cover"
             :style="{ backgroundImage: 'url(' + config.player.cover + ')' }"
           >
-            <div
-              class="goCurrent"
-              v-if="
-                showtip &&
-                video_watched_progress &&
-                video_watched_progress[video.id]
-              "
-            >
-              <span
-                >上次观看到
-                {{
-                  $utils.getHMS(video_watched_progress[video.id].watch_seconds)
-                }}</span
-              ><span
-                class="link"
-                @click="toWatch(video_watched_progress[video.id].watch_seconds)"
-                >立即跳转</span
-              >
-            </div>
             <div v-if="!playendedStatus && (isWatch || video.free_seconds > 0)">
               <div
                 class="iframe-player-box"
@@ -388,7 +369,6 @@ export default {
       attach: [],
       videoContext: null,
       loading: false,
-      showtip: false,
       id: this.$route.query.id,
       video: null,
       course: null,
@@ -432,6 +412,7 @@ export default {
       isIframe: false,
       isBuy: false,
       showTry: false,
+      last_see_value: null,
     };
   },
   watch: {
@@ -585,17 +566,6 @@ export default {
         this.showTry = !this.isBuy;
       });
     },
-    showLink() {
-      this.showtip = true;
-      setTimeout(() => {
-        this.showtip = false;
-      }, 5000);
-    },
-    toWatch(sec) {
-      this.showtip = false;
-      window.player.seek(sec);
-      window.player.play();
-    },
     getDetail() {
       this.$api.Course.Video(this.id).then((res) => {
         this.video = res.data.video;
@@ -663,7 +633,10 @@ export default {
           this.video_watched_progress[this.video.id] &&
           this.video_watched_progress[this.video.id].watch_seconds > 0
         ) {
-          this.showLink();
+          this.last_see_value = {
+            time: 5,
+            pos: this.video_watched_progress[this.video.id].watch_seconds,
+          };
         }
       });
     },
@@ -725,6 +698,7 @@ export default {
           color: "red",
         },
         ban_drag: parseInt(this.video.ban_drag) === 1,
+        last_see_pos: this.last_see_value,
       });
 
       // 监听播放进度更新evt

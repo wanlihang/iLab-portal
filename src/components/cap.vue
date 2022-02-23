@@ -163,8 +163,8 @@
     </div>
     <template v-if="isOver">
       <div class="analysis-box">
-        <div class="pop-box">
-          <div class="remark" style="padding-top: 20px" v-if="question.remark">
+        <div class="pop-box" v-if="question.remark">
+          <div class="remark" style="padding-top: 20px">
             <div>解析：</div>
             <div v-html="question.remark"></div>
           </div>

@@ -81,7 +81,7 @@
                 <div class="isOver" v-if="ms.is_over">已售罄</div>
                 <div
                   class="buy-button"
-                  v-if="!order && !ms.is_over"
+                  v-if="order.length === 0 && !ms.is_over"
                   @click="goOrder()"
                 >
                   立即抢购￥{{ ms.charge }}
@@ -668,6 +668,9 @@ export default {
               line-height: 16px;
               box-sizing: border-box;
               cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
             }
             .isOver {
               background: #999999;
@@ -679,6 +682,9 @@ export default {
               line-height: 16px;
               box-sizing: border-box;
               cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
             }
             .buy-button {
               background: #ff5068;
@@ -690,6 +696,9 @@ export default {
               line-height: 16px;
               box-sizing: border-box;
               cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
             }
             .unpaid {
               background: #ff5068;
@@ -701,6 +710,9 @@ export default {
               line-height: 16px;
               box-sizing: border-box;
               cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
             }
           }
         }

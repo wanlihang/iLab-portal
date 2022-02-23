@@ -12,16 +12,17 @@
         <button class="submit" @click="search()">搜索</button>
       </div>
       <div class="type-box">
-        <div
-          class="item"
-          :class="{ active: pagination.type === item.key }"
-          @click="setType(item.key)"
-          v-for="item in types"
-          :key="item.key"
-        >
-          {{ item.name }}
-          <div class="actline" v-if="pagination.type === item.key"></div>
-        </div>
+        <template v-for="item in types">
+          <div
+            class="item"
+            :class="{ active: pagination.type === item.key }"
+            @click="setType(item.key)"
+            :key="item.key"
+          >
+            {{ item.name }}
+            <div class="actline" v-if="pagination.type === item.key"></div>
+          </div>
+        </template>
       </div>
     </div>
     <div class="contanier">
@@ -54,6 +55,8 @@
           <none type="white" v-else></none>
           <div id="page" v-show="list.length > 0 && total > pagination.size">
             <page-box
+              :key="pagination.page"
+              :page="pagination.page"
               :totals="total"
               @current-change="changepage"
               :pageSize="pagination.size"
@@ -67,6 +70,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import None from "../../components/none.vue";
 import PageBox from "../../components/page.vue";
 import NavFooter from "../../components/footer.vue";
@@ -89,7 +93,13 @@ export default {
         type: 0,
         keywords: this.$route.query.keywords,
       },
-      types: [
+      loading: false,
+    };
+  },
+  computed: {
+    ...mapState(["configFunc"]),
+    types() {
+      let types = [
         {
           key: 0,
           name: "全部",
@@ -102,29 +112,39 @@ export default {
           key: "video",
           name: "录播视频",
         },
-        {
+      ];
+      if (this.configFunc["live"]) {
+        types.push({
           key: "live",
           name: "直播课",
-        },
-        {
+        });
+      }
+      if (this.configFunc["book"]) {
+        types.push({
           key: "book",
           name: "电子书",
-        },
-        {
+        });
+      }
+      if (this.configFunc["topic"]) {
+        types.push({
           key: "topic",
           name: "图文",
-        },
-        {
+        });
+      }
+      if (this.configFunc["paper"]) {
+        types.push({
           key: "paper",
           name: "试卷",
-        },
-        {
+        });
+      }
+      if (this.configFunc["practice"]) {
+        types.push({
           key: "practice",
           name: "练习",
-        },
-      ],
-      loading: false,
-    };
+        });
+      }
+      return types;
+    },
   },
   mounted() {
     this.getData();
@@ -184,13 +204,13 @@ export default {
         this.$message.error("请输入关键字后再搜索");
         return;
       }
-      this.resetData();
       this.$router.push({
         path: this.$route.path,
         query: {
           keywords: this.pagination.keywords,
         },
       });
+      this.resetData();
       this.getData();
     },
     goDetail(val, id) {
