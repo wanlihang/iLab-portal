@@ -29,7 +29,10 @@
             src="../../../assets/img/commen/icon-close.png"
           />
         </div>
-        <div class="text">还有{{ surplus }}道题未做，确认要交卷吗？</div>
+        <div class="text" v-if="surplus !== 0">
+          还有{{ surplus }}道题未做，确认要交卷吗？
+        </div>
+        <div class="text" v-else>确认要交卷吗？</div>
         <div class="button">
           <div class="confirm" style="cursor: pointer" @click="submitHandle()">
             确定
