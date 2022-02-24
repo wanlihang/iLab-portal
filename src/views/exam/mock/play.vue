@@ -199,6 +199,7 @@ export default {
         sec: 0,
       },
       collects: null,
+      notComplete: [],
     };
   },
   beforeDestroy() {
@@ -223,9 +224,21 @@ export default {
         answer: answer,
         question_id: qid,
       });
+      this.questions.forEach((item) => {
+        if (!item.answer_content && item.question_id === qid && answer !== "") {
+          if (this.notComplete.length === 0) {
+            this.$set(this.notComplete, qid, true);
+            this.surplus--;
+          } else {
+            if (!this.notComplete[qid]) {
+              this.$set(this.notComplete, qid, true);
+              this.surplus--;
+            }
+          }
+        }
+      });
     },
     submitAll() {
-      this.getData();
       this.results.openmask = true;
     },
     //倒计时
