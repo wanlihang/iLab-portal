@@ -125,7 +125,7 @@ export default {
               ...res.data.category_children[item.id]
             );
           }
-          
+
           categoriesData.push(categoryItem);
         });
         this.categories = categoriesData;
