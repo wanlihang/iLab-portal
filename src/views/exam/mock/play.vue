@@ -16,7 +16,7 @@
             确定
           </div>
           <div class="cancel" style="cursor: pointer" @click="cancel()">
-            取消
+            继续答题
           </div>
         </div>
       </div>
@@ -165,6 +165,7 @@ export default {
         openmask: false,
         surplus: null,
       },
+      flag: false,
       timer: null,
       id: this.$route.query.id || 0,
       pid: this.$route.query.pid || 0,
@@ -212,9 +213,9 @@ export default {
       const now = Date.parse(new Date());
       const msec = end - now;
       if (msec < 0) {
-        if (this.userPaper.status === 0) {
-          this.finish();
-        }
+        this.flag = true;
+        this.finish();
+
         return;
       }
       let day = parseInt(msec / 1000 / 60 / 60 / 24);
@@ -229,6 +230,7 @@ export default {
       if (min >= 0 && sec >= 0) {
         //倒计时结束关闭订单
         if (min === 0 && sec === 0 && hr === 0) {
+          that.flag = true;
           that.finish();
           return;
         }
@@ -305,7 +307,13 @@ export default {
           }
           this.questions = params;
           if (this.userPaper.status === 0) {
-            this.timer = setInterval(this.countdown, 1000);
+            this.timer = setInterval(() => {
+              if (this.flag) {
+                this.timer && clearInterval(this.timer);
+              } else {
+                this.countdown();
+              }
+            }, 1000);
           }
         })
         .catch((e) => {
@@ -321,7 +329,6 @@ export default {
           this.results.openmask = false;
           this.$message.success("考试结束，得分：" + totalScore);
           this.getData();
-          this.timer && clearInterval(this.timer);
         })
         .catch((e) => {
           this.$message.error(e.message);

@@ -16,7 +16,7 @@
             确定
           </div>
           <div class="cancel" style="cursor: pointer" @click="cancel()">
-            取消
+            继续答题
           </div>
         </div>
       </div>
@@ -188,6 +188,7 @@ export default {
         openmask: false,
         surplus: null,
       },
+      flag: false,
       submitTip: false,
       readTip: false,
       timer: null,
@@ -252,10 +253,9 @@ export default {
       const now = Date.parse(new Date());
       const msec = end - now;
       if (msec < 0) {
+        this.flag = true;
         this.workTime = parseInt(this.paper.expired_minutes) * 60;
-        if (this.userPaper.status === 1) {
-          this.finish();
-        }
+        this.finish();
         return;
       }
       this.workTime =
@@ -272,6 +272,7 @@ export default {
       if (min >= 0 && sec >= 0) {
         //倒计时结束关闭订单
         if (min === 0 && sec === 0 && hr === 0) {
+          that.flag = true;
           that.finish();
           return;
         }
@@ -344,7 +345,13 @@ export default {
           }
           this.questions = params;
           if (this.userPaper.status === 1) {
-            this.timer = setInterval(this.countdown, 1000);
+            this.timer = setInterval(() => {
+              if (this.flag) {
+                this.timer && clearInterval(this.timer);
+              } else {
+                this.countdown();
+              }
+            }, 1000);
           }
         })
         .catch((e) => {
@@ -367,7 +374,6 @@ export default {
             this.results.openmask = true;
             this.readTip = true;
           }
-          this.timer && clearInterval(this.timer);
         })
         .catch((e) => {
           this.$message.error(e.message);
