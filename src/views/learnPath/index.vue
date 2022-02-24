@@ -5,7 +5,7 @@
       :categories="categories"
       :cid="cid"
       :child="child"
-      @change="filterChange3"
+      @change="filterChange"
     ></filter-two-class>
     <template v-if="navLoading">
       <skeletonNav></skeletonNav>
@@ -82,9 +82,10 @@ export default {
   mounted() {
     this.navLoading = true;
     this.params();
+    this.getData();
   },
   methods: {
-    filterChange3(cid1, cid2) {
+    filterChange(cid1, cid2) {
       if (cid2 !== 0) {
         this.pagination.category_id = cid2;
       } else {
@@ -107,8 +108,7 @@ export default {
       this.$api.LearnPath.Create().then((res) => {
         this.navLoading = false;
         this.categories = res.data;
-        this.filterChange3(this.cid, this.child);
-        this.getData();
+        this.filterChange(this.cid, this.child);
       });
     },
     getData() {
