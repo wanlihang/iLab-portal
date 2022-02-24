@@ -205,6 +205,8 @@
           </div>
           <div id="page" v-show="comments.length > 0 && total > 20">
             <page-box
+              :key="pagination.page"
+              :page="pagination.page"
               :totals="total"
               @current-change="changepage"
               :pageSize="pagination.size"

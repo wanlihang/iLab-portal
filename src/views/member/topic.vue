@@ -109,6 +109,8 @@
         </div>
         <div id="page" v-show="currentTab === 1 && list.length > 0">
           <page-box
+            :key="pagination.page"
+            :page="pagination.page"
             :totals="total1"
             @current-change="changepage"
             :pageSize="pagination.size"
@@ -117,6 +119,8 @@
         </div>
         <div id="page" v-show="currentTab === 3 && collects.length > 0">
           <page-box
+            :key="pagination.page"
+            :page="pagination.page"
             :totals="total2"
             @current-change="changepage"
             :pageSize="pagination.size"
@@ -125,6 +129,8 @@
         </div>
         <div id="page" v-show="currentTab === 4 && votes.length > 0">
           <page-box
+            :key="pagination.page"
+            :page="pagination.page"
             :totals="total3"
             @current-change="changepage"
             :pageSize="pagination.size"

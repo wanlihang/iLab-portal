@@ -40,6 +40,8 @@
         </template>
         <div id="page" v-show="currentTab === 1 && list.length > 0">
           <page-box
+            :key="pagination.page"
+            :page="pagination.page"
             :totals="total1"
             @current-change="changepage"
             :pageSize="pagination.size"
@@ -74,6 +76,8 @@
         </template>
         <div id="page" v-show="currentTab === 2 && list2.length > 0">
           <page-box
+            :key="pagination2.page"
+            :page="pagination2.page"
             :totals="total2"
             @current-change="changepage"
             :pageSize="pagination2.size"
@@ -201,7 +205,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .box {

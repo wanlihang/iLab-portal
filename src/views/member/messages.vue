@@ -22,6 +22,8 @@
         </div>
         <div id="page">
           <page-box
+            :key="pagination.page"
+            :page="pagination.page"
             :totals="total"
             @current-change="changepage"
             :pageSize="pagination.page_size"
@@ -117,7 +119,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .box {

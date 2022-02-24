@@ -39,6 +39,8 @@
     <none v-else></none>
     <div id="page" v-show="list.length > 0 && total > pagination.page_size">
       <page-box
+        :key="pagination.page"
+        :page="pagination.page"
         :totals="total"
         @current-change="changepage"
         :pageSize="pagination.page_size"
