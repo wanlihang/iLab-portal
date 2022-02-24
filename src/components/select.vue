@@ -230,7 +230,7 @@ export default {
 
     .choice-tap-item {
       width: 100%;
-      height: 20px;
+      height: auto;
       float: left;
       box-sizing: border-box;
       display: flex;
@@ -266,10 +266,6 @@ export default {
         font-size: 16px;
         font-weight: 400;
         background-color: #fff;
-
-        img {
-          max-width: 100%;
-        }
       }
     }
   }
