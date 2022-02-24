@@ -10,7 +10,7 @@
             src="../../../assets/img/commen/icon-close.png"
           />
         </div>
-        <div class="text">确认要交卷吗？</div>
+        <div class="text">还有{{ surplus }}道题未做，确认要交卷吗？</div>
         <div class="button">
           <div class="confirm" style="cursor: pointer" @click="submitHandle()">
             确定
@@ -167,6 +167,7 @@ export default {
       },
       flag: false,
       timer: null,
+      surplus: 0,
       id: this.$route.query.id || 0,
       pid: this.$route.query.pid || 0,
       paper: [],
@@ -205,6 +206,7 @@ export default {
       });
     },
     submitAll() {
+      this.getData();
       this.results.openmask = true;
     },
     //倒计时
@@ -257,6 +259,7 @@ export default {
             });
             return;
           }
+          let unread = 0;
           let params = [];
           let choice = [];
           let select = [];
@@ -265,6 +268,9 @@ export default {
           let judge = [];
           let cap = [];
           normaldata.forEach((item) => {
+            if (!item.answer_content) {
+              unread++;
+            }
             if (item.question) {
               if (item.question.type === 1) {
                 choice.push(item);
@@ -306,6 +312,7 @@ export default {
             params.push(...cap);
           }
           this.questions = params;
+          this.surplus = unread;
           if (this.userPaper.status === 0) {
             this.timer = setInterval(() => {
               if (this.flag) {

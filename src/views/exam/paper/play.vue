@@ -1,6 +1,25 @@
 <template>
   <div class="content">
     <div class="mask" v-if="results.openmask">
+      <div class="popup borderbox" v-if="dialogStatus">
+        <div class="tabs">
+          <div class="item-tab">确认信息</div>
+          <img
+            class="btn-close"
+            @click="cancel()"
+            src="../../../assets/img/commen/icon-close.png"
+          />
+        </div>
+        <div class="text">正在考试中,是否确认返回?</div>
+        <div class="button">
+          <div class="confirm" style="cursor: pointer" @click="confirm()">
+            确认
+          </div>
+          <div class="cancel" style="cursor: pointer" @click="cancel()">
+            取消
+          </div>
+        </div>
+      </div>
       <div class="popup borderbox" v-if="submitTip">
         <div class="tabs">
           <div class="item-tab">确认信息</div>
@@ -10,7 +29,7 @@
             src="../../../assets/img/commen/icon-close.png"
           />
         </div>
-        <div class="text">确认要交卷吗？</div>
+        <div class="text">还有{{ surplus }}道题未做，确认要交卷吗？</div>
         <div class="button">
           <div class="confirm" style="cursor: pointer" @click="submitHandle()">
             确定
@@ -37,7 +56,7 @@
     </div>
     <div class="navheader">
       <div class="top">
-        <div class="top-left" @click="$router.back()">
+        <div class="top-left" @click="goBack()">
           <img
             class="icon-back"
             src="../../../assets/img/commen/icon-back-h.png"
@@ -189,9 +208,11 @@ export default {
         surplus: null,
       },
       flag: false,
+      dialogStatus: false,
       submitTip: false,
       readTip: false,
       timer: null,
+      surplus: 0,
       workTime: 0,
       id: this.$route.query.id || 0,
       pid: this.$route.query.pid || 0,
@@ -217,10 +238,24 @@ export default {
     this.getData();
   },
   methods: {
+    goBack() {
+      if (this.userPaper.status === 1) {
+        this.results.openmask = true;
+        this.dialogStatus = true;
+      } else {
+        this.cancel();
+        this.$router.back();
+      }
+    },
+    confirm() {
+      this.cancel();
+      this.$router.back();
+    },
     cancel() {
       this.results.openmask = false;
       this.submitTip = false;
       this.readTip = false;
+      this.dialogStatus = false;
     },
     ok() {
       this.results.openmask = false;
@@ -244,6 +279,7 @@ export default {
       });
     },
     submitAll() {
+      this.getData();
       this.results.openmask = true;
       this.submitTip = true;
     },
@@ -295,6 +331,7 @@ export default {
             });
             return;
           }
+          let unread = 0;
           let params = [];
           let choice = [];
           let select = [];
@@ -303,6 +340,9 @@ export default {
           let judge = [];
           let cap = [];
           normaldata.forEach((item) => {
+            if (!item.answer_content) {
+              unread++;
+            }
             if (item.question) {
               if (item.question.type === 1) {
                 choice.push(item);
@@ -344,6 +384,7 @@ export default {
             params.push(...cap);
           }
           this.questions = params;
+          this.surplus = unread;
           if (this.userPaper.status === 1) {
             this.timer = setInterval(() => {
               if (this.flag) {
