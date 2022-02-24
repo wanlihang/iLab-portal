@@ -22,6 +22,7 @@
           :activeNum="activeQid"
           :qidArr="qidArr"
           @change="changeQid"
+          :configkey="configkey"
         ></NumberSheet>
       </div>
       <div class="right-box">
@@ -162,6 +163,7 @@ export default {
       showAnswer: false,
       showText: "对答案",
       loading: false,
+      configkey: [],
     };
   },
   mounted() {

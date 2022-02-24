@@ -21,6 +21,7 @@
           type="collection"
           :activeNum="activeQid"
           :qidArr="qidArr"
+          :configkey="configkey"
           @change="changeQid"
         ></NumberSheet>
       </div>
@@ -160,6 +161,7 @@ export default {
       showAnswer: false,
       showText: "对答案",
       loading: false,
+      configkey: [],
     };
   },
   mounted() {

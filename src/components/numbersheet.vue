@@ -4,7 +4,7 @@
       <div
         class="num"
         :class="{
-          active: index + 1 === activeNum,
+          active: index + 1 === activeNum || configkey[index],
           practice: type === 'practice',
           wrongbook: type === 'wrongbook',
           collection: type === 'collection',
@@ -20,7 +20,7 @@
       <div
         class="num"
         :class="{
-          active: index + 1 === activeNum,
+          active: index + 1 === activeNum || configkey[index],
           practice: type === 'practice',
           wrongbook: type === 'wrongbook',
           collection: type === 'collection',
@@ -36,7 +36,7 @@
 </template>
 <script>
 export default {
-  props: ["activeNum", "qidArr", "type"],
+  props: ["activeNum", "qidArr", "type", "configkey"],
   data() {
     return {};
   },
@@ -47,7 +47,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .box {
   width: 100%;
   .number-box {
