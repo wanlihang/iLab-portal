@@ -6,7 +6,7 @@
       >
     </div>
     <div class="question-content">
-      <div v-html="header"></div>
+      <div class="content-render" v-html="header"></div>
     </div>
     <div class="choice-box">
       <template v-for="(item, index) in questions">

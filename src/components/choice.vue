@@ -2,11 +2,11 @@
   <div class="choice-item">
     <div class="info" :class="{ spcolor: spcolor }">
       <span class="tit"
-        >{{num}}.{{ question.type_text }}（{{ question.score }}分）</span
+        >{{ num }}.{{ question.type_text }}（{{ question.score }}分）</span
       >
     </div>
     <div class="question-content" :class="{ spcolor: spcolor }">
-      <div v-html="question.content"></div>
+      <div class="content-render" v-html="question.content"></div>
     </div>
     <div class="choice-box" :class="{ spcolor: spcolor }">
       <template v-for="item in 10">
@@ -19,7 +19,10 @@
         >
           <div class="index">{{ optionTypeTextMap["option" + item] }}</div>
           <div class="content" :class="{ spcolor: spcolor }">
-            <div v-html="question['option' + item]"></div>
+            <div
+              class="content-render"
+              v-html="question['option' + item]"
+            ></div>
           </div>
         </div>
       </template>
@@ -95,7 +98,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .spcolor {
   background: #f4fafe !important;
 }
@@ -193,4 +196,3 @@ export default {
   }
 }
 </style>
-  

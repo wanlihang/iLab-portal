@@ -25,7 +25,7 @@
       >
     </div>
     <div class="question-content" :class="{ spcolor: spcolor }">
-      <div v-html="question.content"></div>
+      <div class="content-render" v-html="question.content"></div>
     </div>
     <div class="choice-box" :class="{ spcolor: spcolor }">
       <div class="input-title">我的作答</div>
