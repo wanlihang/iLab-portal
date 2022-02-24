@@ -8,7 +8,7 @@
       />
       <img
         @click="deleteImage()"
-        v-if="!isOver"
+        v-if="!isOver && !prew"
         class="delete-img"
         src="../assets/img/icon-delete.png"
       />
@@ -25,7 +25,11 @@
       >
     </div>
     <div class="question-content" :class="{ spcolor: spcolor }">
-      <div class="content-render" v-html="question.content"></div>
+      <div
+        @click="PreviewImage2($event)"
+        class="content-render"
+        v-html="question.content"
+      ></div>
     </div>
     <div class="choice-box" :class="{ spcolor: spcolor }">
       <div class="input-title">我的作答</div>
@@ -109,6 +113,7 @@ export default {
         thumb: null,
         index: null,
       },
+      prew: false,
     };
   },
   mounted() {
@@ -167,8 +172,16 @@ export default {
     },
     PreviewImage(val, index) {
       this.previewImage = true;
+      this.prew = false;
       this.image.thumb = val;
       this.image.index = index;
+    },
+    PreviewImage2($event) {
+      if ($event.target.src) {
+        this.prew = true;
+        this.image.thumb = $event.target.src;
+        this.previewImage = true;
+      }
     },
     emitCall() {
       this.$emit("update", this.question.id, this.val, this.localThumbs);
@@ -200,6 +213,7 @@ export default {
       left: 15px;
       width: 19px;
       height: 19px;
+      cursor: pointer;
     }
     .delete-img {
       position: absolute;
@@ -207,6 +221,7 @@ export default {
       right: 15px;
       width: 24px;
       height: 24px;
+      cursor: pointer;
     }
     .pic-item {
       width: 100%;
