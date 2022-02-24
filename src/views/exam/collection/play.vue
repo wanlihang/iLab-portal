@@ -119,7 +119,16 @@
             </div>
           </div>
         </template>
-        <div class="buttons-box">
+        <div
+          class="buttons-box"
+          v-if="
+            question &&
+            (question.type === 2 ||
+              question.type === 3 ||
+              question.type === 4 ||
+              question.type === 6)
+          "
+        >
           <div class="see-answer" @click="seeAnswer()">{{ showText }}</div>
         </div>
       </div>
@@ -205,6 +214,9 @@ export default {
             this.question = question;
             this.qidArr.push(this.question.id);
             this.collectStatus();
+            for (var i = 0; i < this.qidArr.length; i++) {
+              this.configkey.push(false);
+            }
           })
           .catch((e) => {
             this.loading = false;
@@ -218,6 +230,9 @@ export default {
             this.question = res.data.first_question;
             this.qidArr = res.data.qid_arr;
             this.collectStatus();
+            for (var i = 0; i < this.qidArr.length; i++) {
+              this.configkey.push(false);
+            }
           })
           .catch((e) => {
             this.loading = false;
@@ -277,6 +292,7 @@ export default {
     },
     seeAnswer() {
       let questionId = this.qidArr[this.activeQid - 1];
+      this.$set(this.configkey, this.activeQid - 1, true);
       if (this.showAnswer === true) {
         this.showText = "对答案";
       } else {
@@ -289,7 +305,14 @@ export default {
         }
       );
     },
-    questionUpdate() {},
+    questionUpdate() {
+      if (
+        this.question &&
+        (this.question.type === 1 || this.question.type === 5)
+      ) {
+        this.seeAnswer();
+      }
+    },
   },
 };
 </script>
