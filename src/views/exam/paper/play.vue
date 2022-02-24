@@ -92,6 +92,21 @@
       <div class="questions-box" v-if="questions && userPaper">
         <template v-for="(question, index) in questions">
           <div class="item" :key="index">
+            <template v-if="userPaper.status === 2 && collects">
+              <div
+                class="collect-icon"
+                @click="collectAnswer(question.question_id)"
+              >
+                <img
+                  v-if="collects[question.question_id] === 1"
+                  src="../../../assets/img/commen/icon-collect-h.png"
+                />
+                <img
+                  v-else
+                  src="../../../assets/img/commen/icon-collect-n.png"
+                />
+              </div>
+            </template>
             <!-- 单选 -->
             <question-choice
               :num="index + 1"
@@ -226,6 +241,7 @@ export default {
         min: 0,
         sec: 0,
       },
+      collects: null,
     };
   },
   beforeDestroy() {
@@ -393,6 +409,8 @@ export default {
                 this.countdown();
               }
             }, 1000);
+          } else if (this.userPaper.status === 2) {
+            this.getCollectStatus();
           }
         })
         .catch((e) => {
@@ -419,6 +437,35 @@ export default {
         .catch((e) => {
           this.$message.error(e.message);
         });
+    },
+    getCollectStatus() {
+      let data = this.questions;
+      let ids = [];
+      for (let i = 0; i < data.length; i++) {
+        ids.push(data[i].question_id);
+      }
+      this.$api.Exam.Practice.CollectionStatus({
+        question_ids: ids,
+      })
+        .then((res) => {
+          this.collects = res.data;
+        })
+        .catch((e) => {
+          this.$message.error(e.message);
+        });
+    },
+    collectAnswer(id) {
+      this.$api.Exam.Practice.Collect({
+        question_id: id,
+      }).then(() => {
+        if (this.collects[id] === 1) {
+          this.$message.success("已取消收藏");
+          this.$set(this.collects, id, 0);
+        } else {
+          this.$message.success("已收藏试题");
+          this.$set(this.collects, id, 1);
+        }
+      });
     },
   },
 };
@@ -512,6 +559,23 @@ export default {
     margin-top: 50px;
     .questions-box {
       width: 1200px;
+      height: auto;
+      float: left;
+      .item {
+        width: 100%;
+        height: auto;
+        float: left;
+        position: relative;
+        .collect-icon {
+          position: absolute;
+          width: 28px;
+          height: 28px;
+          cursor: pointer;
+          right: 30px;
+          top: 30px;
+          z-index: 10;
+        }
+      }
     }
   }
   .mask {

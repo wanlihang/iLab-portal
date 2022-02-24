@@ -497,6 +497,9 @@ const Api = {
       CollectStatus(params) {
         return post(`/addons/Paper/api/v1/collection/status`, params);
       },
+      CollectionStatus(params) {
+        return post(`/addons/Paper/api/v1/collection/status/multi`, params);
+      },
       Collect(params) {
         return post(`/addons/Paper/api/v1/collection/action`, params);
       },
