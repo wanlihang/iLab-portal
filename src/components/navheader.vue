@@ -336,8 +336,8 @@ export default {
   }
 }
 .skeletonLogo {
-  width: 140px;
-  height: 40px;
+  width: 187px;
+  height: 50px;
   background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
   background-size: 400% 100%;
   animation: el-skeleton-loading 1.4s ease infinite;
