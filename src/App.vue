@@ -202,6 +202,7 @@ export default {
         _.indexOf(config.enabled_addons, "DaySignIn") !== -1;
       funcTable["credit1Mall"] =
         _.indexOf(config.enabled_addons, "Credit1Mall") !== -1;
+      funcTable["tuangou"] = _.indexOf(config.enabled_addons, "TuanGou") !== -1;
       this.updateFuncConfig(funcTable);
       if (this.$utils.isMobile() && config.h5_url !== "") {
         window.location.href = config.h5_url;

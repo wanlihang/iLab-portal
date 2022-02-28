@@ -83,6 +83,9 @@
               </div>
             </div>
           </div>
+          <template v-if="!isBuy && tgData">
+            <tuangou-list :tg="tgData"></tuangou-list>
+          </template>
           <div class="tabs" id="NavBar">
             <div
               class="item-tab"
@@ -232,6 +235,7 @@ import PageBox from "../../../components/page.vue";
 import None from "../../../components/none.vue";
 import HistoryRecord from "../../../components/history-record.vue";
 import SkeletonDetail from "../../../components/skeleton/skeletonDetail.vue";
+import TuangouList from "../../../components/tuangou-list.vue";
 
 export default {
   components: {
@@ -241,6 +245,7 @@ export default {
     None,
     HistoryRecord,
     SkeletonDetail,
+    TuangouList,
   },
   data() {
     return {
@@ -277,10 +282,11 @@ export default {
         },
       },
       isfixTab: false,
+      tgData: null,
     };
   },
   computed: {
-    ...mapState(["isLogin", "user"]),
+    ...mapState(["isLogin", "user", "configFunc"]),
   },
   mounted() {
     window.addEventListener("scroll", this.handleTabFix, true);
@@ -392,10 +398,25 @@ export default {
           this.chapters = res.data.chapters;
           this.isBuy = res.data.is_buy;
           document.title = res.data.course.title;
+          //获取团购信息
+          if (!this.isBuy && this.configFunc["live"]) {
+            this.getTgDetail();
+          }
         })
         .catch((e) => {
           this.$message.error("获取课程失败");
         });
+    },
+    getTgDetail() {
+      if (this.course.charge === 0) {
+        return;
+      }
+      this.$api.TuanGou.Detail(0, {
+        course_id: this.id,
+        course_type: "live",
+      }).then((res) => {
+        this.tgData = res.data;
+      });
     },
     getComments() {
       if (this.comment.loading) {
@@ -529,7 +550,7 @@ export default {
     }
     .course-info {
       width: 1200px;
-      height: 372px;
+      height: auto;
       background: #ffffff;
       border-radius: 8px;
       .course-info-box {

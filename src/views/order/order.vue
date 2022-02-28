@@ -87,6 +87,7 @@ export default {
       promoCodeModel: null,
       paymentScene: "pc",
       course_id: this.$route.query.course_id,
+      course_type: this.$route.query.course_type,
     };
   },
   computed: {
@@ -381,6 +382,7 @@ export default {
               type: this.goods.type,
               id: this.goods.id,
               course_id: this.$route.query.course_id,
+              course_type: this.$route.query.course_type,
             },
           });
         } else {

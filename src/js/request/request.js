@@ -732,8 +732,8 @@ const Api = {
     List(params) {
       return get("/addons/TuanGou/api/v1/t", params);
     },
-    Detail(id) {
-      return get("/addons/TuanGou/api/v1/t/" + id);
+    Detail(id, params) {
+      return get("/addons/TuanGou/api/v1/t/" + id, params);
     },
     CreateOrder(id, params) {
       return post("/addons/TuanGou/api/v1/t/" + id + "/buy", params);
