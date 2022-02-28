@@ -40,6 +40,12 @@
               </div>
             </div>
           </div>
+          <template v-if="!isBuy && tgData">
+            <tuangou-list
+              style="margin-bottom: 30px"
+              :tg="tgData"
+            ></tuangou-list>
+          </template>
         </div>
         <div class="book-chapter-box">
           <template v-if="steps.length > 0">
@@ -117,11 +123,13 @@
 import { mapState, mapMutations } from "vuex";
 import NavFooter from "../../components/footer.vue";
 import SkeletonDetail from "../../components/skeleton/skeletonDetail.vue";
+import TuangouList from "../../components/tuangou-list.vue";
 
 export default {
   components: {
     NavFooter,
     SkeletonDetail,
+    TuangouList,
   },
   data() {
     return {
@@ -130,12 +138,12 @@ export default {
       learn: [],
       currentTab: 3,
       steps: [],
-
+      tgData: null,
       isBuy: false,
     };
   },
   computed: {
-    ...mapState(["isLogin", "user"]),
+    ...mapState(["isLogin", "user", "configFunc"]),
   },
   mounted() {
     this.getDetail();
@@ -204,6 +212,20 @@ export default {
         this.steps = res.data.steps;
         this.isBuy = res.data.is_buy;
         document.title = res.data.data.name;
+        if (!this.isBuy && this.configFunc["book"]) {
+          this.getTgDetail();
+        }
+      });
+    },
+    getTgDetail() {
+      if (this.steps.charge === 0) {
+        return;
+      }
+      this.$api.TuanGou.Detail(0, {
+        course_id: this.id,
+        course_type: "learnPath",
+      }).then((res) => {
+        this.tgData = res.data;
       });
     },
   },
@@ -288,12 +310,14 @@ export default {
       }
     }
     .book-info {
+      display: flex;
       width: 1200px;
-      height: 300px;
+      height: auto;
       background: #ffffff;
       border-radius: 8px;
+      flex-direction: column;
       .book-info-box {
-        width: 1200px;
+        width: 100%;
         height: 300px;
         box-sizing: border-box;
         padding: 30px 50px 30px 30px;

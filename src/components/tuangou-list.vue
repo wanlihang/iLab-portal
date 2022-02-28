@@ -29,10 +29,8 @@
             />
             <img
               class="value"
-              v-for="(it, index) in tg.goods.people_num -
-              1 -
-              tg.join_item.users.length"
-              :key="index + tg.join_item.users.length"
+              v-for="it in tg.goods.people_num - 1 - tg.join_item.users.length"
+              :key="it + tg.join_item.users.length + 1"
               src="../assets/img/commen/icon-member.png"
             />
           </div>
@@ -45,9 +43,8 @@
             />
             <img
               class="value"
-              v-for="(it, index) in tg.goods.people_num -
-              tg.join_item.users.length"
-              :key="index"
+              v-for="it in tg.goods.people_num - tg.join_item.users.length"
+              :key="it + tg.join_item.users.length"
               src="../assets/img/commen/icon-member.png"
             />
           </div>
@@ -76,8 +73,8 @@
             />
             <img
               class="value"
-              v-for="(it, index) in tg.goods.people_num - 1 - item.users.length"
-              :key="index"
+              v-for="it in tg.goods.people_num - 1 - item.users.length"
+              :key="it + item.users.length + 1"
               src="../assets/img/commen/icon-member.png"
             />
           </div>
@@ -90,8 +87,8 @@
             />
             <img
               class="value"
-              v-for="(it, index) in tg.goods.people_num - item.users.length"
-              :key="index + item.users.length"
+              v-for="it in tg.goods.people_num - item.users.length"
+              :key="it + item.users.length"
               src="../assets/img/commen/icon-member.png"
             />
           </div>

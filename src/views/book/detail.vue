@@ -77,6 +77,9 @@
               </div>
             </div>
           </div>
+          <template v-if="!isBuy && tgData">
+            <tuangou-list :tg="tgData"></tuangou-list>
+          </template>
           <div class="tabs" id="NavBar">
             <div
               class="item-tab"
@@ -226,6 +229,7 @@ import None from "../../components/none.vue";
 import PageBox from "../../components/page.vue";
 import HistoryRecord from "../../components/history-record.vue";
 import SkeletonDetail from "../../components/skeleton/skeletonDetail.vue";
+import TuangouList from "../../components/tuangou-list.vue";
 
 export default {
   components: {
@@ -234,6 +238,7 @@ export default {
     None,
     HistoryRecord,
     SkeletonDetail,
+    TuangouList,
   },
   data() {
     return {
@@ -271,10 +276,11 @@ export default {
         content: "",
       },
       isfixTab: false,
+      tgData: null,
     };
   },
   computed: {
-    ...mapState(["isLogin", "user"]),
+    ...mapState(["isLogin", "user", "configFunc"]),
   },
   mounted() {
     window.addEventListener("scroll", this.handleTabFix, true);
@@ -408,6 +414,21 @@ export default {
         this.articles = res.data.articles;
         this.isBuy = res.data.is_buy;
         document.title = res.data.book.name;
+        //获取团购信息
+        if (!this.isBuy && this.configFunc["book"]) {
+          this.getTgDetail();
+        }
+      });
+    },
+    getTgDetail() {
+      if (this.book.charge === 0) {
+        return;
+      }
+      this.$api.TuanGou.Detail(0, {
+        course_id: this.id,
+        course_type: "book",
+      }).then((res) => {
+        this.tgData = res.data;
       });
     },
     getComments() {
@@ -538,7 +559,7 @@ export default {
     }
     .book-info {
       width: 1200px;
-      height: 452px;
+      height: auto;
       background: #ffffff;
       border-radius: 8px;
       .book-info-box {
