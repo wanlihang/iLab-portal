@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <template v-if="tg.join_item">
+    <template v-if="tg.join_item && tg.join_item.length > 0">
       <div class="tg-list">
         <div class="item">
           <div class="left-box" v-if="tg.join_item.create_user_id === 0">
@@ -148,7 +148,7 @@ export default {
       input.select();
       document.execCommand("Copy");
       document.body.removeChild(input);
-      this.$message.success("复制当前地址成功，可分享邀请好友参团");
+      this.$message.success("链接已复制，可分享邀请好友参团");
     },
   },
 };

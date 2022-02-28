@@ -1,8 +1,13 @@
 <template>
   <div class="value">
-    {{ remainingTime.day }}天{{ remainingTime.hr }}时{{ remainingTime.min }}分{{
-      remainingTime.sec
-    }}秒
+    <template v-if="remainingTime.day === 0">
+      {{ remainingTime.hr }}时{{ remainingTime.min }}分{{ remainingTime.sec }}秒
+    </template>
+    <template v-if="remainingTime.day > 0">
+      {{ remainingTime.day }}天{{ remainingTime.hr }}时{{
+        remainingTime.min
+      }}分{{ remainingTime.sec }}秒
+    </template>
   </div>
 </template>
 <script>

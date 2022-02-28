@@ -73,7 +73,12 @@
                   >
                     会员免费看
                   </div>
-                  <template v-if="tgData">
+                  <template
+                    v-if="
+                      tgData &&
+                      (!tgData.join_item || tgData.join_item.length === 0)
+                    "
+                  >
                     <div class="role-button" @click="goPay(0)">
                       单独开团￥{{ tgData.goods.charge }}
                     </div>
