@@ -45,12 +45,35 @@ export default {
   props: ["name", "items"],
   methods: {
     goTgDetail(item) {
-      this.$router.push({
-        name: "tgDetail",
-        query: {
-          id: item.id,
-        },
-      });
+      if (item.goods_type === "course") {
+        this.$router.push({
+          name: "coursesDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      } else if (item.goods_type === "live") {
+        this.$router.push({
+          name: "liveDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      } else if (item.goods_type === "book") {
+        this.$router.push({
+          name: "bookDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      } else if (item.goods_type === "learnPath") {
+        this.$router.push({
+          name: "learnPathDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      }
     },
   },
 };
