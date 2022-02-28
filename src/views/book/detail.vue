@@ -73,6 +73,11 @@
                   >
                     会员免费看
                   </div>
+                  <template v-if="tgData">
+                    <div class="role-button" @click="goPay(0)">
+                      单独开团￥{{ tgData.goods.charge }}
+                    </div>
+                  </template>
                 </template>
               </div>
             </div>
@@ -293,6 +298,26 @@ export default {
   },
   methods: {
     ...mapMutations(["showLoginDialog", "changeDialogType"]),
+    goPay(gid = 0) {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
+      this.$router.push({
+        name: "order",
+        query: {
+          goods_type: "tg",
+          goods_charge: this.tgData.goods.charge,
+          goods_label: "团购",
+          goods_name: this.tgData.goods.goods_title,
+          goods_id: this.tgData.goods.id,
+          goods_thumb: this.tgData.goods.goods_thumb,
+          tg_gid: gid,
+          course_id: this.tgData.goods.other_id,
+          course_type: this.tgData.goods.goods_type,
+        },
+      });
+    },
     goLogin() {
       this.changeDialogType(1);
       this.showLoginDialog();

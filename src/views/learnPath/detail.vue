@@ -35,6 +35,11 @@
                       learn.courses_count
                     }}课程）
                   </div>
+                  <template v-if="tgData">
+                    <div class="role-button" @click="goPay(0)">
+                      单独开团￥{{ tgData.goods.charge }}
+                    </div>
+                  </template>
                   <div class="original">原价:￥{{ learn.original_charge }}</div>
                 </template>
               </div>
@@ -151,6 +156,26 @@ export default {
   beforeDestroy() {},
   methods: {
     ...mapMutations(["showLoginDialog", "changeDialogType"]),
+    goPay(gid = 0) {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
+      this.$router.push({
+        name: "order",
+        query: {
+          goods_type: "tg",
+          goods_charge: this.tgData.goods.charge,
+          goods_label: "团购",
+          goods_name: this.tgData.goods.goods_title,
+          goods_id: this.tgData.goods.id,
+          goods_thumb: this.tgData.goods.goods_thumb,
+          tg_gid: gid,
+          course_id: this.tgData.goods.other_id,
+          course_type: this.tgData.goods.goods_type,
+        },
+      });
+    },
     goLogin() {
       this.changeDialogType(1);
       this.showLoginDialog();
@@ -423,6 +448,21 @@ export default {
               color: #ffffff;
               line-height: 16px;
               box-sizing: border-box;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+            .role-button {
+              background: #e1a500;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              margin-left: 20px;
               cursor: pointer;
               &:hover {
                 opacity: 0.8;
