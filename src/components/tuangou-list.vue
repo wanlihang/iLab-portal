@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <template v-if="tg.join_item && tg.join_item.length > 0">
+    <template v-if="tg.join_item && tg.join_item.length !== 0">
       <div class="tg-list">
         <div class="item">
           <div class="left-box" v-if="tg.join_item.create_user_id === 0">
