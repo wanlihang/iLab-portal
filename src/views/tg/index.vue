@@ -12,7 +12,7 @@
             class="tg-item"
             v-for="item in list"
             :key="item.id"
-            @click="goTgDetail(item.id)"
+            @click="goTgDetail(item)"
           >
             <div class="tg-course-thumb">
               <div class="thumb-bar">
@@ -152,13 +152,36 @@ export default {
       this.getData();
       window.scrollTo(0, 0);
     },
-    goTgDetail(id) {
-      this.$router.push({
-        name: "tgDetail",
-        query: {
-          id: id,
-        },
-      });
+    goTgDetail(item) {
+      if (item.goods_type === "course") {
+        this.$router.push({
+          name: "coursesDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      } else if (item.goods_type === "live") {
+        this.$router.push({
+          name: "liveDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      } else if (item.goods_type === "book") {
+        this.$router.push({
+          name: "bookDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      } else if (item.goods_type === "learnPath") {
+        this.$router.push({
+          name: "learnPathDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      }
     },
     getData() {
       if (this.loading) {
