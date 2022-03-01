@@ -16,92 +16,58 @@
         </div>
       </div>
     </div>
-    <template v-if="tg.join_item && tg.join_item.length !== 0">
-      <div class="tg-list">
-        <div class="item">
-          <div class="left-box" v-if="tg.join_item.create_user_id === 0">
-            <img class="value" :src="tg.join_item.create_user_avatar" />
-            <img
-              class="value"
-              :src="it.avatar"
-              v-for="(it, index) in tg.join_item.users"
-              :key="index"
-            />
-            <img
-              class="value"
-              v-for="it in tg.goods.people_num - 1 - tg.join_item.users.length"
-              :key="it + tg.join_item.users.length + 1"
-              src="../assets/img/commen/icon-member.png"
-            />
-          </div>
-          <div class="left-box" v-else>
-            <img
-              class="value"
-              :src="it.avatar"
-              v-for="(it, index) in tg.join_item.users"
-              :key="index"
-            />
-            <img
-              class="value"
-              v-for="it in tg.goods.people_num - tg.join_item.users.length"
-              :key="it + tg.join_item.users.length"
-              src="../assets/img/commen/icon-member.png"
-            />
-          </div>
-          <div class="right-box">
-            <div class="date">
-              差<span>{{ tg.join_item.over_people_num }}</span
-              >人拼成 剩余<count-down
-                :timestamp="tg.join_item.count_down"
-              ></count-down>
-            </div>
-            <div class="button" @click="copy()">拼团中，邀请好友参团</div>
-          </div>
+    <div class="tg-list" v-if="tg.items && tg.items.length > 0">
+      <div class="item" v-for="item in tg.items" :key="item.id">
+        <div class="left-box" v-if="item.create_user_id === 0">
+          <img class="value" :src="item.create_user_avatar" />
+          <img
+            class="value"
+            :src="it.avatar"
+            v-for="(it, index) in item.users"
+            :key="index"
+          />
+          <img
+            class="value"
+            v-for="it in tg.goods.people_num - 1 - item.users.length"
+            :key="it + item.users.length + 1"
+            src="../assets/img/commen/icon-member.png"
+          />
         </div>
-      </div>
-    </template>
-    <template v-else>
-      <div class="tg-list" v-if="tg.items && tg.items.length > 0">
-        <div class="item" v-for="item in tg.items" :key="item.id">
-          <div class="left-box" v-if="item.create_user_id === 0">
-            <img class="value" :src="item.create_user_avatar" />
-            <img
-              class="value"
-              :src="it.avatar"
-              v-for="(it, index) in item.users"
-              :key="index"
-            />
-            <img
-              class="value"
-              v-for="it in tg.goods.people_num - 1 - item.users.length"
-              :key="it + item.users.length + 1"
-              src="../assets/img/commen/icon-member.png"
-            />
+        <div class="left-box" v-else>
+          <img
+            class="value"
+            :src="it.avatar"
+            v-for="(it, index) in item.users"
+            :key="index"
+          />
+          <img
+            class="value"
+            v-for="it in tg.goods.people_num - item.users.length"
+            :key="it + item.users.length"
+            src="../assets/img/commen/icon-member.png"
+          />
+        </div>
+        <div class="right-box">
+          <div class="date">
+            差<span>{{ item.over_people_num }}</span
+            >人拼成 剩余<count-down :timestamp="item.count_down"></count-down>
           </div>
-          <div class="left-box" v-else>
-            <img
-              class="value"
-              :src="it.avatar"
-              v-for="(it, index) in item.users"
-              :key="index"
-            />
-            <img
-              class="value"
-              v-for="it in tg.goods.people_num - item.users.length"
-              :key="it + item.users.length"
-              src="../assets/img/commen/icon-member.png"
-            />
-          </div>
-          <div class="right-box">
-            <div class="date">
-              差<span>{{ item.over_people_num }}</span
-              >人拼成 剩余<count-down :timestamp="item.count_down"></count-down>
+          <template v-if="tg.join_item && tg.join_item.length !== 0">
+            <div
+              class="button"
+              v-if="tg.join_item.id === item.id"
+              @click="copy()"
+            >
+              拼团中，邀请好友参团
             </div>
+            <div class="button no-join" v-else>加入拼团</div>
+          </template>
+          <template v-else>
             <div class="button" @click="goPay(item.id)">加入拼团</div>
-          </div>
+          </template>
         </div>
       </div>
-    </template>
+    </div>
   </div>
 </template>
 <script>
@@ -294,6 +260,9 @@ export default {
           cursor: pointer;
           &:hover {
             opacity: 0.8;
+          }
+          &.no-join {
+            background: #ccc;
           }
         }
       }
