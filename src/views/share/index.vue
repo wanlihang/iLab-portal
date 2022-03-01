@@ -97,17 +97,7 @@
               </div>
             </div>
           </template>
-          <div id="page" v-show="projectType === 1 && course.length > 0">
-            <page-box
-              :key="pagination2.page"
-              :page="pagination2.page"
-              :totals="total2"
-              @current-change="changepage2"
-              :pageSize="pagination2.size"
-              :tab="false"
-            ></page-box>
-          </div>
-          <template v-if="projectType === 2 && list.length > 0">
+          <template v-else-if="projectType === 2 && list.length > 0">
             <div
               class="project-item"
               v-for="(item, index) in list"
@@ -120,6 +110,17 @@
               </div>
             </div>
           </template>
+          <none v-else type="white"></none>
+          <div id="page" v-show="projectType === 1 && course.length > 0">
+            <page-box
+              :key="pagination2.page"
+              :page="pagination2.page"
+              :totals="total2"
+              @current-change="changepage2"
+              :pageSize="pagination2.size"
+              :tab="false"
+            ></page-box>
+          </div>
           <div id="page" v-show="projectType === 2 && list.length > 0">
             <page-box
               :key="pagination.page"
@@ -145,11 +146,13 @@
 import { mapState, mapMutations } from "vuex";
 import NavFooter from "../../components/footer.vue";
 import PageBox from "../../components/page.vue";
+import None from "../../components/none.vue";
 
 export default {
   components: {
     NavFooter,
     PageBox,
+    None,
   },
   data() {
     return {
