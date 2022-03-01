@@ -38,6 +38,7 @@
                   <template
                     v-if="
                       tgData &&
+                      tgData.goods &&
                       (!tgData.join_item || tgData.join_item.length === 0)
                     "
                   >
