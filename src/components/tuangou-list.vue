@@ -105,7 +105,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import CountDown from "./count-down.vue";
 export default {
   components: {
@@ -121,6 +121,11 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["showLoginDialog", "changeDialogType"]),
+    goLogin() {
+      this.changeDialogType(1);
+      this.showLoginDialog();
+    },
     goPay(gid = 0) {
       if (!this.isLogin) {
         this.goLogin();
@@ -142,6 +147,10 @@ export default {
       });
     },
     copy() {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
       var input = document.createElement("input");
       input.value = window.location.href;
       document.body.appendChild(input);
