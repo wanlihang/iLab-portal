@@ -629,11 +629,12 @@ export default {
       width: 1200px;
       margin: 0 auto;
       box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
+      display: inline-block;
+      float: left;
       .info-box {
         width: 400px;
-        height: 332px;
+        height: auto;
+        float: left;
         background: #ffffff;
         border-radius: 8px;
         box-sizing: border-box;
@@ -674,6 +675,7 @@ export default {
 
       .project-box {
         width: 770px;
+        float: left;
         height: auto;
         background: #ffffff;
         border-radius: 8px;
