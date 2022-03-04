@@ -1,6 +1,8 @@
 <template>
   <div class="tg-comp" v-if="tg.goods">
     <div class="tg-content">
+      <div class="sp-mask"></div>
+      <div class="sp-transform"></div>
       <div class="tg-content-item">
         <div class="original-price">原价￥{{ tg.goods.original_charge }}</div>
         <div class="tip">若拼团失败退款将原路返回，请耐心等待</div>
@@ -146,6 +148,26 @@ export default {
     color: #fff;
     box-sizing: border-box;
     padding: 15px 50px;
+    position: relative;
+    .sp-mask {
+      width: 522px;
+      height: 80px;
+      background: rgb(#ffffff, 0.15);
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 10;
+    }
+    .sp-transform {
+      width: 0;
+      height: 0;
+      border-bottom: 80px solid #ff4e79;
+      border-left: 80px solid transparent;
+      position: absolute;
+      left: 442px;
+      top: 0;
+      z-index: 11;
+    }
     .tg-content-item {
       width: 100%;
       float: left;
