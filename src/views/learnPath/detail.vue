@@ -20,7 +20,7 @@
               <p class="desc" v-html="learn.desc"></p>
               <div class="btn-box">
                 <template v-if="isBuy">
-                  <div class="see-button">已购买</div>
+                  <div class="has-button">已购买</div>
                 </template>
                 <template v-else>
                   <div class="has-button" v-if="learn.charge === 0">
