@@ -47,6 +47,7 @@
 
               <li
                 class="item-content"
+                v-highlight="{ keyword: pagination.keywords, separator: ' ' }"
                 v-if="item.short_desc"
                 v-html="item.short_desc"
               ></li>
