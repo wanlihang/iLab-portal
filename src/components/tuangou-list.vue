@@ -152,6 +152,7 @@ export default {
     .sp-mask {
       width: 522px;
       height: 80px;
+      border-radius: 4px 0px 0px 4px;
       background: rgb(#ffffff, 0.15);
       position: absolute;
       left: 0;
