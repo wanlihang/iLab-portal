@@ -69,7 +69,7 @@
               class="input2"
               v-model="form.credit1"
               :disabled="user.credit1 === 0"
-              placeholder="设置悬赏积分(选填)"
+              placeholder="设置悬赏积分"
             />
 
             <div class="help" v-if="user">积分余额：{{ user.credit1 }}积分</div>
@@ -140,7 +140,8 @@ export default {
     },
     isNumber(val) {
       var regPos = /^\d+(\.\d+)?$/; //非负浮点数
-      var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
+      var regNeg =
+        /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
       if (regPos.test(val) || regNeg.test(val)) {
         return true;
       } else {
