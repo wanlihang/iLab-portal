@@ -69,7 +69,7 @@
               class="input2"
               v-model="form.credit1"
               :disabled="user.credit1 === 0"
-              placeholder="设置悬赏积分"
+              placeholder="设置悬赏积分(选填)"
             />
 
             <div class="help" v-if="user">积分余额：{{ user.credit1 }}积分</div>
