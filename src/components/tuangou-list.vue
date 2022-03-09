@@ -189,6 +189,7 @@ export default {
         font-weight: 400;
         line-height: 14px;
         text-decoration: line-through;
+        opacity: 0.6;
       }
       .tip {
         width: auto;
@@ -196,6 +197,7 @@ export default {
         font-size: 12px;
         font-weight: 400;
         line-height: 14px;
+        opacity: 0.6;
       }
       .price {
         width: auto;
