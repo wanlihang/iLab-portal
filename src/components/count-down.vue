@@ -51,7 +51,7 @@ export default {
       const that = this;
       if (min >= 0 && sec >= 0) {
         //倒计时结束关闭订单
-        if (min === 0 && sec === 0 && hr === 0) {
+        if (day === 0 && min === 0 && sec === 0 && hr === 0) {
           return;
         }
         that.endTime--;
