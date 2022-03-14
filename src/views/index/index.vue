@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-main-body-box">
     <div class="contanier">
       <template v-if="loading">
         <skeletonBanner></skeletonBanner>
@@ -113,6 +113,7 @@ export default {
   },
   data() {
     return {
+      pageName: "index",
       loading: false,
       loading2: false,
       notice: null,
@@ -132,7 +133,7 @@ export default {
         },
         effect: "slide",
         on: {
-          click: function(e) {
+          click: function (e) {
             let url = e.target.name;
             if (url) {
               if (
@@ -163,6 +164,13 @@ export default {
     this.getSliders();
     this.getPageBlocks();
     this.getNotice();
+  },
+  activated() {
+    this.$utils.scrollTopSet(this.pageName);
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$utils.scrollTopRecord(this.pageName);
+    next();
   },
   methods: {
     getSliders() {

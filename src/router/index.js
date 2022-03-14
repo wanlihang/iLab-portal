@@ -15,6 +15,7 @@ const routes = [
     meta: {
       title: "首页",
       sign: true,
+      keepAlive: true,
     },
     component: () => import("../views/index/index.vue"),
   },
@@ -23,6 +24,7 @@ const routes = [
     name: "courses",
     meta: {
       title: "点播课",
+      keepAlive: true,
     },
     component: () => import("../views/course/vod/index.vue"),
   },
@@ -54,6 +56,7 @@ const routes = [
     name: "live",
     meta: {
       title: "直播课",
+      keepAlive: true,
     },
     component: () => import("../views/course/live/index.vue"),
   },

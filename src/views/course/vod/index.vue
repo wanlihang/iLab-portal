@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content page-main-body-box">
     <filter-box
       v-show="!navLoading"
       :categories1="scenes"
@@ -69,6 +69,7 @@ export default {
   },
   data() {
     return {
+      pageName: "courses-list",
       scenes: [
         {
           id: "",
@@ -140,10 +141,74 @@ export default {
     this.getCategories();
     this.getData();
   },
+  activated() {
+    this.changefilter();
+    this.$utils.scrollTopSet(this.pageName);
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$utils.scrollTopRecord(this.pageName);
+    next();
+  },
   methods: {
+    changefilter() {
+      let cid = this.pagination.category_id;
+      let scene = this.pagination.scene;
+      if (cid === 0 && scene === "") {
+        this.$router.push({
+          path: this.$route.path,
+        });
+      } else if (cid !== 0 && scene === "") {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            category_id: cid,
+          },
+        });
+      } else if (cid === 0 && scene !== "") {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            scene: scene,
+          },
+        });
+      } else if (cid !== 0 && scene !== "") {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            category_id: cid,
+            scene: scene,
+          },
+        });
+      }
+    },
     filterChange(scene, cid) {
-      this.pagination.scene = scene;
-      this.pagination.category_id = cid;
+      if (cid === 0 && scene === "") {
+        this.$router.push({
+          path: this.$route.path,
+        });
+      } else if (cid !== 0 && scene === "") {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            category_id: cid,
+          },
+        });
+      } else if (cid === 0 && scene !== "") {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            scene: scene,
+          },
+        });
+      } else if (cid !== 0 && scene !== "") {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            category_id: cid,
+            scene: scene,
+          },
+        });
+      }
       this.resetData();
       this.getData();
     },
@@ -170,6 +235,8 @@ export default {
         return;
       }
       this.loading = true;
+      this.pagination.scene = this.$route.query.scene || "";
+      this.pagination.category_id = this.$route.query.category_id || 0;
       this.$api.Course.List(this.pagination).then((res) => {
         this.loading = false;
         let list = res.data.data;
