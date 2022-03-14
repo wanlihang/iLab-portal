@@ -128,6 +128,7 @@ const routes = [
     name: "wenda",
     meta: {
       title: "在线问答",
+      keepAlive: true,
     },
     component: () => import("../views/wenda/index.vue"),
   },

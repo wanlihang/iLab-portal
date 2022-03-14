@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content page-main-body-box">
     <filter-box
       v-show="!navLoading"
       :categories1="scenes"
@@ -101,6 +101,7 @@ export default {
   },
   data() {
     return {
+      pageName: "wenda-list",
       list: [],
       total: null,
       createQestion: false,
@@ -141,15 +142,58 @@ export default {
     this.navLoading = true;
     this.getData();
   },
+  activated() {
+    this.changefilter();
+    this.$utils.scrollTopSet(this.pageName);
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$utils.scrollTopRecord(this.pageName);
+    next();
+  },
   methods: {
     ...mapMutations(["showLoginDialog", "changeDialogType"]),
+    changefilter() {
+      let cid = this.pagination.cid;
+      let scene = this.pagination.scene;
+      if (cid === 0) {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            scene: scene,
+          },
+        });
+      } else {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            scene: scene,
+            category_id: cid,
+          },
+        });
+      }
+    },
     goLogin() {
       this.changeDialogType(1);
       this.showLoginDialog();
     },
     filterChange(scene, cid) {
       this.pagination.scene = scene;
-      this.pagination.cid = cid;
+      if (cid === 0) {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            scene: scene,
+          },
+        });
+      } else {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            scene: scene,
+            category_id: cid,
+          },
+        });
+      }
       this.resetData();
       this.getData();
     },
@@ -168,6 +212,7 @@ export default {
         return;
       }
       this.loading = true;
+      this.pagination.cid = this.$route.query.category_id || 0;
       this.$api.Wenda.List(this.pagination).then((res) => {
         this.loading = false;
         this.navLoading = false;
