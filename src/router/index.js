@@ -78,6 +78,7 @@ const routes = [
     name: "topic",
     meta: {
       title: "图文收费",
+      keepAlive: true,
     },
     component: () => import("../views/topic/topic.vue"),
   },

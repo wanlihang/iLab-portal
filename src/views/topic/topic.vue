@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content page-main-body-box">
     <filter-box
       v-show="!navLoading"
       :categories2="categories"
@@ -111,6 +111,7 @@ export default {
   },
   data() {
     return {
+      pageName: "topic-list",
       list: [],
       total: null,
       pagination: {
@@ -127,31 +128,49 @@ export default {
       navLoading: false,
     };
   },
-  watch: {
-    "pagination.cid"(val) {
-      if (val === 0) {
-        this.$router.push({
-          path: this.$route.path,
-        });
-        return;
-      }
-      this.$router.push({
-        path: this.$route.path,
-        query: {
-          category_id: val,
-        },
-      });
-    },
-  },
   mounted() {
     this.navLoading = true;
     this.getData();
     this.getHotData();
   },
+  activated() {
+    this.changefilter();
+    this.$utils.scrollTopSet(this.pageName);
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$utils.scrollTopRecord(this.pageName);
+    next();
+  },
   methods: {
+    changefilter() {
+      let cid = this.pagination.cid;
+      if (cid === 0) {
+        this.$router.push({
+          path: this.$route.path,
+        });
+      } else {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            category_id: cid,
+          },
+        });
+      }
+    },
     filterChange(scene, cid) {
       this.pagination.scene = scene;
-      this.pagination.cid = cid;
+      if (cid === 0) {
+        this.$router.push({
+          path: this.$route.path,
+        });
+      } else {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            category_id: cid,
+          },
+        });
+      }
       this.resetData();
       this.getData();
     },
@@ -180,6 +199,7 @@ export default {
         return;
       }
       this.loading = true;
+      this.pagination.cid = this.$route.query.category_id || 0;
       this.$api.Topic.List(this.pagination).then((res) => {
         this.loading = false;
         this.navLoading = false;

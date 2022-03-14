@@ -130,6 +130,7 @@ export default {
       this.$router.push({ name: "liveDetail", query: { id: item.id } });
     },
     filterChange(scene, cid) {
+      this.pagination.scene = scene;
       if (cid === 0) {
         this.$router.push({
           path: this.$route.path,

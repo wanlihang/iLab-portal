@@ -161,6 +161,7 @@ export default {
       }
     },
     filterChange(scene, cid) {
+      this.pagination.scene = scene;
       if (cid === 0) {
         this.$router.push({
           path: this.$route.path,
