@@ -98,44 +98,6 @@ export default {
       navLoading: false,
     };
   },
-  watch: {
-    "pagination.scene"(val) {
-      if (val !== "") {
-        this.$router.push({
-          path: this.$route.path,
-          query: {
-            category_id: this.$route.query.category_id,
-            scene: val,
-          },
-        });
-      } else {
-        this.$router.push({
-          path: this.$route.path,
-          query: {
-            category_id: this.$route.query.category_id,
-          },
-        });
-      }
-    },
-    "pagination.category_id"(val) {
-      if (val === 0) {
-        this.$router.push({
-          path: this.$route.path,
-          query: {
-            scene: this.$route.query.scene,
-          },
-        });
-        return;
-      }
-      this.$router.push({
-        path: this.$route.path,
-        query: {
-          category_id: val,
-          scene: this.$route.query.scene,
-        },
-      });
-    },
-  },
   mounted() {
     this.navLoading = true;
     this.getCategories();
