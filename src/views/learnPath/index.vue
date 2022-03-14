@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content page-main-body-box">
     <filter-two-class
       v-show="!navLoading"
       :categories="categories"
@@ -66,6 +66,7 @@ export default {
   },
   data() {
     return {
+      pageName: "learnPath-list",
       list: [],
       total: null,
       pagination: {
@@ -73,8 +74,8 @@ export default {
         size: 16,
         category_id: 0,
       },
-      cid: this.$route.query.cid || 0,
-      child: this.$route.query.child || 0,
+      cid: 0,
+      child: 0,
       steps: [],
       loading: false,
       navLoading: false,
@@ -86,12 +87,45 @@ export default {
     this.params();
     this.getData();
   },
+  activated() {
+    this.changefilter();
+    this.$utils.scrollTopSet(this.pageName);
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$utils.scrollTopRecord(this.pageName);
+    next();
+  },
   methods: {
-    filterChange(cid1, cid2) {
-      if (cid2 !== 0) {
-        this.pagination.category_id = cid2;
+    changefilter() {
+      let cid1 = this.cid;
+      let cid2 = this.child;
+      if (parseInt(cid1) === 0) {
+        this.$router.push({
+          path: this.$route.path,
+        });
       } else {
-        this.pagination.category_id = cid1;
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            cid: cid1,
+            child: cid2,
+          },
+        });
+      }
+    },
+    filterChange(cid1, cid2) {
+      if (parseInt(cid1) === 0) {
+        this.$router.push({
+          path: this.$route.path,
+        });
+      } else {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            cid: cid1,
+            child: cid2,
+          },
+        });
       }
       this.resetData();
       this.getData();
@@ -118,6 +152,13 @@ export default {
         return;
       }
       this.loading = true;
+      this.cid = this.$route.query.cid || 0;
+      this.child = this.$route.query.child || 0;
+      if (parseInt(this.child) === 0) {
+        this.pagination.category_id = this.cid;
+      } else {
+        this.pagination.category_id = this.child;
+      }
       this.$api.LearnPath.List(this.pagination).then((res) => {
         this.loading = false;
         this.steps = res.data.steps;

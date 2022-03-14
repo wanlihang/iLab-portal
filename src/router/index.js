@@ -113,6 +113,7 @@ const routes = [
     name: "learnPath",
     meta: {
       title: "学习路径",
+      keepAlive: true,
     },
     component: () => import("../views/learnPath/index.vue"),
   },
