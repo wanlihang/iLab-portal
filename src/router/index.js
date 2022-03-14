@@ -91,6 +91,7 @@ const routes = [
     name: "book",
     meta: {
       title: "电子书",
+      keepAlive: true,
     },
     component: () => import("../views/book/index.vue"),
   },
