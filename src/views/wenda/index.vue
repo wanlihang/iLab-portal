@@ -212,6 +212,7 @@ export default {
         return;
       }
       this.loading = true;
+      this.pagination.scene = this.$route.query.scene || "default";
       this.pagination.cid = this.$route.query.category_id || 0;
       this.$api.Wenda.List(this.pagination).then((res) => {
         this.loading = false;
