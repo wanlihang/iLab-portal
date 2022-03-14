@@ -56,6 +56,9 @@ export default new Vuex.Store({
       this.keywords = null;
       Utils.clearToken();
     },
+    changeUserCredit(state, credit1) {
+      state.user.credit1 = credit1;
+    },
     saveUnread(state) {
       state.freshUnread = true;
     },

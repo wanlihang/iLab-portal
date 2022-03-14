@@ -172,15 +172,14 @@ export default {
       }
       this.$api.Wenda.Store(this.form)
         .then((res) => {
+          this.form.title = "";
+          this.form.category_id = 0;
+          this.form.original_content = "";
+          this.form.render_content = "";
+          this.form.images = [];
+          this.form.credit1 = null;
           this.$message.success("发布成功");
-          setTimeout(() => {
-            this.$router.push({
-              name: "wendaDetail",
-              query: {
-                id: res.data.id,
-              },
-            });
-          }, 600);
+          this.$emit("success", res.data.id, credit1);
         })
         .catch((e) => {
           this.$message.error(e.message);

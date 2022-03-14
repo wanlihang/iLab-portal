@@ -11,6 +11,7 @@
     <CreateQuestion
       v-if="createQestion"
       @cancel="closeQuestion"
+      @success="createSuccess"
       :status="true"
     ></CreateQuestion>
 
@@ -151,7 +152,11 @@ export default {
     next();
   },
   methods: {
-    ...mapMutations(["showLoginDialog", "changeDialogType"]),
+    ...mapMutations([
+      "showLoginDialog",
+      "changeDialogType",
+      "changeUserCredit",
+    ]),
     changefilter() {
       let cid = this.pagination.cid;
       let scene = this.pagination.scene;
@@ -206,6 +211,19 @@ export default {
       this.pagination.page = item.currentPage;
       this.getData();
       window.scrollTo(0, 0);
+    },
+    createSuccess(id, credit1) {
+      this.createQestion = false;
+      let credit = parseInt(this.user.credit1) - parseInt(credit1);
+      this.changeUserCredit(credit);
+      setTimeout(() => {
+        this.$router.push({
+          name: "wendaDetail",
+          query: {
+            id: id,
+          },
+        });
+      }, 600);
     },
     getData() {
       if (this.loading) {
