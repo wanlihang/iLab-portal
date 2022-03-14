@@ -179,7 +179,7 @@ export default {
           this.form.images = [];
           this.form.credit1 = null;
           this.$message.success("发布成功");
-          this.$emit("success", res.data.id, credit1);
+          this.$emit("success", res.data.id, credit1 || 0);
         })
         .catch((e) => {
           this.$message.error(e.message);
