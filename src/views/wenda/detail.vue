@@ -139,13 +139,7 @@
                     <img v-else src="../../assets/img/commen/icon-like.png" />
                     {{ item.vote_count }}
                   </div>
-                  <div
-                    :class="{ trans: configInput[index] === true }"
-                    class="reply-answer"
-                    @click="showReply(index)"
-                  >
-                    回复
-                  </div>
+
                   <div
                     class="reply-answer"
                     :class="{ trans: configkey[index] === true }"
@@ -154,9 +148,19 @@
                   >
                     {{ item.reply_count }}回复
                   </div>
+                  <div
+                    v-else
+                    :class="{ trans: configInput[index] === true }"
+                    class="reply-answer"
+                    @click="showReply(index)"
+                  >
+                    回复
+                  </div>
                 </div>
                 <div
-                  v-if="configInput[index] === true"
+                  v-if="
+                    configkey[index] === true || configInput[index] === true
+                  "
                   class="one-class-replybox"
                 >
                   <input
@@ -203,34 +207,6 @@
                         </div>
                         <div class="reply-text">
                           <div v-html="replyItem.render_content"></div>
-                        </div>
-                        <div class="answer-item" @click="showReply2(index2)">
-                          回复
-                        </div>
-                        <div
-                          v-if="configInput2[index2] === true"
-                          class="Two-class-replybox"
-                        >
-                          <input
-                            type="text"
-                            class="input-box"
-                            v-model="reply.content"
-                            :placeholder="'回复' + replyItem.user.nick_name"
-                          />
-                          <div
-                            class="confirm-button"
-                            @click="
-                              ReplyAnswer(
-                                item.id,
-                                replyItem.user_id,
-                                replyItem.user.nick_name,
-                                index
-                              )
-                            "
-                            :class="{ active: reply.content }"
-                          >
-                            发表回复
-                          </div>
                         </div>
                       </div>
                     </div>
