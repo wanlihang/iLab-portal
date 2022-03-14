@@ -113,6 +113,9 @@ export default {
       this.backTopStatus = scrollTop >= 2000;
     },
     getSignStatus() {
+      if (!this.$route.meta.sign) {
+        return;
+      }
       this.$api.Sign.User()
         .then((res) => {
           let is_submit = res.data.is_submit;
