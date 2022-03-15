@@ -66,20 +66,38 @@
               <p class="desc">{{ course.short_description }}</p>
               <div class="btn-box">
                 <template v-if="!isBuy && course.charge !== 0">
-                  <div
-                    class="buy-button"
-                    v-if="course.charge > 0"
-                    @click="buyCourse()"
-                  >
-                    订阅课程￥{{ course.charge }}
-                  </div>
-                  <div
-                    class="role-button"
-                    v-if="course.vip_can_view === 1"
-                    @click="goRole()"
-                  >
-                    会员免费看
-                  </div>
+                  <template v-if="msData && msData.data">
+                    <div
+                      class="buy-button"
+                      v-if="msData.order.length === 0 && !msData.data.is_over"
+                      @click="openMsDialog()"
+                    >
+                      立即秒杀￥{{ msData.data.charge }}
+                    </div>
+                    <div
+                      class="buy-button"
+                      @click="goMsOrder(msData.order.id)"
+                      v-if="msData.order && msData.order.status === 0"
+                    >
+                      已获得秒杀资格，请尽快支付
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div
+                      class="buy-button"
+                      v-if="course.charge > 0"
+                      @click="buyCourse()"
+                    >
+                      订阅课程￥{{ course.charge }}
+                    </div>
+                    <div
+                      class="role-button"
+                      v-if="course.vip_can_view === 1"
+                      @click="goRole()"
+                    >
+                      会员免费看
+                    </div>
+                  </template>
                   <template
                     v-if="
                       tgData &&
@@ -102,7 +120,11 @@
             </div>
           </div>
           <template v-if="!isBuy && msData">
-            <miaosha-list :ms="msData"></miaosha-list>
+            <miaosha-list
+              :ms="msData"
+              :status="msDialogStatus"
+              @cancel="closeMsDialog"
+            ></miaosha-list>
           </template>
           <template v-if="!isBuy && tgData">
             <tuangou-list :tg="tgData"></tuangou-list>
@@ -358,6 +380,7 @@ export default {
       showTry: false,
       tgData: null,
       msData: null,
+      msDialogStatus: false,
     };
   },
   computed: {
@@ -410,7 +433,6 @@ export default {
           : (this.isfixTab = false);
       }
     },
-
     tabChange(key) {
       this.currentTab = key;
     },
@@ -596,6 +618,26 @@ export default {
           this.getTgDetail();
         }
       });
+    },
+    goMsOrder(id) {
+      this.$router.push({
+        name: "order",
+        query: {
+          course_id: this.msData.data.id,
+          goods_type: "ms",
+          goods_charge: this.msData.data.charge,
+          goods_label: "秒杀",
+          goods_name: this.msData.data.goods_title,
+          goods_id: id,
+          goods_thumb: this.msData.data.goods_thumb,
+        },
+      });
+    },
+    openMsDialog() {
+      this.msDialogStatus = true;
+    },
+    closeMsDialog() {
+      this.msDialogStatus = false;
     },
     getComments() {
       if (this.comment.loading) {
