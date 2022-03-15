@@ -59,20 +59,45 @@
                   <div class="see-button" @click="startLearn">开始阅读</div>
                 </template>
                 <template v-else>
-                  <div
-                    class="buy-button"
-                    v-if="book.charge > 0"
-                    @click="buyBook()"
-                  >
-                    订阅电子书￥{{ book.charge }}
-                  </div>
-                  <div
-                    class="role-button"
-                    v-if="book.charge > 0 && book.is_vip_free === 1"
-                    @click="goRole()"
-                  >
-                    会员免费看
-                  </div>
+                  <template v-if="msData && msData.data">
+                    <div
+                      class="buy-button"
+                      v-if="
+                        book.charge > 0 &&
+                        msData.order.length === 0 &&
+                        !msData.data.is_over
+                      "
+                      @click="openMsDialog()"
+                    >
+                      立即秒杀￥{{ msData.data.charge }}
+                    </div>
+                    <div
+                      class="buy-button"
+                      @click="goMsOrder(msData.order.id)"
+                      v-if="
+                        (book.charge > 0) & msData.order &&
+                        msData.order.status === 0
+                      "
+                    >
+                      已获得秒杀资格，请尽快支付
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div
+                      class="buy-button"
+                      v-if="book.charge > 0"
+                      @click="buyBook()"
+                    >
+                      订阅电子书￥{{ book.charge }}
+                    </div>
+                    <div
+                      class="role-button"
+                      v-if="book.charge > 0 && book.is_vip_free === 1"
+                      @click="goRole()"
+                    >
+                      会员免费看
+                    </div>
+                  </template>
                   <template
                     v-if="
                       tgData &&
@@ -88,6 +113,13 @@
               </div>
             </div>
           </div>
+          <template v-if="!isBuy && msData">
+            <miaosha-list
+              :ms="msData"
+              :status="msDialogStatus"
+              @cancel="closeMsDialog"
+            ></miaosha-list>
+          </template>
           <template v-if="!isBuy && tgData">
             <tuangou-list :tg="tgData"></tuangou-list>
           </template>
@@ -241,6 +273,7 @@ import PageBox from "../../components/page.vue";
 import HistoryRecord from "../../components/history-record.vue";
 import SkeletonDetail from "../../components/skeleton/skeletonDetail.vue";
 import TuangouList from "../../components/tuangou-list.vue";
+import MiaoshaList from "../../components/miaosha-list.vue";
 
 export default {
   components: {
@@ -250,6 +283,7 @@ export default {
     HistoryRecord,
     SkeletonDetail,
     TuangouList,
+    MiaoshaList,
   },
   data() {
     return {
@@ -288,6 +322,8 @@ export default {
       },
       isfixTab: false,
       tgData: null,
+      msData: null,
+      msDialogStatus: false,
     };
   },
   computed: {
@@ -445,8 +481,12 @@ export default {
         this.articles = res.data.articles;
         this.isBuy = res.data.is_buy;
         document.title = res.data.book.name;
+        //获取秒杀信息
+        if (!this.isBuy && this.configFunc["miaosha"]) {
+          this.getMsDetail();
+        }
         //获取团购信息
-        if (!this.isBuy && this.configFunc["book"]) {
+        else if (!this.isBuy && this.configFunc["tuangou"]) {
           this.getTgDetail();
         }
       });
@@ -461,6 +501,41 @@ export default {
       }).then((res) => {
         this.tgData = res.data;
       });
+    },
+    getMsDetail() {
+      if (this.book.charge === 0) {
+        return;
+      }
+      this.$api.MiaoSha.Detail(0, {
+        course_id: this.id,
+        course_type: "book",
+      }).then((res) => {
+        this.msData = res.data;
+        if (!this.msData.data && !this.isBuy && this.configFunc["tuangou"]) {
+          this.getTgDetail();
+        }
+      });
+    },
+    goMsOrder(id) {
+      this.$router.push({
+        name: "order",
+        query: {
+          course_id: this.msData.data.goods_id,
+          course_type: this.msData.data.goods_type,
+          goods_type: "ms",
+          goods_charge: this.msData.data.charge,
+          goods_label: "秒杀",
+          goods_name: this.msData.data.goods_title,
+          goods_id: id,
+          goods_thumb: this.msData.data.goods_thumb,
+        },
+      });
+    },
+    openMsDialog() {
+      this.msDialogStatus = true;
+    },
+    closeMsDialog() {
+      this.msDialogStatus = false;
     },
     getComments() {
       if (this.comment.loading) {
