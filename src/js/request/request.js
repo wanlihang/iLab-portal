@@ -743,8 +743,8 @@ const Api = {
     List(params) {
       return get("/addons/MiaoSha/api/v1/m", params);
     },
-    Detail(id) {
-      return get("/addons/MiaoSha/api/v1/m/" + id);
+    Detail(id, params) {
+      return get("/addons/MiaoSha/api/v1/m/" + id, params);
     },
     Join(id, params) {
       return post("/addons/MiaoSha/api/v1/m/" + id + "/join", params);

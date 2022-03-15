@@ -352,6 +352,7 @@ export default {
       isfixTab: false,
       showTry: false,
       tgData: null,
+      msData: null,
     };
   },
   computed: {
@@ -553,6 +554,10 @@ export default {
           this.videoWatchedProgress = res.data.videoWatchedProgress;
           this.videos = res.data.videos;
           this.buyVideos = res.data.buyVideos;
+          //获取秒杀信息
+          if (!this.isBuy && this.configFunc["miaosha"]) {
+            this.getMsDetail();
+          }
           //获取团购信息
           if (!this.isBuy && this.configFunc["tuangou"]) {
             this.getTgDetail();
@@ -571,6 +576,17 @@ export default {
         course_type: "course",
       }).then((res) => {
         this.tgData = res.data;
+      });
+    },
+    getMsDetail() {
+      if (this.course.is_free === 1) {
+        return;
+      }
+      this.$api.MiaoSha.Detail(0, {
+        course_id: this.id,
+        course_type: "course",
+      }).then((res) => {
+        this.msData = res.data;
       });
     },
     getComments() {
