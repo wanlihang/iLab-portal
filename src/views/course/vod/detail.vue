@@ -101,6 +101,9 @@
               </div>
             </div>
           </div>
+          <template v-if="!isBuy && msData">
+            <miaosha-list :ms="msData"></miaosha-list>
+          </template>
           <template v-if="!isBuy && tgData">
             <tuangou-list :tg="tgData"></tuangou-list>
           </template>
@@ -294,6 +297,7 @@ import None from "../../../components/none.vue";
 import HistoryRecord from "../../../components/history-record.vue";
 import SkeletonDetail from "../../../components/skeleton/skeletonDetail.vue";
 import TuangouList from "../../../components/tuangou-list.vue";
+import MiaoshaList from "../../../components/miaosha-list.vue";
 
 export default {
   components: {
@@ -304,6 +308,7 @@ export default {
     HistoryRecord,
     SkeletonDetail,
     TuangouList,
+    MiaoshaList,
   },
   data() {
     return {
@@ -559,7 +564,7 @@ export default {
             this.getMsDetail();
           }
           //获取团购信息
-          if (!this.isBuy && this.configFunc["tuangou"]) {
+          else if (!this.isBuy && this.configFunc["tuangou"]) {
             this.getTgDetail();
           }
         })
@@ -587,6 +592,9 @@ export default {
         course_type: "course",
       }).then((res) => {
         this.msData = res.data;
+        if (!this.msData.data && !this.isBuy && this.configFunc["tuangou"]) {
+          this.getTgDetail();
+        }
       });
     },
     getComments() {
