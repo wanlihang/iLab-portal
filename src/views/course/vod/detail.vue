@@ -623,7 +623,8 @@ export default {
       this.$router.push({
         name: "order",
         query: {
-          course_id: this.msData.data.id,
+          course_id: this.msData.data.goods_id,
+          course_type: this.msData.data.goods_type,
           goods_type: "ms",
           goods_charge: this.msData.data.charge,
           goods_label: "秒杀",

@@ -228,12 +228,42 @@ export default {
           });
         }
       } else if (this.goods_type === "ms") {
-        this.$router.push({
-          name: "msDetail",
-          query: {
-            id: this.course_id,
-          },
-        });
+        if (this.course_type === "course") {
+          this.$router.push({
+            name: "coursesDetail",
+            query: {
+              id: this.course_id,
+            },
+          });
+        } else if (this.course_type === "live") {
+          this.$router.push({
+            name: "liveDetail",
+            query: {
+              id: this.course_id,
+            },
+          });
+        } else if (this.course_type === "book") {
+          this.$router.push({
+            name: "bookDetail",
+            query: {
+              id: this.course_id,
+            },
+          });
+        } else if (this.course_type === "learnPath") {
+          this.$router.push({
+            name: "learnPathDetail",
+            query: {
+              id: this.course_id,
+            },
+          });
+        } else {
+          this.$router.push({
+            name: "tgDetail",
+            query: {
+              id: this.course_id,
+            },
+          });
+        }
       } else if (this.goods_type === "paper") {
         this.$router.push({
           name: "ExamPapersDetail",
