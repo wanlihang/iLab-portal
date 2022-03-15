@@ -64,12 +64,35 @@ export default {
       return (((num - overnum) * 100) / num).toFixed(0) + "px";
     },
     goMsDetail(item) {
-      this.$router.push({
-        name: "msDetail",
-        query: {
-          id: item.id,
-        },
-      });
+      if (item.goods_type === "course") {
+        this.$router.push({
+          name: "coursesDetail",
+          query: {
+            id: item.goods_id,
+          },
+        });
+      } else if (item.goods_type === "live") {
+        this.$router.push({
+          name: "liveDetail",
+          query: {
+            id: item.goods_id,
+          },
+        });
+      } else if (item.goods_type === "book") {
+        this.$router.push({
+          name: "bookDetail",
+          query: {
+            id: item.goods_id,
+          },
+        });
+      } else if (item.goods_type === "learnPath") {
+        this.$router.push({
+          name: "learnPathDetail",
+          query: {
+            id: item.goods_id,
+          },
+        });
+      }
     },
   },
 };
