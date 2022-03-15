@@ -26,15 +26,41 @@
                   <div class="has-button" v-if="learn.charge === 0">
                     本路径免费
                   </div>
-                  <div
-                    class="buy-button"
-                    v-if="learn.charge > 0"
-                    @click="buy()"
-                  >
-                    购买套餐￥{{ learn.charge }}（共{{
-                      learn.courses_count
-                    }}课程）
-                  </div>
+                  <template v-if="msData && msData.data">
+                    <div
+                      class="buy-button"
+                      v-if="
+                        learn.charge > 0 &&
+                        msData.order.length === 0 &&
+                        !msData.data.is_over
+                      "
+                      @click="openMsDialog()"
+                    >
+                      立即秒杀￥{{ msData.data.charge }}
+                    </div>
+                    <div
+                      class="buy-button"
+                      @click="goMsOrder(msData.order.id)"
+                      v-if="
+                        learn.charge > 0 &&
+                        msData.order &&
+                        msData.order.status === 0
+                      "
+                    >
+                      已获得秒杀资格，请尽快支付
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div
+                      class="buy-button"
+                      v-if="learn.charge > 0"
+                      @click="buy()"
+                    >
+                      购买套餐￥{{ learn.charge }}（共{{
+                        learn.courses_count
+                      }}课程）
+                    </div>
+                  </template>
                   <template
                     v-if="
                       tgData &&
@@ -51,6 +77,13 @@
               </div>
             </div>
           </div>
+          <template v-if="!isBuy && msData">
+            <miaosha-list
+              :ms="msData"
+              :status="msDialogStatus"
+              @cancel="closeMsDialog"
+            ></miaosha-list>
+          </template>
           <template v-if="!isBuy && tgData">
             <tuangou-list
               style="margin-bottom: 30px"
@@ -135,12 +168,14 @@ import { mapState, mapMutations } from "vuex";
 import NavFooter from "../../components/footer.vue";
 import SkeletonDetail from "../../components/skeleton/skeletonDetail.vue";
 import TuangouList from "../../components/tuangou-list.vue";
+import MiaoshaList from "../../components/miaosha-list.vue";
 
 export default {
   components: {
     NavFooter,
     SkeletonDetail,
     TuangouList,
+    MiaoshaList,
   },
   data() {
     return {
@@ -151,6 +186,8 @@ export default {
       steps: [],
       tgData: null,
       isBuy: false,
+      msData: null,
+      msDialogStatus: false,
     };
   },
   computed: {
@@ -243,7 +280,9 @@ export default {
         this.steps = res.data.steps;
         this.isBuy = res.data.is_buy;
         document.title = res.data.data.name;
-        if (!this.isBuy && this.configFunc["book"]) {
+        if (!this.isBuy && this.configFunc["miaosha"]) {
+          this.getMsDetail();
+        } else if (!this.isBuy && this.configFunc["tuangou"]) {
           this.getTgDetail();
         }
       });
@@ -258,6 +297,41 @@ export default {
       }).then((res) => {
         this.tgData = res.data;
       });
+    },
+    getMsDetail() {
+      if (this.steps.charge === 0) {
+        return;
+      }
+      this.$api.MiaoSha.Detail(0, {
+        course_id: this.id,
+        course_type: "learnPath",
+      }).then((res) => {
+        this.msData = res.data;
+        if (!this.msData.data && !this.isBuy && this.configFunc["tuangou"]) {
+          this.getTgDetail();
+        }
+      });
+    },
+    goMsOrder(id) {
+      this.$router.push({
+        name: "order",
+        query: {
+          course_id: this.msData.data.goods_id,
+          course_type: this.msData.data.goods_type,
+          goods_type: "ms",
+          goods_charge: this.msData.data.charge,
+          goods_label: "秒杀",
+          goods_name: this.msData.data.goods_title,
+          goods_id: id,
+          goods_thumb: this.msData.data.goods_thumb,
+        },
+      });
+    },
+    openMsDialog() {
+      this.msDialogStatus = true;
+    },
+    closeMsDialog() {
+      this.msDialogStatus = false;
     },
   },
 };

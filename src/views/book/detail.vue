@@ -75,7 +75,8 @@
                       class="buy-button"
                       @click="goMsOrder(msData.order.id)"
                       v-if="
-                        (book.charge > 0) & msData.order &&
+                        book.charge > 0 &&
+                        msData.order &&
                         msData.order.status === 0
                       "
                     >
