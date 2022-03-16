@@ -38,11 +38,11 @@
             />
             <img
               src="../../assets/img/commen/icon-wepay.png"
-              v-if="item.sign === 'wechat'"
+              v-else-if="item.sign === 'wechat'"
             />
             <img
               src="../../assets/img/commen/icon-crad.png"
-              v-if="item.sign === 'handPay'"
+              v-else-if="item.sign === 'handPay'"
             />
           </div>
         </template>
