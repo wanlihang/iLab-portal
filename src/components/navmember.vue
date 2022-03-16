@@ -139,7 +139,7 @@ export default {
               name: "邀请推广",
               id: 14,
               path: "MemberShare",
-              status: this.configFunc["share"],
+              status: !this.configFunc["share"],
             },
             {
               name: "兑换课程",
