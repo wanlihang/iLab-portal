@@ -79,7 +79,20 @@ export default {
       },
       configTip: false,
       discount: 0,
-      payments: [],
+      payments: [
+        {
+          name: "支付宝",
+          sign: "alipay",
+        },
+        {
+          name: "微信支付",
+          sign: "wechat",
+        },
+        {
+          name: "手动打款",
+          sign: "handPay",
+        },
+      ],
       payment: "alipay",
       total: parseInt(this.$route.query.goods_charge),
       promoCode: null,
@@ -162,15 +175,15 @@ export default {
       } else if (this.goods_type === "paper") {
         this.hasThumb = false;
       }
-      this.params();
+      // this.params();
     },
-    params() {
-      this.$api.Order.Payments({
-        scene: "pc",
-      }).then((res) => {
-        this.payments = res.data;
-      });
-    },
+    // params() {
+    //   this.$api.Order.Payments({
+    //     scene: "pc",
+    //   }).then((res) => {
+    //     this.payments = res.data;
+    //   });
+    // },
     payHandler() {
       if (!this.payment) {
         this.$message.error("请选择支付方式");
