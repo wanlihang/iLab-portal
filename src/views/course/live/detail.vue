@@ -463,7 +463,7 @@ export default {
             this.getMsDetail();
           }
           //获取团购信息
-          else if (!this.isBuy && this.configFunc["live"]) {
+          else if (!this.isBuy && this.configFunc["tuangou"]) {
             this.getTgDetail();
           }
         })
@@ -483,7 +483,7 @@ export default {
       });
     },
     getMsDetail() {
-      if (this.course.is_free === 1) {
+      if (this.course.charge === 0) {
         return;
       }
       this.$api.MiaoSha.Detail(0, {
