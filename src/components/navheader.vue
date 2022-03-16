@@ -253,6 +253,10 @@ export default {
     checkNav(url, blank) {
       this.hash = document.location.hash.split("?")[0];
       if (url) {
+        if (url === "/share" && !this.configFunc["share"]) {
+          this.$message.error("没有权限");
+          return;
+        }
         if (blank === 0) {
           if (url.match("https:") || url.match("http:")) {
             window.location.href = url;
