@@ -173,20 +173,9 @@ export default {
       });
     },
     getInviteInfo() {
-      this.$api.User.Detail()
-        .then((res) => {
-          this.loginHandle(res.data);
-        })
-        .catch((e) => {
-          if (e.code === 401) {
-            this.$utils.clearToken();
-            this.$router.replace({
-              name: "index",
-            });
-          } else {
-            this.$message.error(e.message);
-          }
-        });
+      this.$api.User.Detail().then((res) => {
+        this.loginHandle(res.data);
+      });
     },
     getPromoCode() {
       this.$api.Member.PromoCode().then((res) => {
