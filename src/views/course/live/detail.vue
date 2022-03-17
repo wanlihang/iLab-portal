@@ -59,7 +59,7 @@
               <p class="desc">{{ course.short_description }}</p>
               <div class="btn-box">
                 <template v-if="!isBuy && course.charge !== 0">
-                  <template v-if="msData && msData.data">
+                  <template v-if="msData && msData.data && msData.order">
                     <div
                       class="buy-button"
                       v-if="msData.order.length === 0 && !msData.data.is_over"

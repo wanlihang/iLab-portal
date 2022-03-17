@@ -59,7 +59,7 @@
                   <div class="see-button" @click="startLearn">开始阅读</div>
                 </template>
                 <template v-else>
-                  <template v-if="msData && msData.data">
+                  <template v-if="msData && msData.data && msData.order">
                     <div
                       class="buy-button"
                       v-if="

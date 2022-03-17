@@ -26,7 +26,7 @@
                   <div class="has-button" v-if="learn.charge === 0">
                     本路径免费
                   </div>
-                  <template v-if="msData && msData.data">
+                  <template v-if="msData && msData.data && msData.order">
                     <div
                       class="buy-button"
                       v-if="
