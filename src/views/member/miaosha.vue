@@ -46,7 +46,9 @@
                   <div class="item-name">
                     {{ item.goods.goods_title }}
                   </div>
-                  <div class="order-num"></div>
+                  <div class="order-num">
+                    类型：{{ item.goods.goods_type_text }}
+                  </div>
                   <div class="item-time">
                     {{ item.created_at | changeTime }}
                   </div>
