@@ -59,18 +59,7 @@
                   <div class="see-button" @click="startLearn">开始阅读</div>
                 </template>
                 <template v-else>
-                  <template v-if="msData && msData.data && msData.order">
-                    <div
-                      class="buy-button"
-                      v-if="
-                        book.charge > 0 &&
-                        msData.order.length === 0 &&
-                        !msData.data.is_over
-                      "
-                      @click="openMsDialog()"
-                    >
-                      立即秒杀￥{{ msData.data.charge }}
-                    </div>
+                  <template v-if="msData && msData.data">
                     <div
                       class="buy-button"
                       @click="goMsOrder(msData.order.id)"
@@ -81,6 +70,13 @@
                       "
                     >
                       已获得秒杀资格，请尽快支付
+                    </div>
+                    <div
+                      class="buy-button"
+                      v-else-if="book.charge > 0 && !msData.data.is_over"
+                      @click="openMsDialog()"
+                    >
+                      立即秒杀￥{{ msData.data.charge }}
                     </div>
                   </template>
                   <template v-else>
@@ -533,6 +529,10 @@ export default {
       });
     },
     openMsDialog() {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
       this.msDialogStatus = true;
     },
     closeMsDialog() {

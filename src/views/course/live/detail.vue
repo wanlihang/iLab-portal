@@ -59,20 +59,20 @@
               <p class="desc">{{ course.short_description }}</p>
               <div class="btn-box">
                 <template v-if="!isBuy && course.charge !== 0">
-                  <template v-if="msData && msData.data && msData.order">
-                    <div
-                      class="buy-button"
-                      v-if="msData.order.length === 0 && !msData.data.is_over"
-                      @click="openMsDialog()"
-                    >
-                      立即秒杀￥{{ msData.data.charge }}
-                    </div>
+                  <template v-if="msData && msData.data">
                     <div
                       class="buy-button"
                       @click="goMsOrder(msData.order.id)"
                       v-if="msData.order && msData.order.status === 0"
                     >
                       已获得秒杀资格，请尽快支付
+                    </div>
+                    <div
+                      class="buy-button"
+                      v-else-if="!msData.data.is_over"
+                      @click="openMsDialog()"
+                    >
+                      立即秒杀￥{{ msData.data.charge }}
                     </div>
                   </template>
                   <template v-else>
@@ -512,6 +512,10 @@ export default {
       });
     },
     openMsDialog() {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
       this.msDialogStatus = true;
     },
     closeMsDialog() {
