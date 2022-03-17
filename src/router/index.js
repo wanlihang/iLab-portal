@@ -336,6 +336,14 @@ const routes = [
     component: () => import("../views/member/credit1_free.vue"),
   },
   {
+    path: "/member/miaosha",
+    name: "MemberMiaosha",
+    meta: {
+      title: "我的秒杀",
+    },
+    component: () => import("../views/member/miaosha.vue"),
+  },
+  {
     path: "/exam",
     name: "Exam",
     meta: {

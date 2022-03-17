@@ -90,6 +90,7 @@ export default {
       paymentScene: "pc",
       course_id: this.$route.query.course_id,
       course_type: this.$route.query.course_type,
+      payment: null,
     };
   },
   computed: {
@@ -120,9 +121,6 @@ export default {
         });
       }
       return payments;
-    },
-    payment() {
-      return this.payments[0].sign;
     },
   },
   mounted() {
@@ -197,6 +195,7 @@ export default {
       }).then((res) => {
         let payments = res.data;
         for (let i = 0; i < payments.length; i++) {
+          this.payment = payments[0].sign;
           if (payments[i].sign === "alipay") {
             this.aliStatus = true;
           } else if (payments[i].sign === "wechat") {

@@ -343,6 +343,9 @@ const Api = {
     Collects(params) {
       return get("/api/v2/member/courses/like", params);
     },
+    Miaosha(params) {
+      return get("/addons/MiaoSha/api/v1/m/user/orders", params);
+    },
   },
   MultiLevelShare: {
     Config() {
