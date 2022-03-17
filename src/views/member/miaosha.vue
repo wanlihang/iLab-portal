@@ -3,7 +3,7 @@
     <div class="box">
       <nav-member :cid="19" :news="newStatus"></nav-member>
       <div class="project-box">
-        <div class="btn-title">所有订单</div>
+        <div class="btn-title">秒杀订单</div>
         <div class="project-content">
           <template v-if="loading">
             <skeletonMemberOrder></skeletonMemberOrder>
@@ -74,7 +74,7 @@
           </template>
           <none type="white" v-else></none>
         </div>
-        <div id="page" v-show="list.length > 0">
+        <div id="page">
           <page-box
             :key="pagination.page"
             :page="pagination.page"
@@ -313,6 +313,7 @@ export default {
       }
       #page {
         width: 100%;
+        height: auto;
         display: flex;
         justify-content: center;
       }
