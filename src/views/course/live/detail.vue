@@ -1017,6 +1017,15 @@ export default {
         flex-direction: row;
         align-items: center;
         margin-bottom: 50px;
+        .text {
+          width: 100%;
+          text-align: center;
+          cursor: pointer;
+          &:hover {
+            color: #3ca7fa;
+            text-decoration: underline;
+          }
+        }
         .reply {
           width: 100%;
           display: flex;
