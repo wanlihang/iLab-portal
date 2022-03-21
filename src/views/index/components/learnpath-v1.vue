@@ -110,7 +110,7 @@ export default {
         .learnpath-course-title {
           width: 360px;
           height: 20px;
-          font-size: 20px;
+          font-size: 16px;
           font-weight: 500;
           color: #333333;
           line-height: 20px;

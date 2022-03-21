@@ -117,7 +117,7 @@ export default {
         height: 20px;
         line-height: 20px;
         float: left;
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 600;
         color: #333333;
         white-space: nowrap;

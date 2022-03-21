@@ -31,7 +31,7 @@
             </div>
             <div class="tg-progress">
               <div class="label">立即抢购</div>
-              <div class="progress-text">差0人成团</div>
+              <div class="progress-text">{{ course.people_num }}人团</div>
             </div>
           </div>
         </div>
@@ -130,7 +130,7 @@ export default {
       .tg-course-body {
         box-sizing: border-box;
         width: 100%;
-        height: 109px;
+        height: auto;
         background-color: #fff;
         border-radius: 0px 0px 8px 8px;
         padding: 15px 10px 15px 10px;
@@ -138,12 +138,12 @@ export default {
 
         .tg-course-title {
           width: 100%;
-          height: 16px;
+          height: 20px;
           float: left;
           font-size: 16px;
           font-weight: 600;
           color: #333333;
-          line-height: 16px;
+          line-height: 20px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;

@@ -95,6 +95,12 @@ export default {
               path: "MemberProfile",
               status: true,
             },
+            {
+              name: "我的秒杀",
+              id: 19,
+              path: "MemberMiaosha",
+              status: this.configFunc["miaosha"],
+            },
           ],
         },
         {
@@ -158,12 +164,6 @@ export default {
               id: 18,
               path: "MemberCredit1Free",
               status: !this.configFunc["credit1Mall"],
-            },
-            {
-              name: "我的秒杀",
-              id: 19,
-              path: "MemberMiaosha",
-              status: this.configFunc["miaosha"],
             },
           ],
         },

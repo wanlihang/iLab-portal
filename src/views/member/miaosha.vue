@@ -9,68 +9,70 @@
             <skeletonMemberOrder></skeletonMemberOrder>
           </template>
           <template v-else-if="list.length > 0">
-            <div class="project-item" v-for="item in list" :key="item.id">
-              <div
-                class="item-thumb"
-                v-if="item.goods && item.goods.goods_thumb"
-              >
-                <div class="spback"></div>
-                <img :src="item.goods.goods_thumb" />
-              </div>
-              <div
-                class="item-thumb"
-                v-else-if="item.goods.goods_type === 'course'"
-              >
-                <img src="../../assets/img/commen/default-lesson.png" />
-              </div>
-              <div
-                class="item-thumb"
-                v-else-if="item.goods.goods_type === 'live'"
-              >
-                <img src="../../assets/img/commen/default-live.png" />
-              </div>
-              <div
-                class="item-thumb"
-                v-else-if="item.goods.goods_type === 'learnPath'"
-              >
-                <img src="../../assets/img/commen/default-steps.png" />
-              </div>
-              <div
-                class="item-thumb"
-                v-else-if="item.goods.goods_type === 'book'"
-              >
-                <img src="../../assets/img/commen/default-ebook.png" />
-              </div>
-              <div class="item-info">
-                <div class="item-top">
-                  <div class="item-name">
-                    {{ item.goods.goods_title }}
+            <template v-for="item in list">
+              <div class="project-item" :key="item.id" v-if="item.goods">
+                <div
+                  class="item-thumb"
+                  v-if="item.goods && item.goods.goods_thumb"
+                >
+                  <div class="spback"></div>
+                  <img :src="item.goods.goods_thumb" />
+                </div>
+                <div
+                  class="item-thumb"
+                  v-else-if="item.goods.goods_type === 'course'"
+                >
+                  <img src="../../assets/img/commen/default-lesson.png" />
+                </div>
+                <div
+                  class="item-thumb"
+                  v-else-if="item.goods.goods_type === 'live'"
+                >
+                  <img src="../../assets/img/commen/default-live.png" />
+                </div>
+                <div
+                  class="item-thumb"
+                  v-else-if="item.goods.goods_type === 'learnPath'"
+                >
+                  <img src="../../assets/img/commen/default-steps.png" />
+                </div>
+                <div
+                  class="item-thumb"
+                  v-else-if="item.goods.goods_type === 'book'"
+                >
+                  <img src="../../assets/img/commen/default-ebook.png" />
+                </div>
+                <div class="item-info">
+                  <div class="item-top">
+                    <div class="item-name">
+                      {{ item.goods.goods_title }}
+                    </div>
+                    <div class="order-num">
+                      类型：{{ item.goods.goods_type_text }}
+                    </div>
+                    <div class="item-time">
+                      {{ item.created_at | changeTime }}
+                    </div>
                   </div>
-                  <div class="order-num">
-                    类型：{{ item.goods.goods_type_text }}
-                  </div>
-                  <div class="item-time">
-                    {{ item.created_at | changeTime }}
+                  <div class="item-bottom">
+                    <div class="item-price">实付款：￥{{ item.charge }}</div>
+                    <div
+                      class="item-status act"
+                      @click="goMsOrder(item)"
+                      v-if="item.status === 0"
+                    >
+                      未支付，点击立即支付
+                    </div>
+                    <div class="item-status" v-else-if="item.status === 1">
+                      已支付
+                    </div>
+                    <div class="item-status" v-else-if="item.status === 3">
+                      已取消
+                    </div>
                   </div>
                 </div>
-                <div class="item-bottom">
-                  <div class="item-price">实付款：￥{{ item.charge }}</div>
-                  <div
-                    class="item-status act"
-                    @click="goMsOrder(item)"
-                    v-if="item.status === 0"
-                  >
-                    未支付，点击立即支付
-                  </div>
-                  <div class="item-status" v-else-if="item.status === 1">
-                    已支付
-                  </div>
-                  <div class="item-status" v-else-if="item.status === 3">
-                    已取消
-                  </div>
-                </div>
               </div>
-            </div>
+            </template>
           </template>
           <none type="white" v-else></none>
         </div>

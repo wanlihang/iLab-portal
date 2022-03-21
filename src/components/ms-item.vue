@@ -181,12 +181,12 @@ export default {
 
     .ms-course-title {
       width: 100%;
-      height: 16px;
+      height: 20px;
       float: left;
       font-size: 16px;
       font-weight: 600;
       color: #333333;
-      line-height: 16px;
+      line-height: 20px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;

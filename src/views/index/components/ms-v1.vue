@@ -38,7 +38,10 @@
                     :style="{ width: proWidth(course.num, course.over_num) }"
                   ></div>
                 </div>
-                <div class="progress-text-pure">
+                <div
+                  class="progress-text-pure"
+                  v-if="course.num && course.over_num"
+                >
                   {{
                     (
                       ((course.num - course.over_num) * 100) /
@@ -46,6 +49,7 @@
                     ).toFixed(0)
                   }}%
                 </div>
+                <div class="progress-text-pure" v-else>0%</div>
               </div>
             </div>
           </div>
@@ -149,7 +153,7 @@ export default {
       .ms-course-body {
         box-sizing: border-box;
         width: 100%;
-        height: 109px;
+        height: auto;
         background-color: #fff;
         border-radius: 0px 0px 8px 8px;
         padding: 15px 10px 15px 10px;
@@ -157,12 +161,12 @@ export default {
 
         .ms-course-title {
           width: 100%;
-          height: 16px;
+          height: 20px;
           float: left;
           font-size: 16px;
           font-weight: 600;
           color: #333333;
-          line-height: 16px;
+          line-height: 20px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
@@ -232,13 +236,14 @@ export default {
             font-weight: 400;
             color: #ffffff;
             line-height: 12px;
-            padding: 0px 8px 0px 5px;
+            padding: 0px 5px 0px 5px;
             box-sizing: border-box;
             display: flex;
             align-items: center;
             flex-direction: row;
+            justify-content: space-between;
             .progress-text-pure {
-              margin-left: 2px;
+              display: block;
             }
             .progress-render {
               width: 100px;

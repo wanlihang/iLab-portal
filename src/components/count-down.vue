@@ -52,6 +52,7 @@ export default {
       if (min >= 0 && sec >= 0) {
         //倒计时结束关闭订单
         if (day === 0 && min === 0 && sec === 0 && hr === 0) {
+          window.location.reload();
           return;
         }
         that.endTime--;
