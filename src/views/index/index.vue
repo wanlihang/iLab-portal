@@ -5,7 +5,12 @@
         <skeletonBanner></skeletonBanner>
       </template>
       <template v-else>
-        <div class="banner" v-show="sliders && sliders.length > 0">
+        <div
+          class="banner"
+          @mouseover="enter"
+          @mouseleave="leave"
+          v-show="sliders && sliders.length > 0"
+        >
           <swiper ref="mySwiper" :options="swiperOptions">
             <swiper-slide v-for="item in sliders" :key="item.sort">
               <img :src="item.thumb" :name="item.url" />
@@ -123,6 +128,7 @@ export default {
         direction: "horizontal",
         loop: true,
         autoplay: {
+          stopOnLastSlide: false,
           disableOnInteraction: false,
           delay: 3000,
         },
@@ -161,6 +167,11 @@ export default {
     },
   },
   mounted() {
+    if (this.swiper.length > 1) {
+      this.swiperOptions.loop = true;
+    } else {
+      this.swiperOptions.loop = false;
+    }
     this.getSliders();
     this.getPageBlocks();
     this.getNotice();
@@ -173,14 +184,17 @@ export default {
     next();
   },
   methods: {
+    enter() {
+      this.$refs.mySwiper.$swiper.autoplay.stop();
+    },
+    leave() {
+      this.$refs.mySwiper.$swiper.autoplay.start();
+    },
     getSliders() {
       this.loading = true;
       this.$api.ViewBlock.Sliders({ platform: "PC" }).then((res) => {
         this.sliders = res.data;
         this.loading = false;
-        this.$nextTick(() => {
-          this.swiper.slideTo(3, 1000, false);
-        });
       });
     },
     getPageBlocks() {
