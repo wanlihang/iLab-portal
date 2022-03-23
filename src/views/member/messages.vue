@@ -211,6 +211,7 @@ export default {
       }
       #page {
         width: 100%;
+        margin-top: 70px;
         display: flex;
         justify-content: center;
       }
