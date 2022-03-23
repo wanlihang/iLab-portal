@@ -40,7 +40,7 @@
                 </div>
                 <div
                   class="progress-text-pure"
-                  v-if="course.num && course.over_num"
+                  v-if="course.num >= 0 && course.over_num >= 0"
                 >
                   {{
                     (
@@ -65,7 +65,7 @@ export default {
   computed: {},
   methods: {
     proWidth(num, overnum) {
-      return (((num - overnum) * 100) / num).toFixed(0) + "px";
+      return (((num - overnum) * 90) / num).toFixed(0) + "px";
     },
     goMsDetail(item) {
       if (item.goods_type === "course") {
@@ -246,7 +246,7 @@ export default {
               display: block;
             }
             .progress-render {
-              width: 100px;
+              width: 90px;
               height: 7px;
               background: rgba(255, 255, 255, 0.4);
               border-radius: 4px;

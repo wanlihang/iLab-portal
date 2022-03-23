@@ -10,7 +10,11 @@
           </template>
           <template v-else-if="list.length > 0">
             <template v-for="item in list">
-              <div class="project-item" :key="item.id" v-if="item.goods">
+              <div
+                class="project-item"
+                :key="item.id"
+                v-if="item.goods && item.goods.goods_type"
+              >
                 <div
                   class="item-thumb"
                   v-if="item.goods && item.goods.goods_thumb"
