@@ -147,95 +147,23 @@
           <div class="new-content" v-html="course.render_desc"></div>
         </div>
         <div class="course-chapter-box" v-show="currentTab === 3">
-          <template v-if="chapters.length > 0">
-            <div
-              class="chapter-item"
-              v-for="chapter in chapters"
-              :key="chapter.id"
-            >
-              <div class="chapter-name">{{ chapter.title }}</div>
-              <div class="chapter-videos-box">
-                <div
-                  class="video-item"
-                  @click="goPlay(video)"
-                  v-for="video in videos[chapter.id]"
-                  :key="video.id"
-                >
-                  <img
-                    class="play-icon"
-                    v-if="
-                      isBuy ||
-                      course.is_free === 1 ||
-                      video.charge === 0 ||
-                      buyVideos.indexOf(video.id) !== -1
-                    "
-                    src="../../../assets/img/commen/icon-unlock.png"
-                  />
-                  <img
-                    class="play-icon"
-                    v-else
-                    src="../../../assets/img/commen/icon-lock.png"
-                  />
-                  <div class="video-title">
-                    <span class="text">{{ video.title }}</span>
-                    <span
-                      class="free"
-                      v-if="
-                        showTry &&
-                        course.is_free !== 1 &&
-                        (video.free_seconds > 0 || video.charge === 0)
-                      "
-                      >试看</span
-                    >
-                  </div>
-                  <div class="video-info">
-                    <template>
-                      <duration :seconds="video.duration"></duration>
-                    </template>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </template>
-          <template v-else>
-            <div
-              class="video-item"
-              @click="goPlay(video)"
-              v-for="video in videos[0]"
-              :key="video.id"
-            >
-              <img
-                class="play-icon"
-                v-if="
-                  isBuy ||
-                  course.is_free === 1 ||
-                  video.charge === 0 ||
-                  buyVideos.indexOf(video.id) !== -1
-                "
-                src="../../../assets/img/commen/icon-unlock.png"
-              />
-              <img
-                class="play-icon"
-                v-else
-                src="../../../assets/img/commen/icon-lock.png"
-              />
-              <div class="video-title">
-                <span class="text">{{ video.title }}</span>
-                <span
-                  class="free"
-                  v-if="
-                    showTry &&
-                    course.is_free !== 1 &&
-                    (video.free_seconds > 0 || video.charge === 0)
-                  "
-                  >试看</span
-                >
-              </div>
-              <div class="video-duration">
-                <duration :seconds="video.duration"></duration>
-              </div>
-            </div>
-          </template>
+          <video-chapter-list-comp
+            :chapters="chapters"
+            :course="course"
+            :videos="videos"
+            :is-buy="isBuy"
+            :buy-videos="buyVideos"
+            v-if="chapters.length > 0"
+            @switchVideo="goPlay"
+          ></video-chapter-list-comp>
+          <video-list-comp
+            :course="course"
+            :videos="videos[0]"
+            :is-buy="isBuy"
+            :buy-videos="buyVideos"
+            @switchVideo="goPlay"
+            v-else
+          ></video-list-comp>
         </div>
         <div class="course-comments-box" v-show="currentTab === 4">
           <div class="comment-divider">全部评论</div>
@@ -313,24 +241,26 @@
 import Utils from "@/js/utils";
 import { mapState, mapMutations } from "vuex";
 import NavFooter from "../../../components/footer.vue";
-import Duration from "../../../components/duration.vue";
 import CourseDialog from "../../../components/coursedialog.vue";
 import None from "../../../components/none.vue";
 import HistoryRecord from "../../../components/history-record.vue";
 import SkeletonDetail from "../../../components/skeleton/skeletonDetail.vue";
 import TuangouList from "../../../components/tuangou-list.vue";
 import MiaoshaList from "../../../components/miaosha-list.vue";
+import VideoListComp from "./components/detail/video-list.vue";
+import VideoChapterListComp from "./components/detail/video-chaper-list.vue";
 
 export default {
   components: {
     NavFooter,
-    Duration,
     CourseDialog,
     None,
     HistoryRecord,
     SkeletonDetail,
     TuangouList,
     MiaoshaList,
+    VideoListComp,
+    VideoChapterListComp,
   },
   data() {
     return {
@@ -441,16 +371,11 @@ export default {
         this.goLogin();
         return;
       }
-      if (this.course.is_free === 1 || this.isBuy) {
-        this.$router.push({
-          name: "coursesVideo",
-          query: {
-            id: item.id,
-          },
-        });
-      } else if (
-        this.course.is_free !== 1 &&
-        (item.charge === 0 || item.free_seconds > 0)
+      if (
+        this.course.is_free === 1 ||
+        this.isBuy ||
+        (this.course.is_free !== 1 &&
+          (item.charge === 0 || item.free_seconds > 0))
       ) {
         this.$router.push({
           name: "coursesVideo",
@@ -987,136 +912,6 @@ export default {
       background: #ffffff;
       margin-top: 30px;
       border-radius: 8px;
-      .video-item {
-        width: 100%;
-        height: 24px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        position: relative;
-        margin-top: 30px;
-        cursor: pointer;
-        &:first-child {
-          margin-top: 0px;
-        }
-
-        .play-icon {
-          width: 24px;
-          height: 24px;
-          cursor: pointer;
-        }
-        .video-title {
-          height: 22px;
-          font-size: 14px;
-          font-weight: 400;
-          color: #333333;
-          line-height: 14px;
-          margin-left: 15px;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          .free {
-            margin-left: 15px;
-            width: 44px;
-            height: 22px;
-            background: #04c877;
-            border-radius: 2px;
-            color: #fff;
-            font-size: 12px;
-            font-weight: 400;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-        }
-        .video-duration {
-          position: absolute;
-          height: 14px;
-          font-size: 14px;
-          font-weight: 400;
-          color: #999999;
-          line-height: 14px;
-          top: 5px;
-          right: 0;
-        }
-      }
-      .chapter-item {
-        width: 100%;
-        height: auto;
-        margin-top: 50px;
-        &:first-child {
-          margin-top: 0px;
-        }
-        .chapter-name {
-          width: 100%;
-          height: 16px;
-          font-size: 16px;
-          font-weight: 500;
-          color: #333333;
-          line-height: 16px;
-          margin-bottom: 30px;
-          &:first-child {
-            margin-bottom: 0px;
-          }
-          &:last-child {
-            margin-bottom: 0px;
-          }
-        }
-        .chapter-videos-box {
-          width: 100%;
-          height: auto;
-          .video-item {
-            width: 100%;
-            height: 24px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            position: relative;
-            cursor: pointer;
-            margin-top: 30px;
-
-            .play-icon {
-              width: 24px;
-              height: 24px;
-              cursor: pointer;
-            }
-            .video-title {
-              height: 22px;
-              font-size: 14px;
-              font-weight: 400;
-              color: #333333;
-              line-height: 14px;
-              margin-left: 15px;
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              .free {
-                margin-left: 15px;
-                width: 44px;
-                height: 22px;
-                background: #04c877;
-                border-radius: 2px;
-                color: #fff;
-                font-size: 12px;
-                font-weight: 400;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              }
-            }
-            .video-info {
-              position: absolute;
-              height: 14px;
-              font-size: 14px;
-              font-weight: 400;
-              color: #999999;
-              line-height: 14px;
-              top: 5px;
-              right: 0;
-            }
-          }
-        }
-      }
     }
     .course-comments-box {
       width: 1200px;
