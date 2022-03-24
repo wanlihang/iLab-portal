@@ -95,6 +95,7 @@ export default {
       .live-course-thumb {
         width: 264px;
         height: 198px;
+        border-radius: 8px 8px 0px 0px;
         overflow: hidden;
         img {
           width: 100%;

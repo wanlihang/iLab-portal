@@ -16,11 +16,21 @@
           >
             <div class="tg-course-thumb">
               <div class="thumb-bar">
-                <thumb-bar
-                  :value="item.goods_thumb"
-                  :width="264"
-                  :height="198"
-                ></thumb-bar>
+                <template v-if="item.goods_thumb">
+                  <thumb-bar
+                    v-if="item.goods_type === 'book'"
+                    :value="item.goods_thumb"
+                    :border="8"
+                    :width="148.5"
+                    :height="198"
+                  ></thumb-bar>
+                  <thumb-bar
+                    v-else
+                    :value="item.goods_thumb"
+                    :width="264"
+                    :height="198"
+                  ></thumb-bar>
+                </template>
               </div>
             </div>
             <div class="tg-type over" v-if="item.is_over">已结束</div>
@@ -240,6 +250,7 @@ export default {
           width: 264px;
           height: 198px;
           border-radius: 8px 8px 0px 0px;
+          background-color: #fff;
           overflow: hidden;
           .thumb-bar {
             width: 100%;

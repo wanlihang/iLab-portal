@@ -2,7 +2,21 @@
   <div class="ms-item-comp" @click="goDetail">
     <div class="ms-course-thumb">
       <div class="thumb-bar">
-        <thumb-bar :value="goodsThumb" :width="264" :height="198"></thumb-bar>
+        <template v-if="goodsThumb">
+          <thumb-bar
+            v-if="goodsType === 'book'"
+            :value="goodsThumb"
+            :border="8"
+            :width="148.5"
+            :height="198"
+          ></thumb-bar>
+          <thumb-bar
+            v-else
+            :value="goodsThumb"
+            :width="264"
+            :height="198"
+          ></thumb-bar>
+        </template>
       </div>
     </div>
     <div class="ms-type over" v-if="is_over">已售罄</div>
@@ -44,6 +58,7 @@ export default {
     "is_start",
     "is_over",
     "goodsTitle",
+    "goodsType",
     "goodsThumb",
     "charge",
     "originalCharge",
@@ -142,6 +157,7 @@ export default {
     width: 264px;
     height: 198px;
     border-radius: 8px 8px 0px 0px;
+    background-color: #fff;
     overflow: hidden;
     .thumb-bar {
       width: 100%;

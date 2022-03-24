@@ -11,7 +11,23 @@
           @click="goTgDetail(course)"
         >
           <div class="tg-course-thumb">
-            <img :src="course.goods_thumb" />
+            <template v-if="course.goods_thumb">
+              <thumb-bar
+                class="thumb-bar"
+                v-if="course.goods_type === 'book'"
+                :value="course.goods_thumb"
+                :border="8"
+                :width="148.5"
+                :height="198"
+              ></thumb-bar>
+              <thumb-bar
+                class="thumb-bar"
+                v-else
+                :value="course.goods_thumb"
+                :width="264"
+                :height="198"
+              ></thumb-bar>
+            </template>
           </div>
           <div class="tg-course-body">
             <div class="tg-course-title">
@@ -115,15 +131,26 @@ export default {
       cursor: pointer;
       border-radius: 8px;
       flex-direction: column;
-
+      background-color: #fff;
+      &:hover {
+        .tg-course-thumb {
+          .thumb-bar {
+            transform: scale(1.1, 1.1);
+          }
+        }
+      }
       .tg-course-thumb {
         width: 264px;
         height: 198px;
+        border-radius: 8px 8px 0px 0px;
         overflow: hidden;
         img {
           width: 100%;
           height: 100%;
           border-radius: 8px 8px 0px 0px;
+        }
+        .thumb-bar {
+          transition: all 0.3s;
         }
       }
 

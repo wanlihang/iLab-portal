@@ -12,6 +12,7 @@
             <ms-item
               :cid="item.id"
               :goods-title="item.goods_title"
+              :goods-type="item.goods_type"
               :goods-thumb="item.goods_thumb"
               :charge="item.charge"
               :is_start="item.is_start"
