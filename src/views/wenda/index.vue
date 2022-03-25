@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content page-main-body-box">
     <filter-box
       v-show="!navLoading"
       :categories1="scenes"
@@ -11,6 +11,7 @@
     <CreateQuestion
       v-if="createQestion"
       @cancel="closeQuestion"
+      @success="createSuccess"
       :status="true"
     ></CreateQuestion>
 
@@ -42,6 +43,8 @@
         <none v-else></none>
         <div id="page" v-show="list.length > 0 && total > pagination.size">
           <page-box
+            :key="pagination.page"
+            :page="pagination.page"
             :totals="total"
             @current-change="changepage"
             :pageSize="pagination.size"
@@ -99,6 +102,7 @@ export default {
   },
   data() {
     return {
+      pageName: "wenda-list",
       list: [],
       total: null,
       createQestion: false,
@@ -139,15 +143,62 @@ export default {
     this.navLoading = true;
     this.getData();
   },
+  activated() {
+    this.changefilter();
+    this.$utils.scrollTopSet(this.pageName);
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$utils.scrollTopRecord(this.pageName);
+    next();
+  },
   methods: {
-    ...mapMutations(["showLoginDialog", "changeDialogType"]),
+    ...mapMutations([
+      "showLoginDialog",
+      "changeDialogType",
+      "changeUserCredit",
+    ]),
+    changefilter() {
+      let cid = this.pagination.cid;
+      let scene = this.pagination.scene;
+      if (cid === 0) {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            scene: scene,
+          },
+        });
+      } else {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            scene: scene,
+            category_id: cid,
+          },
+        });
+      }
+    },
     goLogin() {
       this.changeDialogType(1);
       this.showLoginDialog();
     },
     filterChange(scene, cid) {
       this.pagination.scene = scene;
-      this.pagination.cid = cid;
+      if (cid === 0) {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            scene: scene,
+          },
+        });
+      } else {
+        this.$router.push({
+          path: this.$route.path,
+          query: {
+            scene: scene,
+            category_id: cid,
+          },
+        });
+      }
       this.resetData();
       this.getData();
     },
@@ -161,11 +212,26 @@ export default {
       this.getData();
       window.scrollTo(0, 0);
     },
+    createSuccess(id, credit1) {
+      this.createQestion = false;
+      let credit = parseInt(this.user.credit1) - parseInt(credit1);
+      this.changeUserCredit(credit);
+      setTimeout(() => {
+        this.$router.push({
+          name: "wendaDetail",
+          query: {
+            id: id,
+          },
+        });
+      }, 600);
+    },
     getData() {
       if (this.loading) {
         return;
       }
       this.loading = true;
+      this.pagination.scene = this.$route.query.scene || "default";
+      this.pagination.cid = this.$route.query.category_id || 0;
       this.$api.Wenda.List(this.pagination).then((res) => {
         this.loading = false;
         this.navLoading = false;

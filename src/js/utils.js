@@ -13,6 +13,20 @@ export default {
   clearToken() {
     window.localStorage.removeItem(TOKEN_NAME);
   },
+  scrollTopRecord(page) {
+    let pos = document.querySelector(".page-main-body-box").scrollTop;
+    if (pos > 0) {
+      window.localStorage.setItem(`meedu-pc-st-${page}`, pos);
+    }
+  },
+  scrollTopSet(page) {
+    let saveKey = `meedu-pc-st-${page}`;
+    let pos = window.localStorage.getItem(saveKey);
+    if (pos) {
+      document.querySelector(".page-main-body-box").scrollTop = pos;
+      window.localStorage.removeItem(saveKey);
+    }
+  },
   removeTokenParams(url) {
     let parseUrl = new URL(url);
     let hash = parseUrl.hash;

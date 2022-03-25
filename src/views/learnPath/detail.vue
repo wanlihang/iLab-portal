@@ -20,26 +20,72 @@
               <p class="desc" v-html="learn.desc"></p>
               <div class="btn-box">
                 <template v-if="isBuy">
-                  <div class="see-button">已购买</div>
+                  <div class="has-button">已购买</div>
                 </template>
                 <template v-else>
                   <div class="has-button" v-if="learn.charge === 0">
                     本路径免费
                   </div>
-                  <div
-                    class="buy-button"
-                    v-if="learn.charge > 0"
-                    @click="buy()"
+                  <template v-if="msData && msData.data">
+                    <div
+                      class="buy-button"
+                      @click="goMsOrder(msData.order.id)"
+                      v-if="
+                        learn.charge > 0 &&
+                        msData.order &&
+                        msData.order.status === 0
+                      "
+                    >
+                      已获得秒杀资格，请尽快支付
+                    </div>
+                    <div
+                      class="buy-button"
+                      v-else-if="learn.charge > 0 && !msData.data.is_over"
+                      @click="openMsDialog()"
+                    >
+                      立即秒杀￥{{ msData.data.charge }}
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div
+                      class="buy-button"
+                      v-if="learn.charge > 0"
+                      @click="buy()"
+                    >
+                      购买套餐￥{{ learn.charge }}（共{{
+                        learn.courses_count
+                      }}课程）
+                    </div>
+                  </template>
+                  <template
+                    v-if="
+                      tgData &&
+                      tgData.goods &&
+                      (!tgData.join_item || tgData.join_item.length === 0)
+                    "
                   >
-                    购买套餐￥{{ learn.charge }}（共{{
-                      learn.courses_count
-                    }}课程）
-                  </div>
+                    <div class="role-button" @click="goPay(0)">
+                      单独开团￥{{ tgData.goods.charge }}
+                    </div>
+                  </template>
                   <div class="original">原价:￥{{ learn.original_charge }}</div>
                 </template>
               </div>
             </div>
           </div>
+          <template v-if="!isBuy && msData">
+            <miaosha-list
+              :ms="msData"
+              :status="msDialogStatus"
+              @cancel="closeMsDialog"
+            ></miaosha-list>
+          </template>
+          <template v-if="!isBuy && tgData">
+            <tuangou-list
+              style="margin-bottom: 30px"
+              :tg="tgData"
+            ></tuangou-list>
+          </template>
         </div>
         <div class="book-chapter-box">
           <template v-if="steps.length > 0">
@@ -117,11 +163,15 @@
 import { mapState, mapMutations } from "vuex";
 import NavFooter from "../../components/footer.vue";
 import SkeletonDetail from "../../components/skeleton/skeletonDetail.vue";
+import TuangouList from "../../components/tuangou-list.vue";
+import MiaoshaList from "../../components/miaosha-list.vue";
 
 export default {
   components: {
     NavFooter,
     SkeletonDetail,
+    TuangouList,
+    MiaoshaList,
   },
   data() {
     return {
@@ -130,12 +180,14 @@ export default {
       learn: [],
       currentTab: 3,
       steps: [],
-
+      tgData: null,
       isBuy: false,
+      msData: null,
+      msDialogStatus: false,
     };
   },
   computed: {
-    ...mapState(["isLogin", "user"]),
+    ...mapState(["isLogin", "user", "configFunc"]),
   },
   mounted() {
     this.getDetail();
@@ -143,6 +195,26 @@ export default {
   beforeDestroy() {},
   methods: {
     ...mapMutations(["showLoginDialog", "changeDialogType"]),
+    goPay(gid = 0) {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
+      this.$router.push({
+        name: "order",
+        query: {
+          goods_type: "tg",
+          goods_charge: this.tgData.goods.charge,
+          goods_label: "团购",
+          goods_name: this.tgData.goods.goods_title,
+          goods_id: this.tgData.goods.id,
+          goods_thumb: this.tgData.goods.goods_thumb,
+          tg_gid: gid,
+          course_id: this.tgData.goods.other_id,
+          course_type: this.tgData.goods.goods_type,
+        },
+      });
+    },
     goLogin() {
       this.changeDialogType(1);
       this.showLoginDialog();
@@ -204,7 +276,62 @@ export default {
         this.steps = res.data.steps;
         this.isBuy = res.data.is_buy;
         document.title = res.data.data.name;
+        if (!this.isBuy && this.configFunc["miaosha"]) {
+          this.getMsDetail();
+        } else if (!this.isBuy && this.configFunc["tuangou"]) {
+          this.getTgDetail();
+        }
       });
+    },
+    getTgDetail() {
+      if (this.steps.charge === 0) {
+        return;
+      }
+      this.$api.TuanGou.Detail(0, {
+        course_id: this.id,
+        course_type: "learnPath",
+      }).then((res) => {
+        this.tgData = res.data;
+      });
+    },
+    getMsDetail() {
+      if (this.steps.charge === 0) {
+        return;
+      }
+      this.$api.MiaoSha.Detail(0, {
+        course_id: this.id,
+        course_type: "learnPath",
+      }).then((res) => {
+        this.msData = res.data;
+        if (!this.msData.data && !this.isBuy && this.configFunc["tuangou"]) {
+          this.getTgDetail();
+        }
+      });
+    },
+    goMsOrder(id) {
+      this.$router.push({
+        name: "order",
+        query: {
+          course_id: this.msData.data.goods_id,
+          course_type: this.msData.data.goods_type,
+          goods_type: "ms",
+          goods_charge: this.msData.data.charge,
+          goods_label: "秒杀",
+          goods_name: this.msData.data.goods_title,
+          goods_id: id,
+          goods_thumb: this.msData.data.goods_thumb,
+        },
+      });
+    },
+    openMsDialog() {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
+      this.msDialogStatus = true;
+    },
+    closeMsDialog() {
+      this.msDialogStatus = false;
     },
   },
 };
@@ -288,12 +415,14 @@ export default {
       }
     }
     .book-info {
+      display: flex;
       width: 1200px;
-      height: 300px;
+      height: auto;
       background: #ffffff;
       border-radius: 8px;
+      flex-direction: column;
       .book-info-box {
-        width: 1200px;
+        width: 100%;
         height: 300px;
         box-sizing: border-box;
         padding: 30px 50px 30px 30px;
@@ -399,6 +528,21 @@ export default {
               color: #ffffff;
               line-height: 16px;
               box-sizing: border-box;
+              cursor: pointer;
+              &:hover {
+                opacity: 0.8;
+              }
+            }
+            .role-button {
+              background: #e1a500;
+              border-radius: 4px;
+              padding: 20px;
+              font-size: 16px;
+              font-weight: 400;
+              color: #ffffff;
+              line-height: 16px;
+              box-sizing: border-box;
+              margin-left: 20px;
               cursor: pointer;
               &:hover {
                 opacity: 0.8;

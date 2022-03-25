@@ -11,7 +11,23 @@
           @click="goMsDetail(course)"
         >
           <div class="ms-course-thumb">
-            <img :src="course.goods_thumb" />
+            <template v-if="course.goods_thumb">
+              <thumb-bar
+                class="thumb-bar"
+                v-if="course.goods_type === 'book'"
+                :value="course.goods_thumb"
+                :border="8"
+                :width="148.5"
+                :height="198"
+              ></thumb-bar>
+              <thumb-bar
+                class="thumb-bar"
+                v-else
+                :value="course.goods_thumb"
+                :width="264"
+                :height="198"
+              ></thumb-bar>
+            </template>
           </div>
           <div class="ms-course-body">
             <div class="ms-course-title">
@@ -38,7 +54,10 @@
                     :style="{ width: proWidth(course.num, course.over_num) }"
                   ></div>
                 </div>
-                <div class="progress-text-pure">
+                <div
+                  class="progress-text-pure"
+                  v-if="course.num >= 0 && course.over_num >= 0"
+                >
                   {{
                     (
                       ((course.num - course.over_num) * 100) /
@@ -46,6 +65,7 @@
                     ).toFixed(0)
                   }}%
                 </div>
+                <div class="progress-text-pure" v-else>0%</div>
               </div>
             </div>
           </div>
@@ -61,15 +81,38 @@ export default {
   computed: {},
   methods: {
     proWidth(num, overnum) {
-      return (((num - overnum) * 100) / num).toFixed(0) + "px";
+      return (((num - overnum) * 90) / num).toFixed(0) + "px";
     },
     goMsDetail(item) {
-      this.$router.push({
-        name: "msDetail",
-        query: {
-          id: item.id,
-        },
-      });
+      if (item.goods_type === "course") {
+        this.$router.push({
+          name: "coursesDetail",
+          query: {
+            id: item.goods_id,
+          },
+        });
+      } else if (item.goods_type === "live") {
+        this.$router.push({
+          name: "liveDetail",
+          query: {
+            id: item.goods_id,
+          },
+        });
+      } else if (item.goods_type === "book") {
+        this.$router.push({
+          name: "bookDetail",
+          query: {
+            id: item.goods_id,
+          },
+        });
+      } else if (item.goods_type === "learnPath") {
+        this.$router.push({
+          name: "learnPathDetail",
+          query: {
+            id: item.goods_id,
+          },
+        });
+      }
     },
   },
 };
@@ -111,22 +154,33 @@ export default {
       cursor: pointer;
       flex-direction: column;
       border-radius: 8px;
-
+      background-color: #fff;
+      &:hover {
+        .ms-course-thumb {
+          .thumb-bar {
+            transform: scale(1.1, 1.1);
+          }
+        }
+      }
       .ms-course-thumb {
         width: 264px;
         height: 198px;
+        border-radius: 8px 8px 0px 0px;
         overflow: hidden;
         img {
           width: 100%;
           height: 100%;
           border-radius: 8px 8px 0px 0px;
         }
+        .thumb-bar {
+          transition: all 0.3s;
+        }
       }
 
       .ms-course-body {
         box-sizing: border-box;
         width: 100%;
-        height: 109px;
+        height: auto;
         background-color: #fff;
         border-radius: 0px 0px 8px 8px;
         padding: 15px 10px 15px 10px;
@@ -134,12 +188,12 @@ export default {
 
         .ms-course-title {
           width: 100%;
-          height: 16px;
+          height: 20px;
           float: left;
           font-size: 16px;
           font-weight: 600;
           color: #333333;
-          line-height: 16px;
+          line-height: 20px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
@@ -209,16 +263,17 @@ export default {
             font-weight: 400;
             color: #ffffff;
             line-height: 12px;
-            padding: 0px 8px 0px 5px;
+            padding: 0px 5px 0px 5px;
             box-sizing: border-box;
             display: flex;
             align-items: center;
             flex-direction: row;
+            justify-content: space-between;
             .progress-text-pure {
-              margin-left: 2px;
+              display: block;
             }
             .progress-render {
-              width: 100px;
+              width: 90px;
               height: 7px;
               background: rgba(255, 255, 255, 0.4);
               border-radius: 4px;

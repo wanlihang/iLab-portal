@@ -41,6 +41,8 @@ export default new Vuex.Store({
       promoCode: false,
       daySignIn: false,
       credit1Mall: false,
+      tuangou: false,
+      miaosha: false,
     },
   },
   mutations: {
@@ -54,6 +56,9 @@ export default new Vuex.Store({
       state.isLogin = false;
       this.keywords = null;
       Utils.clearToken();
+    },
+    changeUserCredit(state, credit1) {
+      state.user.credit1 = credit1;
     },
     saveUnread(state) {
       state.freshUnread = true;

@@ -95,6 +95,7 @@ export default {
       .live-course-thumb {
         width: 264px;
         height: 198px;
+        border-radius: 8px 8px 0px 0px;
         overflow: hidden;
         img {
           width: 100%;
@@ -114,12 +115,12 @@ export default {
 
         .live-course-title {
           width: 100%;
-          height: 16px;
+          height: 20px;
           float: left;
           font-size: 16px;
           font-weight: 600;
           color: #333333;
-          line-height: 16px;
+          line-height: 20px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;

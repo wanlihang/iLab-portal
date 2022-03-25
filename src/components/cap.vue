@@ -1,12 +1,29 @@
 <template>
   <div class="spbackground">
+    <div v-if="previewImage" class="preview-image borderbox">
+      <img
+        class="back-detail"
+        @click="backDetail()"
+        src="../assets/img/icon-back-n.png"
+      />
+      <div class="pic-item">
+        <div
+          class="pic"
+          :style="{ 'background-image': 'url(' + thumb + ')' }"
+        ></div>
+      </div>
+    </div>
     <div class="info">
       <span class="tit"
         >{{ num }}.{{ question.type_text }}（{{ question.score }}分）</span
       >
     </div>
     <div class="question-content">
-      <div v-html="header"></div>
+      <div
+        @click="PreviewImage($event)"
+        class="content-render"
+        v-html="header"
+      ></div>
     </div>
     <div class="choice-box">
       <template v-for="(item, index) in questions">
@@ -210,6 +227,8 @@ export default {
         4: "问答",
         5: "判断",
       },
+      previewImage: false,
+      thumb: null,
     };
   },
   mounted() {
@@ -255,6 +274,15 @@ export default {
     },
     questionUpdate(qid, answer, thumbs) {
       this.$emit("update", qid, answer, thumbs);
+    },
+    backDetail() {
+      this.previewImage = false;
+    },
+    PreviewImage($event) {
+      if ($event.target.src) {
+        this.thumb = $event.target.src;
+        this.previewImage = true;
+      }
     },
   },
 };

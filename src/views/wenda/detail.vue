@@ -126,12 +126,20 @@
                 </div>
                 <div class="reply-answer-box">
                   <div
-                    :class="{ trans: configInput[index] === true }"
-                    class="reply-answer"
-                    @click="showReply(index)"
+                    class="vote-button"
+                    @click.stop="questionVote(item)"
+                    :class="{
+                      act: item.is_vote === 1,
+                    }"
                   >
-                    回复
+                    <img
+                      v-if="item.is_vote === 1"
+                      src="../../assets/img/commen/icon-like-h.png"
+                    />
+                    <img v-else src="../../assets/img/commen/icon-like.png" />
+                    {{ item.vote_count }}
                   </div>
+
                   <div
                     class="reply-answer"
                     :class="{ trans: configkey[index] === true }"
@@ -140,9 +148,19 @@
                   >
                     {{ item.reply_count }}回复
                   </div>
+                  <div
+                    v-else
+                    :class="{ trans: configInput[index] === true }"
+                    class="reply-answer"
+                    @click="showReply(index)"
+                  >
+                    回复
+                  </div>
                 </div>
                 <div
-                  v-if="configInput[index] === true"
+                  v-if="
+                    configkey[index] === true || configInput[index] === true
+                  "
                   class="one-class-replybox"
                 >
                   <input
@@ -189,34 +207,6 @@
                         </div>
                         <div class="reply-text">
                           <div v-html="replyItem.render_content"></div>
-                        </div>
-                        <div class="answer-item" @click="showReply2(index2)">
-                          回复
-                        </div>
-                        <div
-                          v-if="configInput2[index2] === true"
-                          class="Two-class-replybox"
-                        >
-                          <input
-                            type="text"
-                            class="input-box"
-                            v-model="reply.content"
-                            :placeholder="'回复' + replyItem.user.nick_name"
-                          />
-                          <div
-                            class="confirm-button"
-                            @click="
-                              ReplyAnswer(
-                                item.id,
-                                replyItem.user_id,
-                                replyItem.user.nick_name,
-                                index
-                              )
-                            "
-                            :class="{ active: reply.content }"
-                          >
-                            发表回复
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -361,6 +351,26 @@ export default {
         .then(() => {
           this.$message.success("成功");
           this.getData();
+        })
+        .catch((e) => {
+          this.$message.error(e.message);
+        });
+    },
+    questionVote(answerItem) {
+      this.$api.Wenda.Vote({
+        id: answerItem.id,
+        type: 1,
+      })
+        .then((res) => {
+          if (answerItem.is_vote === 1) {
+            answerItem.vote_count--;
+            answerItem.is_vote = 0;
+            this.$message.error("取消点赞");
+          } else {
+            answerItem.vote_count++;
+            answerItem.is_vote = 1;
+            this.$message.success("已点赞");
+          }
         })
         .catch((e) => {
           this.$message.error(e.message);
@@ -815,6 +825,25 @@ export default {
             width: 1062px;
             display: flex;
             flex-direction: row;
+            .vote-button {
+              margin-top: 14px;
+              font-size: 14px;
+              font-weight: 400;
+              color: #999999;
+              line-height: 20px;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              margin-right: 30px;
+              img {
+                width: 20px;
+                height: 20px;
+                margin-right: 5px;
+              }
+              &.act {
+                color: #3ca7fa;
+              }
+            }
             .reply-answer {
               margin-top: 14px;
               font-size: 14px;

@@ -32,6 +32,8 @@
     </div>
     <div id="page" v-show="list && total < pagination.size">
       <page-box
+        :key="pagination.page"
+        :page="pagination.page"
         :totals="total"
         @current-change="changepage"
         :pageSize="pagination.size"
@@ -125,7 +127,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 #page {
   width: 1200px;
   margin: 0 auto;

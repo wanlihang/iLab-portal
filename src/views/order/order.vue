@@ -25,26 +25,27 @@
       </div>
       <div class="tit">支付方式</div>
       <div class="credit2-box" v-if="payments">
-        <div
-          class="payment-item"
-          @click="setPayment(item.sign)"
-          v-for="item in payments"
-          :key="item.sign"
-          :class="{ active: item.sign === payment }"
-        >
-          <img
-            src="../../assets/img/commen/icon-zfb.png"
-            v-if="item.sign === 'alipay'"
-          />
-          <img
-            src="../../assets/img/commen/icon-wepay.png"
-            v-if="item.sign === 'wechat'"
-          />
-          <img
-            src="../../assets/img/commen/icon-crad.png"
-            v-if="item.sign === 'handPay'"
-          />
-        </div>
+        <template v-for="item in payments">
+          <div
+            class="payment-item"
+            @click="setPayment(item.sign)"
+            :key="item.sign"
+            :class="{ active: item.sign === payment }"
+          >
+            <img
+              src="../../assets/img/commen/icon-zfb.png"
+              v-if="item.sign === 'alipay'"
+            />
+            <img
+              src="../../assets/img/commen/icon-wepay.png"
+              v-else-if="item.sign === 'wechat'"
+            />
+            <img
+              src="../../assets/img/commen/icon-crad.png"
+              v-else-if="item.sign === 'handPay'"
+            />
+          </div>
+        </template>
       </div>
       <div class="line"></div>
       <div class="price-box">
@@ -78,15 +79,18 @@ export default {
         tgGid: this.$route.query.tg_gid || 0,
       },
       configTip: false,
+      aliStatus: false,
+      weStatus: false,
+      handStatus: false,
       discount: 0,
-      payments: [],
-      payment: "alipay",
       total: parseInt(this.$route.query.goods_charge),
       promoCode: null,
       promoCodeBoxStatus: false,
       promoCodeModel: null,
       paymentScene: "pc",
       course_id: this.$route.query.course_id,
+      course_type: this.$route.query.course_type,
+      payment: null,
     };
   },
   computed: {
@@ -95,6 +99,28 @@ export default {
       let val = this.total - this.discount;
       val = val < 0 ? 0 : val;
       return val;
+    },
+    payments() {
+      let payments = [];
+      if (this.aliStatus) {
+        payments.push({
+          name: "支付宝",
+          sign: "alipay",
+        });
+      }
+      if (this.weStatus) {
+        payments.push({
+          name: "微信支付",
+          sign: "wechat",
+        });
+      }
+      if (this.handStatus) {
+        payments.push({
+          name: "手动打款",
+          sign: "handPay",
+        });
+      }
+      return payments;
     },
   },
   mounted() {
@@ -167,7 +193,17 @@ export default {
       this.$api.Order.Payments({
         scene: "pc",
       }).then((res) => {
-        this.payments = res.data;
+        let payments = res.data;
+        for (let i = 0; i < payments.length; i++) {
+          this.payment = payments[0].sign;
+          if (payments[i].sign === "alipay") {
+            this.aliStatus = true;
+          } else if (payments[i].sign === "wechat") {
+            this.weStatus = true;
+          } else if (payments[i].sign === "handPay") {
+            this.handStatus = true;
+          }
+        }
       });
     },
     payHandler() {
@@ -381,6 +417,7 @@ export default {
               type: this.goods.type,
               id: this.goods.id,
               course_id: this.$route.query.course_id,
+              course_type: this.$route.query.course_type,
             },
           });
         } else {

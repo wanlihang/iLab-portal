@@ -24,6 +24,8 @@
         <none type="white" v-else></none>
         <div id="page" v-show="list.length > 0">
           <page-box
+            :key="pagination.page"
+            :page="pagination.page"
             :totals="total"
             @current-change="changepage"
             :pageSize="pagination.size"
@@ -104,7 +106,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .box {

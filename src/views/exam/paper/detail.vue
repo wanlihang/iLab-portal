@@ -26,13 +26,6 @@
           </div>
           <div class="btn-box" v-if="surplus !== 0">
             <div
-              v-if="!can_join && list.is_vip_free === 1"
-              class="button vip-free"
-              @click="payVIP()"
-            >
-              VIP免费
-            </div>
-            <div
               v-if="!can_join && list.charge > 0"
               class="button charge"
               @click="payOrder()"

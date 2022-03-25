@@ -70,12 +70,14 @@ export default {
   position: relative;
   .status-label {
     position: absolute;
-    right: 20px;
-    bottom: 20px;
-    background: #3ca7fa;
+    right: 30px;
+    bottom: 16px;
+    background: #04c877;
     color: white;
-    padding: 4px 8px;
-    border-radius: 3px;
+    padding: 5px 10px;
+    border-radius: 2px;
+    line-height: 12px;
+    font-size: 12px;
   }
   &:last-child {
     margin-bottom: 10px;

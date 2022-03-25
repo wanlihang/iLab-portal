@@ -47,6 +47,8 @@
               v-show="total > pagination2.page_size && list.length > 0"
             >
               <page-box
+                :key="pagination2.page"
+                :page="pagination2.page"
                 :totals="total"
                 @current-change="changepage"
                 :pageSize="pagination2.page_size"

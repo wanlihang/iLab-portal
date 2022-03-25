@@ -221,6 +221,8 @@
               "
             >
               <page-box
+                :key="comment.pagination.page"
+                :page="comment.pagination.page"
                 :totals="total"
                 @current-change="changepage"
                 :pageSize="comment.pagination.size"

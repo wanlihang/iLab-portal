@@ -4,16 +4,18 @@
       <a @click="$router.push({ name: 'Exam' })">在线考试</a> /
       <span> 考试中心 </span>
     </div>
-    <filter-box2
-      v-show="!navLoading"
-      :categories="categories"
-      :cid1="pagination.cid1"
-      :cid2="pagination.cid2"
-      @change="filterChange"
-    ></filter-box2>
-    <template v-if="navLoading">
-      <skeletonPaperNav></skeletonPaperNav>
-    </template>
+    <div class="filter-two-class">
+      <filter-two-class
+        v-show="!navLoading"
+        :categories="categories"
+        :cid="pagination.cid1"
+        :child="pagination.cid2"
+        @change="filterChange"
+      ></filter-two-class>
+      <template v-if="navLoading">
+        <skeletonPaperNav></skeletonPaperNav>
+      </template>
+    </div>
     <template v-if="loading">
       <skeletonPaper></skeletonPaper>
     </template>
@@ -35,6 +37,8 @@
     <none v-else></none>
     <div id="page" v-show="list.length > 0 && total > pagination.page_size">
       <page-box
+        :key="pagination.page"
+        :page="pagination.page"
         :totals="total"
         @current-change="changepage"
         :pageSize="pagination.page_size"
@@ -47,7 +51,7 @@
 <script>
 import None from "../../../components/none.vue";
 import paperItem from "../../../components/paper-item.vue";
-import FilterBox2 from "../../../components/filter-box2.vue";
+import FilterTwoClass from "../../../components/filter-two-class.vue";
 import PageBox from "../../../components/page.vue";
 import NavFooter from "../../../components/footer.vue";
 import SkeletonPaper from "../../../components/skeleton/skeletonPaper.vue";
@@ -56,7 +60,7 @@ import SkeletonPaperNav from "../../../components/skeleton/skeletonPaperNav.vue"
 export default {
   components: {
     paperItem,
-    FilterBox2,
+    FilterTwoClass,
     PageBox,
     NavFooter,
     None,
@@ -71,8 +75,8 @@ export default {
       pagination: {
         page: 1,
         page_size: 10,
-        cid1: this.$route.query.cid1 || 0,
-        cid2: this.$route.query.cid2 || 0,
+        cid1: this.$route.query.cid || 0,
+        cid2: this.$route.query.child || 0,
       },
       userpapers: [],
       over: false,
@@ -109,29 +113,13 @@ export default {
       this.$api.Exam.PaperList(this.pagination).then((res) => {
         this.loading = false;
         this.navLoading = false;
-        let categoriesData = [
-          {
-            id: 0,
-            name: "全部",
-            children: [
-              {
-                id: 0,
-                name: "全部",
-              },
-            ],
-          },
-        ];
+        let categoriesData = [];
 
         res.data.categories.forEach((item) => {
           let categoryItem = {
             id: item.id,
             name: item.name,
-            children: [
-              {
-                id: 0,
-                name: "全部",
-              },
-            ],
+            children: [],
           };
 
           if (typeof res.data.category_children[item.id] !== "undefined") {
@@ -160,6 +148,16 @@ export default {
 <style lang="less" scoped>
 .content {
   width: 100%;
+  .filter-two-class {
+    display: flex;
+    width: 1200px;
+    background: #fff;
+    margin: 0 auto;
+    height: auto;
+    border-radius: 8px;
+    box-sizing: border-box;
+    padding: 15px 30px 5px 30px;
+  }
   .nav {
     width: 1200px;
     margin: 0 auto;

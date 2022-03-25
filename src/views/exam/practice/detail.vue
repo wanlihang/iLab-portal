@@ -21,13 +21,6 @@
           </div>
           <div class="btn-box">
             <div
-              v-if="!can_join && list.is_vip_free === 1"
-              class="button vip-free"
-              @click="payVIP()"
-            >
-              VIP免费
-            </div>
-            <div
               v-if="!can_join && list.charge > 0"
               class="button charge"
               @click="payOrder()"
@@ -200,7 +193,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .nav {

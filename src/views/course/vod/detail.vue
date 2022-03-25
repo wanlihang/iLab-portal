@@ -66,20 +66,49 @@
               <p class="desc">{{ course.short_description }}</p>
               <div class="btn-box">
                 <template v-if="!isBuy && course.charge !== 0">
-                  <div
-                    class="buy-button"
-                    v-if="course.charge > 0"
-                    @click="buyCourse()"
+                  <template v-if="msData && msData.data">
+                    <div
+                      class="buy-button"
+                      @click="goMsOrder(msData.order.id)"
+                      v-if="msData.order && msData.order.status === 0"
+                    >
+                      已获得秒杀资格，请尽快支付
+                    </div>
+                    <div
+                      class="buy-button"
+                      v-else-if="!msData.data.is_over"
+                      @click="openMsDialog()"
+                    >
+                      立即秒杀￥{{ msData.data.charge }}
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div
+                      class="buy-button"
+                      v-if="course.charge > 0"
+                      @click="buyCourse()"
+                    >
+                      订阅课程￥{{ course.charge }}
+                    </div>
+                    <div
+                      class="role-button"
+                      v-if="course.vip_can_view === 1"
+                      @click="goRole()"
+                    >
+                      会员免费看
+                    </div>
+                  </template>
+                  <template
+                    v-if="
+                      tgData &&
+                      tgData.goods &&
+                      (!tgData.join_item || tgData.join_item.length === 0)
+                    "
                   >
-                    订阅课程￥{{ course.charge }}
-                  </div>
-                  <div
-                    class="role-button"
-                    v-if="course.vip_can_view === 1"
-                    @click="goRole()"
-                  >
-                    会员免费看
-                  </div>
+                    <div class="role-button" @click="goPay(0)">
+                      单独开团￥{{ tgData.goods.charge }}
+                    </div>
+                  </template>
                 </template>
                 <template v-if="course.is_free === 1">
                   <div class="has-button">本课程免费</div>
@@ -90,6 +119,16 @@
               </div>
             </div>
           </div>
+          <template v-if="!isBuy && msData">
+            <miaosha-list
+              :ms="msData"
+              :status="msDialogStatus"
+              @cancel="closeMsDialog"
+            ></miaosha-list>
+          </template>
+          <template v-if="!isBuy && tgData">
+            <tuangou-list :tg="tgData"></tuangou-list>
+          </template>
           <div class="tabs" id="NavBar">
             <div
               class="item-tab"
@@ -108,95 +147,23 @@
           <div class="new-content" v-html="course.render_desc"></div>
         </div>
         <div class="course-chapter-box" v-show="currentTab === 3">
-          <template v-if="chapters.length > 0">
-            <div
-              class="chapter-item"
-              v-for="chapter in chapters"
-              :key="chapter.id"
-            >
-              <div class="chapter-name">{{ chapter.title }}</div>
-              <div class="chapter-videos-box">
-                <div
-                  class="video-item"
-                  @click="goPlay(video)"
-                  v-for="video in videos[chapter.id]"
-                  :key="video.id"
-                >
-                  <img
-                    class="play-icon"
-                    v-if="
-                      isBuy ||
-                      course.is_free === 1 ||
-                      video.charge === 0 ||
-                      buyVideos.indexOf(video.id) !== -1
-                    "
-                    src="../../../assets/img/commen/icon-unlock.png"
-                  />
-                  <img
-                    class="play-icon"
-                    v-else
-                    src="../../../assets/img/commen/icon-lock.png"
-                  />
-                  <div class="video-title">
-                    <span class="text">{{ video.title }}</span>
-                    <span
-                      class="free"
-                      v-if="
-                        showTry &&
-                        course.is_free !== 1 &&
-                        (video.free_seconds > 0 || video.charge === 0)
-                      "
-                      >试看</span
-                    >
-                  </div>
-                  <div class="video-info">
-                    <template>
-                      <duration :seconds="video.duration"></duration>
-                    </template>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </template>
-          <template v-else>
-            <div
-              class="video-item"
-              @click="goPlay(video)"
-              v-for="video in videos[0]"
-              :key="video.id"
-            >
-              <img
-                class="play-icon"
-                v-if="
-                  isBuy ||
-                  course.is_free === 1 ||
-                  video.charge === 0 ||
-                  buyVideos.indexOf(video.id) !== -1
-                "
-                src="../../../assets/img/commen/icon-unlock.png"
-              />
-              <img
-                class="play-icon"
-                v-else
-                src="../../../assets/img/commen/icon-lock.png"
-              />
-              <div class="video-title">
-                <span class="text">{{ video.title }}</span>
-                <span
-                  class="free"
-                  v-if="
-                    showTry &&
-                    course.is_free !== 1 &&
-                    (video.free_seconds > 0 || video.charge === 0)
-                  "
-                  >试看</span
-                >
-              </div>
-              <div class="video-duration">
-                <duration :seconds="video.duration"></duration>
-              </div>
-            </div>
-          </template>
+          <video-chapter-list-comp
+            :chapters="chapters"
+            :course="course"
+            :videos="videos"
+            :is-buy="isBuy"
+            :buy-videos="buyVideos"
+            v-if="chapters.length > 0"
+            @switchVideo="goPlay"
+          ></video-chapter-list-comp>
+          <video-list-comp
+            :course="course"
+            :videos="videos[0]"
+            :is-buy="isBuy"
+            :buy-videos="buyVideos"
+            @switchVideo="goPlay"
+            v-else
+          ></video-list-comp>
         </div>
         <div class="course-comments-box" v-show="currentTab === 4">
           <div class="comment-divider">全部评论</div>
@@ -274,20 +241,26 @@
 import Utils from "@/js/utils";
 import { mapState, mapMutations } from "vuex";
 import NavFooter from "../../../components/footer.vue";
-import Duration from "../../../components/duration.vue";
 import CourseDialog from "../../../components/coursedialog.vue";
 import None from "../../../components/none.vue";
 import HistoryRecord from "../../../components/history-record.vue";
 import SkeletonDetail from "../../../components/skeleton/skeletonDetail.vue";
+import TuangouList from "../../../components/tuangou-list.vue";
+import MiaoshaList from "../../../components/miaosha-list.vue";
+import VideoListComp from "./components/detail/video-list.vue";
+import VideoChapterListComp from "./components/detail/video-chaper-list.vue";
 
 export default {
   components: {
     NavFooter,
-    Duration,
     CourseDialog,
     None,
     HistoryRecord,
     SkeletonDetail,
+    TuangouList,
+    MiaoshaList,
+    VideoListComp,
+    VideoChapterListComp,
   },
   data() {
     return {
@@ -335,10 +308,13 @@ export default {
       },
       isfixTab: false,
       showTry: false,
+      tgData: null,
+      msData: null,
+      msDialogStatus: false,
     };
   },
   computed: {
-    ...mapState(["isLogin", "user", "config"]),
+    ...mapState(["isLogin", "user", "config", "configFunc"]),
   },
   mounted() {
     window.addEventListener("scroll", this.handleTabFix, true);
@@ -350,6 +326,26 @@ export default {
   },
   methods: {
     ...mapMutations(["showLoginDialog", "changeDialogType"]),
+    goPay(gid = 0) {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
+      this.$router.push({
+        name: "order",
+        query: {
+          goods_type: "tg",
+          goods_charge: this.tgData.goods.charge,
+          goods_label: "团购",
+          goods_name: this.tgData.goods.goods_title,
+          goods_id: this.tgData.goods.id,
+          goods_thumb: this.tgData.goods.goods_thumb,
+          tg_gid: gid,
+          course_id: this.tgData.goods.other_id,
+          course_type: this.tgData.goods.goods_type,
+        },
+      });
+    },
     goLogin() {
       this.changeDialogType(1);
       this.showLoginDialog();
@@ -367,7 +363,6 @@ export default {
           : (this.isfixTab = false);
       }
     },
-
     tabChange(key) {
       this.currentTab = key;
     },
@@ -376,16 +371,11 @@ export default {
         this.goLogin();
         return;
       }
-      if (this.course.is_free === 1 || this.isBuy) {
-        this.$router.push({
-          name: "coursesVideo",
-          query: {
-            id: item.id,
-          },
-        });
-      } else if (
-        this.course.is_free !== 1 &&
-        (item.charge === 0 || item.free_seconds > 0)
+      if (
+        this.course.is_free === 1 ||
+        this.isBuy ||
+        (this.course.is_free !== 1 &&
+          (item.charge === 0 || item.free_seconds > 0))
       ) {
         this.$router.push({
           name: "coursesVideo",
@@ -516,10 +506,68 @@ export default {
           this.videoWatchedProgress = res.data.videoWatchedProgress;
           this.videos = res.data.videos;
           this.buyVideos = res.data.buyVideos;
+          //获取秒杀信息
+          if (!this.isBuy && this.configFunc["miaosha"]) {
+            this.getMsDetail();
+          }
+          //获取团购信息
+          else if (!this.isBuy && this.configFunc["tuangou"]) {
+            this.getTgDetail();
+          }
         })
         .catch((e) => {
           this.$message.error("获取课程失败");
         });
+    },
+    getTgDetail() {
+      if (this.course.is_free === 1) {
+        return;
+      }
+      this.$api.TuanGou.Detail(0, {
+        course_id: this.id,
+        course_type: "course",
+      }).then((res) => {
+        this.tgData = res.data;
+      });
+    },
+    getMsDetail() {
+      if (this.course.is_free === 1) {
+        return;
+      }
+      this.$api.MiaoSha.Detail(0, {
+        course_id: this.id,
+        course_type: "course",
+      }).then((res) => {
+        this.msData = res.data;
+        if (!this.msData.data && !this.isBuy && this.configFunc["tuangou"]) {
+          this.getTgDetail();
+        }
+      });
+    },
+    goMsOrder(id) {
+      this.$router.push({
+        name: "order",
+        query: {
+          course_id: this.msData.data.goods_id,
+          course_type: this.msData.data.goods_type,
+          goods_type: "ms",
+          goods_charge: this.msData.data.charge,
+          goods_label: "秒杀",
+          goods_name: this.msData.data.goods_title,
+          goods_id: id,
+          goods_thumb: this.msData.data.goods_thumb,
+        },
+      });
+    },
+    openMsDialog() {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
+      this.msDialogStatus = true;
+    },
+    closeMsDialog() {
+      this.msDialogStatus = false;
     },
     getComments() {
       if (this.comment.loading) {
@@ -656,7 +704,7 @@ export default {
     }
     .course-info {
       width: 1200px;
-      height: 372px;
+      height: auto;
       background: #ffffff;
       border-radius: 8px;
       .course-info-box {
@@ -864,136 +912,6 @@ export default {
       background: #ffffff;
       margin-top: 30px;
       border-radius: 8px;
-      .video-item {
-        width: 100%;
-        height: 24px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        position: relative;
-        margin-top: 30px;
-        cursor: pointer;
-        &:first-child {
-          margin-top: 0px;
-        }
-
-        .play-icon {
-          width: 24px;
-          height: 24px;
-          cursor: pointer;
-        }
-        .video-title {
-          height: 22px;
-          font-size: 14px;
-          font-weight: 400;
-          color: #333333;
-          line-height: 14px;
-          margin-left: 15px;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          .free {
-            margin-left: 15px;
-            width: 44px;
-            height: 22px;
-            background: #04c877;
-            border-radius: 2px;
-            color: #fff;
-            font-size: 12px;
-            font-weight: 400;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-        }
-        .video-duration {
-          position: absolute;
-          height: 14px;
-          font-size: 14px;
-          font-weight: 400;
-          color: #999999;
-          line-height: 14px;
-          top: 5px;
-          right: 0;
-        }
-      }
-      .chapter-item {
-        width: 100%;
-        height: auto;
-        margin-top: 50px;
-        &:first-child {
-          margin-top: 0px;
-        }
-        .chapter-name {
-          width: 100%;
-          height: 16px;
-          font-size: 16px;
-          font-weight: 500;
-          color: #333333;
-          line-height: 16px;
-          margin-bottom: 30px;
-          &:first-child {
-            margin-bottom: 0px;
-          }
-          &:last-child {
-            margin-bottom: 0px;
-          }
-        }
-        .chapter-videos-box {
-          width: 100%;
-          height: auto;
-          .video-item {
-            width: 100%;
-            height: 24px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            position: relative;
-            cursor: pointer;
-            margin-top: 30px;
-
-            .play-icon {
-              width: 24px;
-              height: 24px;
-              cursor: pointer;
-            }
-            .video-title {
-              height: 22px;
-              font-size: 14px;
-              font-weight: 400;
-              color: #333333;
-              line-height: 14px;
-              margin-left: 15px;
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              .free {
-                margin-left: 15px;
-                width: 44px;
-                height: 22px;
-                background: #04c877;
-                border-radius: 2px;
-                color: #fff;
-                font-size: 12px;
-                font-weight: 400;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              }
-            }
-            .video-info {
-              position: absolute;
-              height: 14px;
-              font-size: 14px;
-              font-weight: 400;
-              color: #999999;
-              line-height: 14px;
-              top: 5px;
-              right: 0;
-            }
-          }
-        }
-      }
     }
     .course-comments-box {
       width: 1200px;

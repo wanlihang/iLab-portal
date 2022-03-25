@@ -11,7 +11,23 @@
           @click="goTgDetail(course)"
         >
           <div class="tg-course-thumb">
-            <img :src="course.goods_thumb" />
+            <template v-if="course.goods_thumb">
+              <thumb-bar
+                class="thumb-bar"
+                v-if="course.goods_type === 'book'"
+                :value="course.goods_thumb"
+                :border="8"
+                :width="148.5"
+                :height="198"
+              ></thumb-bar>
+              <thumb-bar
+                class="thumb-bar"
+                v-else
+                :value="course.goods_thumb"
+                :width="264"
+                :height="198"
+              ></thumb-bar>
+            </template>
           </div>
           <div class="tg-course-body">
             <div class="tg-course-title">
@@ -31,7 +47,7 @@
             </div>
             <div class="tg-progress">
               <div class="label">立即抢购</div>
-              <div class="progress-text">差0人成团</div>
+              <div class="progress-text">{{ course.people_num }}人团</div>
             </div>
           </div>
         </div>
@@ -45,12 +61,35 @@ export default {
   props: ["name", "items"],
   methods: {
     goTgDetail(item) {
-      this.$router.push({
-        name: "tgDetail",
-        query: {
-          id: item.id,
-        },
-      });
+      if (item.goods_type === "course") {
+        this.$router.push({
+          name: "coursesDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      } else if (item.goods_type === "live") {
+        this.$router.push({
+          name: "liveDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      } else if (item.goods_type === "book") {
+        this.$router.push({
+          name: "bookDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      } else if (item.goods_type === "learnPath") {
+        this.$router.push({
+          name: "learnPathDetail",
+          query: {
+            id: item.other_id,
+          },
+        });
+      }
     },
   },
 };
@@ -92,22 +131,33 @@ export default {
       cursor: pointer;
       border-radius: 8px;
       flex-direction: column;
-
+      background-color: #fff;
+      &:hover {
+        .tg-course-thumb {
+          .thumb-bar {
+            transform: scale(1.1, 1.1);
+          }
+        }
+      }
       .tg-course-thumb {
         width: 264px;
         height: 198px;
+        border-radius: 8px 8px 0px 0px;
         overflow: hidden;
         img {
           width: 100%;
           height: 100%;
           border-radius: 8px 8px 0px 0px;
         }
+        .thumb-bar {
+          transition: all 0.3s;
+        }
       }
 
       .tg-course-body {
         box-sizing: border-box;
         width: 100%;
-        height: 109px;
+        height: auto;
         background-color: #fff;
         border-radius: 0px 0px 8px 8px;
         padding: 15px 10px 15px 10px;
@@ -115,12 +165,12 @@ export default {
 
         .tg-course-title {
           width: 100%;
-          height: 16px;
+          height: 20px;
           float: left;
           font-size: 16px;
           font-weight: 600;
           color: #333333;
-          line-height: 16px;
+          line-height: 20px;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;

@@ -59,20 +59,49 @@
               <p class="desc">{{ course.short_description }}</p>
               <div class="btn-box">
                 <template v-if="!isBuy && course.charge !== 0">
-                  <div
-                    class="buy-button"
-                    v-if="course.charge > 0"
-                    @click="buyCourse()"
+                  <template v-if="msData && msData.data">
+                    <div
+                      class="buy-button"
+                      @click="goMsOrder(msData.order.id)"
+                      v-if="msData.order && msData.order.status === 0"
+                    >
+                      已获得秒杀资格，请尽快支付
+                    </div>
+                    <div
+                      class="buy-button"
+                      v-else-if="!msData.data.is_over"
+                      @click="openMsDialog()"
+                    >
+                      立即秒杀￥{{ msData.data.charge }}
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div
+                      class="buy-button"
+                      v-if="course.charge > 0"
+                      @click="buyCourse()"
+                    >
+                      订阅直播￥{{ course.charge }}
+                    </div>
+                    <div
+                      class="role-button"
+                      v-if="course.vip_can_view === 1"
+                      @click="goRole()"
+                    >
+                      会员免费看
+                    </div>
+                  </template>
+                  <template
+                    v-if="
+                      tgData &&
+                      tgData.goods &&
+                      (!tgData.join_item || tgData.join_item.length === 0)
+                    "
                   >
-                    订阅直播￥{{ course.charge }}
-                  </div>
-                  <div
-                    class="role-button"
-                    v-if="course.vip_can_view === 1"
-                    @click="goRole()"
-                  >
-                    会员免费看
-                  </div>
+                    <div class="role-button" @click="goPay(0)">
+                      单独开团￥{{ tgData.goods.charge }}
+                    </div>
+                  </template>
                 </template>
                 <template v-if="course.charge === 0">
                   <div class="has-button">本课程免费</div>
@@ -83,6 +112,16 @@
               </div>
             </div>
           </div>
+          <template v-if="!isBuy && msData">
+            <miaosha-list
+              :ms="msData"
+              :status="msDialogStatus"
+              @cancel="closeMsDialog"
+            ></miaosha-list>
+          </template>
+          <template v-if="!isBuy && tgData">
+            <tuangou-list :tg="tgData"></tuangou-list>
+          </template>
           <div class="tabs" id="NavBar">
             <div
               class="item-tab"
@@ -210,6 +249,8 @@
           </div>
           <div id="page" v-show="comment.list.length > 0 && total > 20">
             <page-box
+              :key="comment.pagination.page"
+              :page="comment.pagination.page"
               :totals="total"
               @current-change="changepage"
               :pageSize="comment.pagination.size"
@@ -230,6 +271,8 @@ import PageBox from "../../../components/page.vue";
 import None from "../../../components/none.vue";
 import HistoryRecord from "../../../components/history-record.vue";
 import SkeletonDetail from "../../../components/skeleton/skeletonDetail.vue";
+import TuangouList from "../../../components/tuangou-list.vue";
+import MiaoshaList from "../../../components/miaosha-list.vue";
 
 export default {
   components: {
@@ -239,6 +282,8 @@ export default {
     None,
     HistoryRecord,
     SkeletonDetail,
+    TuangouList,
+    MiaoshaList,
   },
   data() {
     return {
@@ -275,10 +320,13 @@ export default {
         },
       },
       isfixTab: false,
+      tgData: null,
+      msData: null,
+      msDialogStatus: false,
     };
   },
   computed: {
-    ...mapState(["isLogin", "user"]),
+    ...mapState(["isLogin", "user", "configFunc"]),
   },
   mounted() {
     window.addEventListener("scroll", this.handleTabFix, true);
@@ -291,6 +339,26 @@ export default {
   },
   methods: {
     ...mapMutations(["showLoginDialog", "changeDialogType"]),
+    goPay(gid = 0) {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
+      this.$router.push({
+        name: "order",
+        query: {
+          goods_type: "tg",
+          goods_charge: this.tgData.goods.charge,
+          goods_label: "团购",
+          goods_name: this.tgData.goods.goods_title,
+          goods_id: this.tgData.goods.id,
+          goods_thumb: this.tgData.goods.goods_thumb,
+          tg_gid: gid,
+          course_id: this.tgData.goods.other_id,
+          course_type: this.tgData.goods.goods_type,
+        },
+      });
+    },
     goLogin() {
       this.changeDialogType(1);
       this.showLoginDialog();
@@ -390,10 +458,68 @@ export default {
           this.chapters = res.data.chapters;
           this.isBuy = res.data.is_buy;
           document.title = res.data.course.title;
+          //获取秒杀信息
+          if (!this.isBuy && this.configFunc["miaosha"]) {
+            this.getMsDetail();
+          }
+          //获取团购信息
+          else if (!this.isBuy && this.configFunc["tuangou"]) {
+            this.getTgDetail();
+          }
         })
         .catch((e) => {
           this.$message.error("获取课程失败");
         });
+    },
+    getTgDetail() {
+      if (this.course.charge === 0) {
+        return;
+      }
+      this.$api.TuanGou.Detail(0, {
+        course_id: this.id,
+        course_type: "live",
+      }).then((res) => {
+        this.tgData = res.data;
+      });
+    },
+    getMsDetail() {
+      if (this.course.charge === 0) {
+        return;
+      }
+      this.$api.MiaoSha.Detail(0, {
+        course_id: this.id,
+        course_type: "live",
+      }).then((res) => {
+        this.msData = res.data;
+        if (!this.msData.data && !this.isBuy && this.configFunc["tuangou"]) {
+          this.getTgDetail();
+        }
+      });
+    },
+    goMsOrder(id) {
+      this.$router.push({
+        name: "order",
+        query: {
+          course_id: this.msData.data.goods_id,
+          course_type: this.msData.data.goods_type,
+          goods_type: "ms",
+          goods_charge: this.msData.data.charge,
+          goods_label: "秒杀",
+          goods_name: this.msData.data.goods_title,
+          goods_id: id,
+          goods_thumb: this.msData.data.goods_thumb,
+        },
+      });
+    },
+    openMsDialog() {
+      if (!this.isLogin) {
+        this.goLogin();
+        return;
+      }
+      this.msDialogStatus = true;
+    },
+    closeMsDialog() {
+      this.msDialogStatus = false;
     },
     getComments() {
       if (this.comment.loading) {
@@ -527,7 +653,7 @@ export default {
     }
     .course-info {
       width: 1200px;
-      height: 372px;
+      height: auto;
       background: #ffffff;
       border-radius: 8px;
       .course-info-box {
@@ -891,6 +1017,15 @@ export default {
         flex-direction: row;
         align-items: center;
         margin-bottom: 50px;
+        .text {
+          width: 100%;
+          text-align: center;
+          cursor: pointer;
+          &:hover {
+            color: #3ca7fa;
+            text-decoration: underline;
+          }
+        }
         .reply {
           width: 100%;
           display: flex;

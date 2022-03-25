@@ -10,13 +10,16 @@
             src="../../../assets/img/commen/icon-close.png"
           />
         </div>
-        <div class="text">确认要交卷吗？</div>
+        <div class="text" v-if="surplus !== 0">
+          还有{{ surplus }}道题未做，确认要交卷吗？
+        </div>
+        <div class="text" v-else>确认要交卷吗？</div>
         <div class="button">
           <div class="confirm" style="cursor: pointer" @click="submitHandle()">
             确定
           </div>
           <div class="cancel" style="cursor: pointer" @click="cancel()">
-            取消
+            继续答题
           </div>
         </div>
       </div>
@@ -59,6 +62,21 @@
       <div class="questions-box" v-if="questions && userPaper">
         <template v-for="(question, index) in questions">
           <div class="item" :key="index">
+            <template v-if="userPaper.status === 1 && collects">
+              <div
+                class="collect-icon"
+                @click="collectAnswer(question.question_id)"
+              >
+                <img
+                  v-if="collects[question.question_id] === 1"
+                  src="../../../assets/img/commen/icon-collect-h.png"
+                />
+                <img
+                  v-else
+                  src="../../../assets/img/commen/icon-collect-n.png"
+                />
+              </div>
+            </template>
             <!-- 单选 -->
             <question-choice
               :num="index + 1"
@@ -165,7 +183,9 @@ export default {
         openmask: false,
         surplus: null,
       },
+      flag: false,
       timer: null,
+      surplus: 0,
       id: this.$route.query.id || 0,
       pid: this.$route.query.pid || 0,
       paper: [],
@@ -178,6 +198,8 @@ export default {
         min: 0,
         sec: 0,
       },
+      collects: null,
+      notComplete: [],
     };
   },
   beforeDestroy() {
@@ -202,6 +224,19 @@ export default {
         answer: answer,
         question_id: qid,
       });
+      this.questions.forEach((item) => {
+        if (!item.answer_content && item.question_id === qid && answer !== "") {
+          if (this.notComplete.length === 0) {
+            this.$set(this.notComplete, qid, true);
+            this.surplus--;
+          } else {
+            if (!this.notComplete[qid]) {
+              this.$set(this.notComplete, qid, true);
+              this.surplus--;
+            }
+          }
+        }
+      });
     },
     submitAll() {
       this.results.openmask = true;
@@ -212,9 +247,9 @@ export default {
       const now = Date.parse(new Date());
       const msec = end - now;
       if (msec < 0) {
-        if (this.userPaper.status === 0) {
-          this.finish();
-        }
+        this.flag = true;
+        this.finish();
+
         return;
       }
       let day = parseInt(msec / 1000 / 60 / 60 / 24);
@@ -229,6 +264,7 @@ export default {
       if (min >= 0 && sec >= 0) {
         //倒计时结束关闭订单
         if (min === 0 && sec === 0 && hr === 0) {
+          that.flag = true;
           that.finish();
           return;
         }
@@ -255,6 +291,7 @@ export default {
             });
             return;
           }
+          let unread = 0;
           let params = [];
           let choice = [];
           let select = [];
@@ -263,6 +300,9 @@ export default {
           let judge = [];
           let cap = [];
           normaldata.forEach((item) => {
+            if (!item.answer_content) {
+              unread++;
+            }
             if (item.question) {
               if (item.question.type === 1) {
                 choice.push(item);
@@ -304,8 +344,17 @@ export default {
             params.push(...cap);
           }
           this.questions = params;
+          this.surplus = unread;
           if (this.userPaper.status === 0) {
-            this.timer = setInterval(this.countdown, 1000);
+            this.timer = setInterval(() => {
+              if (this.flag) {
+                this.timer && clearInterval(this.timer);
+              } else {
+                this.countdown();
+              }
+            }, 1000);
+          } else if (this.userPaper.status === 1) {
+            this.getCollectStatus();
           }
         })
         .catch((e) => {
@@ -321,11 +370,39 @@ export default {
           this.results.openmask = false;
           this.$message.success("考试结束，得分：" + totalScore);
           this.getData();
-          this.timer && clearInterval(this.timer);
         })
         .catch((e) => {
           this.$message.error(e.message);
         });
+    },
+    getCollectStatus() {
+      let data = this.questions;
+      let ids = [];
+      for (let i = 0; i < data.length; i++) {
+        ids.push(data[i].question_id);
+      }
+      this.$api.Exam.Practice.CollectionStatus({
+        question_ids: ids,
+      })
+        .then((res) => {
+          this.collects = res.data;
+        })
+        .catch((e) => {
+          this.$message.error(e.message);
+        });
+    },
+    collectAnswer(id) {
+      this.$api.Exam.Practice.Collect({
+        question_id: id,
+      }).then(() => {
+        if (this.collects[id] === 1) {
+          this.$message.success("已取消收藏");
+          this.$set(this.collects, id, 0);
+        } else {
+          this.$message.success("已收藏试题");
+          this.$set(this.collects, id, 1);
+        }
+      });
     },
   },
 };
@@ -418,6 +495,23 @@ export default {
     margin-top: 50px;
     .questions-box {
       width: 1200px;
+      height: auto;
+      float: left;
+      .item {
+        width: 100%;
+        height: auto;
+        float: left;
+        position: relative;
+        .collect-icon {
+          position: absolute;
+          width: 28px;
+          height: 28px;
+          cursor: pointer;
+          right: 30px;
+          top: 30px;
+          z-index: 10;
+        }
+      }
     }
   }
   .mask {

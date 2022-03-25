@@ -75,13 +75,13 @@ export default {
 
     .topic-title {
       width: 556px;
-      height: auto;
+      height: 20px;
       float: left;
       margin-bottom: 28px;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
       color: #333333;
-      line-height: 18px;
+      line-height: 20px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

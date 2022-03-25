@@ -95,6 +95,12 @@ export default {
               path: "MemberProfile",
               status: true,
             },
+            {
+              name: "我的秒杀",
+              id: 19,
+              path: "MemberMiaosha",
+              status: this.configFunc["miaosha"],
+            },
           ],
         },
         {
@@ -139,7 +145,7 @@ export default {
               name: "邀请推广",
               id: 14,
               path: "MemberShare",
-              status: this.configFunc["share"],
+              status: !this.configFunc["share"],
             },
             {
               name: "兑换课程",

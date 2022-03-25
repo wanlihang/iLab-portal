@@ -35,7 +35,7 @@
     <div class="box">
       <nav-member :cid="14"></nav-member>
       <div class="right-box">
-        <div class="user-box">
+        <div class="user-box" v-if="user">
           <div class="item-box">
             <div class="tit">我的邀请码</div>
             <div class="value" v-if="invite.code">{{ invite.code }}</div>
@@ -44,9 +44,9 @@
           <div class="item-box">
             <div class="tit">奖励余额</div>
             <div class="value">
-              <span>{{ invite.balance }}元</span>
+              <span>{{ user.invite_balance }}元</span>
               <div
-                v-if="invite.balance !== 0"
+                v-if="user.invite_balance !== 0"
                 class="withdraw-button"
                 @click="showWithdrawDialog()"
               >
@@ -56,7 +56,7 @@
           </div>
           <div class="item-box">
             <div class="tit">已成功邀请</div>
-            <div class="value">{{ invite.count }}人</div>
+            <div class="value">{{ user.invite_people_count }}人</div>
           </div>
         </div>
         <div class="info-box" v-if="!noPromoCode">
@@ -86,6 +86,8 @@
           <none type="white" v-else></none>
           <div id="page" v-show="list.length > 0 && total > pagination.size">
             <page-box
+              :key="pagination.page"
+              :page="pagination.page"
               :totals="total"
               @current-change="changepage"
               :pageSize="pagination.size"
@@ -119,8 +121,6 @@ export default {
       list: [],
       invite: {
         code: null,
-        count: 0,
-        balance: 0,
       },
       total: null,
       pagination: {
@@ -144,9 +144,8 @@ export default {
     this.getData();
   },
   methods: {
-    ...mapMutations(["showLoginDialog", "changeDialogType"]),
+    ...mapMutations(["showLoginDialog", "changeDialogType", "loginHandle"]),
     initData() {
-      this.getInviteInfo();
       this.getPromoCode();
     },
     showWithdrawDialog() {
@@ -174,14 +173,9 @@ export default {
       });
     },
     getInviteInfo() {
-      this.$api.MultiLevelShare.User()
-        .then((res) => {
-          this.invite.count = res.data.invite_count;
-          this.invite.balance = res.data.invite_balance;
-        })
-        .catch((e) => {
-          this.$message.error(e.message);
-        });
+      this.$api.User.Detail().then((res) => {
+        this.loginHandle(res.data);
+      });
     },
     getPromoCode() {
       this.$api.Member.PromoCode().then((res) => {
@@ -223,7 +217,7 @@ export default {
         this.$message.error("请输入提现金额");
         return;
       }
-      if (this.withdrawForm.total > this.invite.balance) {
+      if (this.withdrawForm.total > this.user.invite_balance) {
         this.$message.error("提现金额不得大于余额");
         return;
       }

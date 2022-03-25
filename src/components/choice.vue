@@ -1,12 +1,29 @@
 <template>
   <div class="choice-item">
+    <div v-if="previewImage" class="preview-image borderbox">
+      <img
+        class="back-detail"
+        @click="backDetail()"
+        src="../assets/img/icon-back-n.png"
+      />
+      <div class="pic-item">
+        <div
+          class="pic"
+          :style="{ 'background-image': 'url(' + thumb + ')' }"
+        ></div>
+      </div>
+    </div>
     <div class="info" :class="{ spcolor: spcolor }">
       <span class="tit"
-        >{{num}}.{{ question.type_text }}（{{ question.score }}分）</span
+        >{{ num }}.{{ question.type_text }}（{{ question.score }}分）</span
       >
     </div>
     <div class="question-content" :class="{ spcolor: spcolor }">
-      <div v-html="question.content"></div>
+      <div
+        @click="PreviewImage($event)"
+        class="content-render"
+        v-html="question.content"
+      ></div>
     </div>
     <div class="choice-box" :class="{ spcolor: spcolor }">
       <template v-for="item in 10">
@@ -19,7 +36,11 @@
         >
           <div class="index">{{ optionTypeTextMap["option" + item] }}</div>
           <div class="content" :class="{ spcolor: spcolor }">
-            <div v-html="question['option' + item]"></div>
+            <div
+              class="content-render"
+              @click="PreviewImage($event)"
+              v-html="question['option' + item]"
+            ></div>
           </div>
         </div>
       </template>
@@ -74,6 +95,8 @@ export default {
         option9: "I",
         option10: "J",
       },
+      previewImage: false,
+      thumb: null,
     };
   },
   mounted() {
@@ -92,17 +115,57 @@ export default {
       this.active = "option" + index;
       this.$emit("update", this.question.id, this.active);
     },
+    backDetail() {
+      this.previewImage = false;
+    },
+    PreviewImage($event) {
+      if ($event.target.src) {
+        $event.stopPropagation();
+        this.thumb = $event.target.src;
+        this.previewImage = true;
+      }
+    },
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .spcolor {
   background: #f4fafe !important;
 }
 .choice-item {
   background-color: #f1f2f6;
   width: 100%;
-
+  .preview-image {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 400;
+    padding: 15px;
+    background-color: #000000;
+    display: flex;
+    align-items: center;
+    .back-detail {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 19px;
+      height: 19px;
+      cursor: pointer;
+    }
+    .pic-item {
+      width: 100%;
+      height: 100%;
+      .pic {
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center center;
+      }
+    }
+  }
   .info {
     width: 100%;
     display: flex;
@@ -184,13 +247,8 @@ export default {
         font-size: 16px;
         font-weight: 400;
         background-color: #fff;
-
-        img {
-          max-width: 100%;
-        }
       }
     }
   }
 }
 </style>
-  

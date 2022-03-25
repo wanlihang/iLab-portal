@@ -1,8 +1,13 @@
 <template>
   <div class="value">
-    {{ remainingTime.day }}天{{ remainingTime.hr }}时{{ remainingTime.min }}分{{
-      remainingTime.sec
-    }}秒
+    <template v-if="remainingTime.day === 0">
+      {{ remainingTime.hr }}时{{ remainingTime.min }}分{{ remainingTime.sec }}秒
+    </template>
+    <template v-if="remainingTime.day > 0">
+      {{ remainingTime.day }}天{{ remainingTime.hr }}时{{
+        remainingTime.min
+      }}分{{ remainingTime.sec }}秒
+    </template>
   </div>
 </template>
 <script>
@@ -46,7 +51,8 @@ export default {
       const that = this;
       if (min >= 0 && sec >= 0) {
         //倒计时结束关闭订单
-        if (min === 0 && sec === 0 && hr === 0) {
+        if (day === 0 && min === 0 && sec === 0 && hr === 0) {
+          window.location.reload();
           return;
         }
         that.endTime--;

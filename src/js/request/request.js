@@ -343,6 +343,9 @@ const Api = {
     Collects(params) {
       return get("/api/v2/member/courses/like", params);
     },
+    Miaosha(params) {
+      return get("/addons/MiaoSha/api/v1/m/user/orders", params);
+    },
   },
   MultiLevelShare: {
     Config() {
@@ -496,6 +499,9 @@ const Api = {
     Practice: {
       CollectStatus(params) {
         return post(`/addons/Paper/api/v1/collection/status`, params);
+      },
+      CollectionStatus(params) {
+        return post(`/addons/Paper/api/v1/collection/status/multi`, params);
       },
       Collect(params) {
         return post(`/addons/Paper/api/v1/collection/action`, params);
@@ -729,8 +735,8 @@ const Api = {
     List(params) {
       return get("/addons/TuanGou/api/v1/t", params);
     },
-    Detail(id) {
-      return get("/addons/TuanGou/api/v1/t/" + id);
+    Detail(id, params) {
+      return get("/addons/TuanGou/api/v1/t/" + id, params);
     },
     CreateOrder(id, params) {
       return post("/addons/TuanGou/api/v1/t/" + id + "/buy", params);
@@ -740,8 +746,8 @@ const Api = {
     List(params) {
       return get("/addons/MiaoSha/api/v1/m", params);
     },
-    Detail(id) {
-      return get("/addons/MiaoSha/api/v1/m/" + id);
+    Detail(id, params) {
+      return get("/addons/MiaoSha/api/v1/m/" + id, params);
     },
     Join(id, params) {
       return post("/addons/MiaoSha/api/v1/m/" + id + "/join", params);

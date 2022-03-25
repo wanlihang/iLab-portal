@@ -77,6 +77,8 @@
           <none type="white" v-else></none>
           <div id="page" v-show="total > pagination.size && list.length > 0">
             <page-box
+              :key="pagination.page"
+              :page="pagination.page"
               :totals="total"
               @current-change="changepage"
               :pageSize="pagination.size"
@@ -109,6 +111,8 @@
               v-show="total > pagination2.page_size && creditList.length > 0"
             >
               <page-box
+                :key="pagination2.page"
+                :page="pagination2.page"
                 :totals="total"
                 @current-change="changepage"
                 :pageSize="pagination2.page_size"
@@ -218,6 +222,8 @@
             v-show="total > pagination.size && orderList.length > 0"
           >
             <page-box
+              :key="pagination.page"
+              :page="pagination.page"
               :totals="total"
               @current-change="changepage"
               :pageSize="pagination.size"

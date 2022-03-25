@@ -15,6 +15,7 @@ const routes = [
     meta: {
       title: "首页",
       sign: true,
+      keepAlive: true,
     },
     component: () => import("../views/index/index.vue"),
   },
@@ -23,6 +24,7 @@ const routes = [
     name: "courses",
     meta: {
       title: "点播课",
+      keepAlive: true,
     },
     component: () => import("../views/course/vod/index.vue"),
   },
@@ -54,6 +56,7 @@ const routes = [
     name: "live",
     meta: {
       title: "直播课",
+      keepAlive: true,
     },
     component: () => import("../views/course/live/index.vue"),
   },
@@ -75,6 +78,7 @@ const routes = [
     name: "topic",
     meta: {
       title: "图文收费",
+      keepAlive: true,
     },
     component: () => import("../views/topic/topic.vue"),
   },
@@ -88,6 +92,7 @@ const routes = [
     name: "book",
     meta: {
       title: "电子书",
+      keepAlive: true,
     },
     component: () => import("../views/book/index.vue"),
   },
@@ -109,6 +114,7 @@ const routes = [
     name: "learnPath",
     meta: {
       title: "学习路径",
+      keepAlive: true,
     },
     component: () => import("../views/learnPath/index.vue"),
   },
@@ -122,6 +128,7 @@ const routes = [
     name: "wenda",
     meta: {
       title: "在线问答",
+      keepAlive: true,
     },
     component: () => import("../views/wenda/index.vue"),
   },
@@ -327,6 +334,14 @@ const routes = [
       title: "我的积分",
     },
     component: () => import("../views/member/credit1_free.vue"),
+  },
+  {
+    path: "/member/miaosha",
+    name: "MemberMiaosha",
+    meta: {
+      title: "我的秒杀",
+    },
+    component: () => import("../views/member/miaosha.vue"),
   },
   {
     path: "/exam",

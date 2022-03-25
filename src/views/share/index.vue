@@ -5,11 +5,26 @@
         <div class="dialog-title">提现</div>
         <div class="info">
           <div class="tit">支付宝账户</div>
-          <input class="input" type="text" placeholder="支付宝账户" v-model="withdrawForm.channel_account" />
+          <input
+            class="input"
+            type="text"
+            placeholder="支付宝账户"
+            v-model="withdrawForm.channel_account"
+          />
           <div class="tit">真实姓名</div>
-          <input class="input" type="text" placeholder="真实姓名" v-model="withdrawForm.channel_name" />
+          <input
+            class="input"
+            type="text"
+            placeholder="真实姓名"
+            v-model="withdrawForm.channel_name"
+          />
           <div class="tit">提现金额</div>
-          <input class="input" type="text" placeholder="提现金额" v-model="withdrawForm.total" />
+          <input
+            class="input"
+            type="text"
+            placeholder="提现金额"
+            v-model="withdrawForm.total"
+          />
         </div>
         <div class="btn-box">
           <div class="btn-cancel" @click="cancel()">取消</div>
@@ -46,11 +61,19 @@
       <div class="bottom-box">
         <div class="project-box">
           <div class="btns">
-            <div class="btn-title" :class="{ active: projectType === 1 }" @click="setPoject(1)">
+            <div
+              class="btn-title"
+              :class="{ active: projectType === 1 }"
+              @click="setPoject(1)"
+            >
               分销课程
               <div class="baseline" v-if="projectType === 1"></div>
             </div>
-            <div class="btn-title" :class="{ active: projectType === 2 }" @click="setPoject(2)">
+            <div
+              class="btn-title"
+              :class="{ active: projectType === 2 }"
+              @click="setPoject(2)"
+            >
               资金明细
               <div class="baseline" v-if="projectType === 2"></div>
             </div>
@@ -74,11 +97,12 @@
               </div>
             </div>
           </template>
-          <div id="page" v-show="projectType === 1 && course.length > 0">
-            <page-box :totals="total2" @current-change="changepage2" :pageSize="pagination2.size" :tab="false"></page-box>
-          </div>
-          <template v-if="projectType === 2 && list.length > 0">
-            <div class="project-item" v-for="(item, index) in list" :key="index">
+          <template v-else-if="projectType === 2 && list.length > 0">
+            <div
+              class="project-item"
+              v-for="(item, index) in list"
+              :key="index"
+            >
               <div class="title">{{ item.desc }}</div>
               <div class="price">{{ item.total }}元</div>
               <div class="info">
@@ -86,8 +110,26 @@
               </div>
             </div>
           </template>
+          <none v-else type="white"></none>
+          <div id="page" v-show="projectType === 1 && course.length > 0">
+            <page-box
+              :key="pagination2.page"
+              :page="pagination2.page"
+              :totals="total2"
+              @current-change="changepage2"
+              :pageSize="pagination2.size"
+              :tab="false"
+            ></page-box>
+          </div>
           <div id="page" v-show="projectType === 2 && list.length > 0">
-            <page-box :totals="total" @current-change="changepage" :pageSize="pagination.page_size" :tab="false"></page-box>
+            <page-box
+              :key="pagination.page"
+              :page="pagination.page"
+              :totals="total"
+              @current-change="changepage"
+              :pageSize="pagination.page_size"
+              :tab="false"
+            ></page-box>
           </div>
         </div>
         <div class="info-box">
@@ -104,11 +146,13 @@
 import { mapState, mapMutations } from "vuex";
 import NavFooter from "../../components/footer.vue";
 import PageBox from "../../components/page.vue";
+import None from "../../components/none.vue";
 
 export default {
   components: {
     NavFooter,
     PageBox,
+    None,
   },
   data() {
     return {
@@ -353,7 +397,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .content {
   width: 100%;
   .mask {
@@ -588,11 +632,12 @@ export default {
       width: 1200px;
       margin: 0 auto;
       box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
+      display: inline-block;
+      float: left;
       .info-box {
         width: 400px;
-        height: 332px;
+        height: auto;
+        float: left;
         background: #ffffff;
         border-radius: 8px;
         box-sizing: border-box;
@@ -633,6 +678,7 @@ export default {
 
       .project-box {
         width: 770px;
+        float: left;
         height: auto;
         background: #ffffff;
         border-radius: 8px;

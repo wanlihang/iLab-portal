@@ -12,6 +12,7 @@
             <ms-item
               :cid="item.id"
               :goods-title="item.goods_title"
+              :goods-type="item.goods_type"
               :goods-thumb="item.goods_thumb"
               :charge="item.charge"
               :is_start="item.is_start"
@@ -30,6 +31,8 @@
     <none v-else></none>
     <div id="page" v-show="list.length > 0 && total > pagination.size">
       <page-box
+        :key="pagination.page"
+        :page="pagination.page"
         :totals="total"
         @current-change="changepage"
         :pageSize="pagination.size"
