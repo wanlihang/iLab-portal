@@ -8,7 +8,6 @@
         <div
           class="topic-course-item hover:shadow-lg"
           :key="index"
-          v-if="course.is_show === 1"
           @click="goTopicDetail(course)"
         >
           <div class="topic-course-thumb">
