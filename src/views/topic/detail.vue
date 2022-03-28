@@ -733,33 +733,11 @@ export default {
         }
         .topic-content {
           width: 100%;
-          font-size: 16px;
-          font-weight: 400;
-          color: #121212;
-          line-height: 28px;
           position: relative;
-          .md-content {
-            width: 100%;
-            pre {
-              .hljs {
-                border-radius: 3px;
-                font-size: 14px;
-                line-height: 1.5;
-              }
-            }
-          }
-
           .free-content {
             width: 100%;
             min-height: 72px;
             margin-bottom: 0px;
-            pre {
-              .hljs {
-                border-radius: 3px;
-                font-size: 14px;
-                line-height: 1.5;
-              }
-            }
           }
           .buttons {
             width: 100%;
