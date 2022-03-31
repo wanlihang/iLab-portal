@@ -763,17 +763,10 @@ export default {
               this.loginHandle(res.data);
               this.resetDialog();
               this.hideLoginDialog();
-              location.reload();
+              this.redirectHandler();
             })
             .catch((e) => {
-              if (e.code === 401) {
-                Utils.clearToken();
-                this.$router.replace({
-                  name: "index",
-                });
-              } else {
-                this.$message.error(e.message);
-              }
+              this.$message.error(e.message);
             });
         }
       });
@@ -904,10 +897,19 @@ export default {
       this.$emit("changeType", 3);
     },
     changeQQ() {
+      let success_redirect_url = window.document.location.href;
+      if (this.$route.name === "login") {
+        let appUrl = this.$utils.getAppUrl();
+        if (this.$route.query.redirect) {
+          success_redirect_url = appUrl + this.$route.query.redirect;
+        } else {
+          success_redirect_url = appUrl;
+        }
+      }
       window.location.href =
         this.config.url +
         "/api/v2/login/socialite/qq?success_redirect=" +
-        urlencode(window.document.location.href) +
+        urlencode(success_redirect_url) +
         "&failed_redirect=" +
         urlencode(this.config.url + "/500");
     },
@@ -921,6 +923,21 @@ export default {
       clearInterval(this.timer);
       this.resetDialog();
       this.$emit("hideLoginDialog");
+    },
+    redirectHandler() {
+      if (this.$route.name === "login") {
+        if (this.$route.query.redirect) {
+          this.$router.replace({
+            path: this.$route.query.redirect,
+          });
+        } else {
+          this.$router.replace({
+            name: "index",
+          });
+        }
+      } else {
+        location.reload();
+      }
     },
     passwordFormValidate() {
       if (this.loading) {
@@ -949,17 +966,10 @@ export default {
               this.loginHandle(res.data);
               this.resetDialog();
               this.hideLoginDialog();
-              location.reload();
+              this.redirectHandler();
             })
             .catch((e) => {
-              if (e.code === 401) {
-                Utils.clearToken();
-                this.$router.replace({
-                  name: "index",
-                });
-              } else {
-                this.$message.error(e.message);
-              }
+              this.$message.error(e.message);
             });
         })
         .catch((e) => {
@@ -998,17 +1008,10 @@ export default {
               this.loginHandle(res.data);
               this.resetDialog();
               this.hideLoginDialog();
-              location.reload();
+              this.redirectHandler();
             })
             .catch((e) => {
-              if (e.code === 401) {
-                Utils.clearToken();
-                this.$router.replace({
-                  name: "index",
-                });
-              } else {
-                this.$message.error(e.message);
-              }
+              this.$message.error(e.message);
             });
         })
         .catch((e) => {

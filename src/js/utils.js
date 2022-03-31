@@ -80,6 +80,13 @@ export default {
 
     return host;
   },
+  getAppUrl() {
+    let host = window.location.protocol + "//" + window.location.host;
+    if (window.location.pathname) {
+      host += "/" + window.location.pathname;
+    }
+    return host;
+  },
   isPoneAvailable: function (pone) {
     var myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
     if (!myreg.test(pone)) {

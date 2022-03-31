@@ -673,14 +673,6 @@ const Api = {
       return post("/addons/LearnPaths/api/v1/path/" + id + "/buy", params);
     },
   },
-  Study: {
-    List() {
-      return get("/addons/ProgressManager/api/v1/dashboard/index");
-    },
-    UploadAvatar(params) {
-      return post("/api/v2/member/detail/avatar", params);
-    },
-  },
   Topic: {
     List(params) {
       return get("/addons/MeeduTopics/api/v1/topics", params);

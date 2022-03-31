@@ -43,6 +43,25 @@ utils.copyright();
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || "";
+  if (
+    typeof to.meta.auth !== "undefined" &&
+    to.meta.auth &&
+    !utils.getToken()
+  ) {
+    next({
+      name: "login",
+      query: {
+        redirect: to.fullPath,
+      },
+    });
+    return;
+  }
+  if (to.name === "login" && utils.getToken()) {
+    next({
+      name: "index",
+    });
+    return;
+  }
   next();
 });
 
