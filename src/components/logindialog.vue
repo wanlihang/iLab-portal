@@ -696,7 +696,7 @@ export default {
     };
   },
   watch: {
-    dialogType: function () {
+    dialogType: function() {
       this.dialogStatus = this.dialogType;
       if (this.dialogStatus !== 0 && this.dialogStatus !== 5) {
         this.getCaptcha();
@@ -705,7 +705,7 @@ export default {
         this.getBindQrode();
       }
     },
-    mobile: function () {
+    mobile: function() {
       this.messageForm.mobile = this.mobile;
     },
   },
@@ -897,19 +897,19 @@ export default {
       this.$emit("changeType", 3);
     },
     changeQQ() {
-      let success_redirect_url = window.document.location.href;
+      let successRedirectUrl = window.document.location.href;
       if (this.$route.name === "login") {
         let appUrl = this.$utils.getAppUrl();
         if (this.$route.query.redirect) {
-          success_redirect_url = appUrl + this.$route.query.redirect;
+          successRedirectUrl = appUrl + this.$route.query.redirect;
         } else {
-          success_redirect_url = appUrl;
+          successRedirectUrl = appUrl;
         }
       }
       window.location.href =
         this.config.url +
         "/api/v2/login/socialite/qq?success_redirect=" +
-        urlencode(success_redirect_url) +
+        urlencode(successRedirectUrl) +
         "&failed_redirect=" +
         urlencode(this.config.url + "/500");
     },
