@@ -1,18 +1,42 @@
 <template>
-  <div class="backTop" @click="goSign">
+  <div class="backTop" @click="goSign" v-if="signStatus">
     <img src="../assets/img/commen/icon-sign-n.png" />
     <span>签到</span>
   </div>
 </template>
 <script>
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
       loading: false,
+      signStatus: false,
     };
   },
-  mounted() {},
+  computed: {
+    ...mapState(["isLogin", "configFunc"]),
+  },
+  mounted() {
+    this.getSignStatus();
+  },
   methods: {
+    getSignStatus() {
+      if (!this.$route.meta.sign) {
+        return;
+      }
+      this.$api.Sign.User()
+        .then((res) => {
+          let is_submit = res.data.is_submit;
+          if (is_submit === 0) {
+            this.signStatus = true;
+          } else {
+            this.signStatus = false;
+          }
+        })
+        .catch((e) => {
+          console.log(e.message);
+        });
+    },
     goSign() {
       if (this.loading) {
         return;
@@ -22,7 +46,7 @@ export default {
         .then((res) => {
           this.loading = false;
           this.$message.success("签到成功，积分+" + res.data.reward);
-          this.$emit("change", true);
+          this.signStatus = false;
         })
         .catch((e) => {
           this.loading = false;
