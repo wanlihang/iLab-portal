@@ -502,7 +502,7 @@
       </div>
     </div>
     <div
-      style="height: 480px"
+      style="height: 440px"
       class="dialog-login-box"
       v-if="dialogStatus === 9"
     >
