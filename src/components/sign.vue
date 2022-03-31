@@ -5,16 +5,12 @@
   </div>
 </template>
 <script>
-import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
       loading: false,
       signStatus: false,
     };
-  },
-  computed: {
-    ...mapState(["isLogin", "configFunc"]),
   },
   mounted() {
     this.getSignStatus();
