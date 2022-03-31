@@ -46,18 +46,6 @@ export default {
     };
   },
   watch: {
-    "$route.query.token"(val) {
-      if (val) {
-        this.$utils.saveToken(val);
-        let newUrl = this.$utils.removeTokenParams(window.location.href);
-        window.location.href = newUrl;
-      }
-    },
-    "$route.query.msv"(val) {
-      if (val) {
-        this.$utils.saveMsv(val);
-      }
-    },
     $route(to, from) {
       this.backTopStatus = false;
       this.signStatus = false;
@@ -85,7 +73,21 @@ export default {
     ]),
   },
   mounted() {
+    this.$router.onReady(() => {
+      // 社交登录回调处理
+      if (this.$route.query.token) {
+        this.$utils.saveToken(this.$route.query.token);
+        let newUrl = this.$utils.removeTokenParams(window.location.href);
+        window.location.href = newUrl;
+      }
+      // msv分销id记录
+      if (this.$route.query.msv) {
+        this.$utils.saveMsv(this.$route.query.msv);
+      }
+    });
+
     this.MeEduInit();
+
     window.addEventListener("scroll", this.getHeight, true);
   },
   beforeDestroy() {
@@ -214,5 +216,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
