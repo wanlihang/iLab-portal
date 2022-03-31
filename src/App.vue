@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <nav-header v-if="!this.$route.meta.hideHeader"></nav-header>
+
     <Login-Dialog
       :dialogType="loginDialogType"
       :status="loginDialogStatus"
@@ -10,12 +11,15 @@
       @changeType="changeType"
     ></Login-Dialog>
 
-    <keep-alive>
-      <router-view v-if="config && this.$route.meta.keepAlive"></router-view>
-    </keep-alive>
-    <router-view v-if="config && !this.$route.meta.keepAlive"></router-view>
+    <template v-if="initComplete">
+      <keep-alive>
+        <router-view v-if="config && this.$route.meta.keepAlive"></router-view>
+      </keep-alive>
+      <router-view v-if="config && !this.$route.meta.keepAlive"></router-view>
+    </template>
 
     <back-top v-show="backTopStatus"></back-top>
+
     <sign
       v-if="this.$route.meta.sign && isLogin && configFunc.daySignIn"
     ></sign>
@@ -41,6 +45,7 @@ export default {
     return {
       cancelStatus: false,
       backTopStatus: false,
+      initComplete: false,
     };
   },
   watch: {
@@ -72,9 +77,22 @@ export default {
       if (this.$route.query.msv) {
         this.$utils.saveMsv(this.$route.query.msv);
       }
-    });
 
-    this.MeEduInit();
+      // 自动登录
+      this.getConfig();
+      if (this.$utils.getToken()) {
+        this.getUser();
+      }
+
+      // 初始化完成
+      this.initComplete = true;
+
+      // 关闭加载框
+      let loadingBoxDom = window.document.getElementById("meedu-loading-box");
+      if (loadingBoxDom) {
+        loadingBoxDom.remove();
+      }
+    });
 
     window.addEventListener("scroll", this.getHeight, true);
   },
@@ -101,12 +119,6 @@ export default {
 
       this.backTopStatus = scrollTop >= 2000;
     },
-    MeEduInit() {
-      this.getConfig();
-      if (this.$utils.getToken()) {
-        this.getUser();
-      }
-    },
     msvBind() {
       let msv = this.$utils.getMsv();
       if (!msv) {
@@ -115,7 +127,6 @@ export default {
 
       this.$api.MultiLevelShare.Bind({ msv: msv })
         .then(() => {
-          console.log("bind success");
           this.$utils.clearMsv();
         })
         .catch((e) => {
@@ -127,7 +138,6 @@ export default {
       try {
         let res = await this.$api.User.Detail();
         this.loginHandle(res.data);
-        this.msvBind();
 
         // 强制绑定手机号
         if (
