@@ -17,8 +17,7 @@
 
     <back-top v-show="backTopStatus"></back-top>
     <sign
-      @change="reloadSignStatus"
-      v-if="signStatus && this.$route.meta.sign"
+      v-if="this.$route.meta.sign && isLogin && configFunc.daySignIn"
     ></sign>
   </div>
 </template>
@@ -42,23 +41,12 @@ export default {
     return {
       cancelStatus: false,
       backTopStatus: false,
-      signStatus: false,
     };
   },
   watch: {
-    $route(to, from) {
-      this.backTopStatus = false;
-      this.signStatus = false;
-      if (this.isLogin && this.configFunc.daySignIn) {
-        this.getSignStatus();
-      }
-    },
     isLogin(val) {
       if (val) {
         this.msvBind();
-        if (this.configFunc.daySignIn) {
-          this.getSignStatus();
-        }
       }
     },
   },
@@ -112,26 +100,6 @@ export default {
         document.body.scrollTop;
 
       this.backTopStatus = scrollTop >= 2000;
-    },
-    getSignStatus() {
-      if (!this.$route.meta.sign) {
-        return;
-      }
-      this.$api.Sign.User()
-        .then((res) => {
-          let is_submit = res.data.is_submit;
-          if (is_submit === 0) {
-            this.signStatus = true;
-          } else {
-            this.signStatus = false;
-          }
-        })
-        .catch((e) => {
-          console.log(e.message);
-        });
-    },
-    reloadSignStatus() {
-      this.getSignStatus();
     },
     MeEduInit() {
       this.getConfig();
