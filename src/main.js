@@ -44,9 +44,13 @@ utils.copyright();
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || "";
   if (
+    // 开启强制登录
     typeof to.meta.auth !== "undefined" &&
     to.meta.auth &&
-    !utils.getToken()
+    // 本地没有token
+    !utils.getToken() &&
+    // URL地址中没有token
+    !to.query.token
   ) {
     next({
       name: "login",

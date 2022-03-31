@@ -83,7 +83,7 @@ export default {
   getAppUrl() {
     let host = window.location.protocol + "//" + window.location.host;
     let pathname = window.location.pathname;
-    if (pathname && pathname != "/") {
+    if (pathname && pathname !== "/") {
       host += pathname;
     }
     return host + "/#";

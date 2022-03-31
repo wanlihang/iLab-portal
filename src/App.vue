@@ -51,7 +51,6 @@ export default {
         this.$utils.saveToken(val);
         let newUrl = this.$utils.removeTokenParams(window.location.href);
         window.location.href = newUrl;
-        this.getUser();
       }
     },
     "$route.query.msv"(val) {
