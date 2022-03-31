@@ -566,9 +566,6 @@
           <button type="submit" class="submit" @click="NewMobileValidate()">
             立即绑定
           </button>
-          <button class="logout" v-if="notCancel" @click="goLogout">
-            安全退出
-          </button>
         </div>
       </div>
     </div>
