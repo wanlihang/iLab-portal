@@ -125,6 +125,7 @@
                             :value="courseItem.thumb"
                             :width="75"
                             :height="100"
+                            :border="4"
                           ></thumb-bar>
                         </div>
                         <div class="thumb-bar" v-else>
@@ -132,6 +133,7 @@
                             :value="courseItem.thumb"
                             :width="133"
                             :height="100"
+                            :border="4"
                           ></thumb-bar>
                         </div>
                       </div>

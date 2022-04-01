@@ -693,7 +693,7 @@ export default {
     };
   },
   watch: {
-    dialogType: function() {
+    dialogType() {
       this.dialogStatus = this.dialogType;
       if (this.dialogStatus !== 0 && this.dialogStatus !== 5) {
         this.getCaptcha();
@@ -702,7 +702,7 @@ export default {
         this.getBindQrode();
       }
     },
-    mobile: function() {
+    mobile() {
       this.messageForm.mobile = this.mobile;
     },
   },
