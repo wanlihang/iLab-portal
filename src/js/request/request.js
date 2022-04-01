@@ -2,9 +2,6 @@ import { get, post, put, destroy } from "./http";
 
 const Api = {
   Home: {
-    Index(params) {
-      return get(`/addons/templateOne/api/v1/home/index`, params);
-    },
     Announcement() {
       return get(`/api/v2/announcement/latest`);
     },
@@ -72,9 +69,6 @@ const Api = {
     WechatMiniLoginMobile(params) {
       return post(`/api/v2/login/wechatMiniMobile`, params);
     },
-    IsLogin() {
-      return get(`/addons/templateOne/api/v1/user/detail`);
-    },
   },
   Sign: {
     User() {
@@ -116,18 +110,9 @@ const Api = {
     LikeCourses(params) {
       return get(`/addons/templateOne/api/v1/like/courses`, params);
     },
-    List(params) {
-      return get(`/addons/templateOne/api/v1/like/list`, params);
-    },
     User: {
-      Detail() {
-        return get(`/addons/templateOne/api/v1/user/detail`);
-      },
       Courses(params) {
         return get(`/addons/templateOne/api/v1/user/courses`, params);
-      },
-      Orders(params) {
-        return get(`/addons/templateOne/api/v1/user/orders`, params);
       },
     },
     History: {
@@ -140,24 +125,6 @@ const Api = {
       },
       Records(params) {
         return get("/addons/templateOne/api/v1/history/records", params);
-      },
-    },
-    Jssdk(params) {
-      return get("/addons/templateOne/api/v1/jssdk", params);
-    },
-    Config() {
-      return get("/addons/templateOne/api/v1/setting");
-    },
-    Credit2PayHandle(orderId) {
-      return post("/addons/templateOne/api/v1/payment/credit2/pay/handle", {
-        order_id: orderId,
-      });
-    },
-    Course: {
-      Vod: {
-        Detail(id) {
-          return get(`/addons/templateOne/api/v1/course/${id}`);
-        },
       },
     },
   },
