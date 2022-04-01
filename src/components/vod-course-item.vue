@@ -10,7 +10,7 @@
         {{ title }}
       </div>
       <div class="vod-course-info">
-        <div class="vod-course-sub">{{ userCount }}订阅</div>
+        <div class="vod-course-sub">{{ category.name }}</div>
         <div class="vod-course-charge">
           <span class="charge-text" v-if="isFree === 0 && charge > 0">
             <template> <span class="unit">￥</span>{{ charge }} </template>

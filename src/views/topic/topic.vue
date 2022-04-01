@@ -52,7 +52,7 @@
         </template>
         <template v-else>
           <div class="right-list">
-            <div class="tit">热门文章</div>
+            <div class="tit">推荐阅读</div>
             <template v-if="hotList.length > 0">
               <div class="right-box">
                 <div class="topic-item" v-for="item in hotList" :key="item.id">

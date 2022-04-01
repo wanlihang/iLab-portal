@@ -8,7 +8,7 @@
     <div class="book-body">
       <div class="book-info">
         <div class="book-name">{{ name }}</div>
-        <div class="book-user-count">{{ userCount }}订阅</div>
+        <!--<div class="book-user-count">{{ userCount }}订阅</div>-->
       </div>
       <div class="book-desc">{{ shortDesc }}</div>
 
