@@ -8,7 +8,7 @@
         height="40"
         src="../assets/img/commen/icon-qq.png"
     /></a>
-    <a
+    <!--<a
       class="wechat"
       v-if="config && config.h5_url"
       @mouseenter="enter()"
@@ -20,7 +20,7 @@
         height="40"
         src="../assets/img/commen/icon-weixin.png"
       />
-    </a>
+    </a>-->
     <a class="sina" v-if="sina.url" target="_blank" :href="sina.url"
       ><img
         class="sina-icon"
