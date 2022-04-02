@@ -79,7 +79,12 @@
             </div>
           </div>
           <template v-if="projectType === 1 && course.length > 0">
-            <div class="goods-box">
+            <div
+              class="goods-box"
+              :class="{
+                first: pagination2.size <= total2,
+              }"
+            >
               <div class="goods-item" v-for="item in course" :key="item.id">
                 <div class="goods-thumb">
                   <img :src="item.goods_thumb" />
@@ -726,6 +731,9 @@ export default {
           margin-bottom: 30px;
           gap: 30px;
           grid-template-columns: repeat(3, minmax(0, 1fr));
+          &.first {
+            margin-bottom: 0px;
+          }
           .goods-item {
             width: 216px;
             border-radius: 8px;
