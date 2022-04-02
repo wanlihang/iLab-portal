@@ -248,14 +248,19 @@ export default {
         return;
       }
       this.loading = true;
-      this.$api.Auth.Logout().then((res) => {
-        this.loading = false;
-        this.logout();
-        this.$message.success("安全退出成功");
-        this.memberCan = false;
-        this.menuCan = false;
-        this.$router.push({ name: "index" });
-      });
+      this.$api.Auth.Logout()
+        .then((res) => {
+          this.loading = false;
+          this.logout();
+          this.$message.success("安全退出成功");
+          this.memberCan = false;
+          this.menuCan = false;
+          this.$router.push({ name: "index" });
+        })
+        .catch((e) => {
+          this.loading = false;
+          this.$message.error("网络错误");
+        });
     },
     checkNav(url, blank) {
       this.hash = document.location.hash.split("?")[0];
