@@ -569,9 +569,10 @@ export default {
         try: isTrySee === 1,
         bulletSecret: {
           enabled: parseInt(this.config.player.enabled_bullet_secret) === 1,
-          text: this.user.mobile,
-          size: "15px",
-          color: "red",
+          text: this.config.player.bullet_secret.text,
+          size: this.config.player.bullet_secret.size,
+          color: this.config.player.bullet_secret.color,
+          opacity: this.config.player.bullet_secret.opacity,
         },
         ban_drag: parseInt(this.video.ban_drag) === 1,
         last_see_pos: this.last_see_value,
