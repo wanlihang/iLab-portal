@@ -724,9 +724,16 @@ export default {
       "logout",
     ]),
     goLogout() {
-      this.logout();
-      this.resetDialog();
-      this.hideLoginDialog();
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
+      this.$api.Auth.Logout().then((res) => {
+        this.loading = false;
+        this.logout();
+        this.resetDialog();
+        this.hideLoginDialog();
+      });
     },
     resetDialog() {
       this.currentTab = 1;
