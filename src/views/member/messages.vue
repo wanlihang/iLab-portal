@@ -7,18 +7,21 @@
         <template v-if="loading">
           <skeletonMessages></skeletonMessages>
         </template>
-        <div class="messages-content" v-else-if="list.length > 0">
-          <div
-            class="message-item"
-            @click="read(item)"
-            :class="{ readed: item.read_at }"
-            v-for="item in list"
-            :key="item.id"
-          >
-            <div class="point" v-if="!item.read_at"></div>
-            <div class="cont">{{ item.data.message }}</div>
-            <div class="date">{{ item.created_at | changeTime }}</div>
-          </div>
+        <div class="messages-content" v-else>
+          <template v-if="list.length > 0">
+            <div
+              class="message-item"
+              @click="read(item)"
+              :class="{ readed: item.read_at }"
+              v-for="item in list"
+              :key="item.id"
+            >
+              <div class="point" v-if="!item.read_at"></div>
+              <div class="cont">{{ item.data.message }}</div>
+              <div class="date">{{ item.created_at | changeTime }}</div>
+            </div>
+          </template>
+          <none type="white" v-else></none>
         </div>
         <div id="page">
           <page-box
@@ -40,6 +43,7 @@ import { mapState, mapMutations } from "vuex";
 import NavFooter from "../../components/footer.vue";
 import NavMember from "../../components/navmember.vue";
 import PageBox from "../../components/page.vue";
+import None from "../../components/none.vue";
 import SkeletonMessages from "../../components/skeleton/skeletonMessages.vue";
 
 export default {
@@ -48,6 +52,7 @@ export default {
     NavMember,
     PageBox,
     SkeletonMessages,
+    None,
   },
   data() {
     return {
