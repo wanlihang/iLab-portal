@@ -502,7 +502,7 @@
       </div>
     </div>
     <div
-      style="height: 480px"
+      style="height: 440px"
       class="dialog-login-box"
       v-if="dialogStatus === 9"
     >
@@ -565,9 +565,6 @@
         <div class="btn-box" style="margin-bottom: 0px !important">
           <button type="submit" class="submit" @click="NewMobileValidate()">
             立即绑定
-          </button>
-          <button class="logout" v-if="notCancel" @click="goLogout">
-            安全退出
           </button>
         </div>
       </div>
@@ -696,7 +693,7 @@ export default {
     };
   },
   watch: {
-    dialogType: function () {
+    dialogType() {
       this.dialogStatus = this.dialogType;
       if (this.dialogStatus !== 0 && this.dialogStatus !== 5) {
         this.getCaptcha();
@@ -705,7 +702,7 @@ export default {
         this.getBindQrode();
       }
     },
-    mobile: function () {
+    mobile() {
       this.messageForm.mobile = this.mobile;
     },
   },
@@ -763,17 +760,10 @@ export default {
               this.loginHandle(res.data);
               this.resetDialog();
               this.hideLoginDialog();
-              location.reload();
+              this.redirectHandler();
             })
             .catch((e) => {
-              if (e.code === 401) {
-                Utils.clearToken();
-                this.$router.replace({
-                  name: "index",
-                });
-              } else {
-                this.$message.error(e.message);
-              }
+              this.$message.error(e.message);
             });
         }
       });
@@ -904,10 +894,19 @@ export default {
       this.$emit("changeType", 3);
     },
     changeQQ() {
+      let successRedirectUrl = window.document.location.href;
+      if (this.$route.name === "login") {
+        let appUrl = this.$utils.getAppUrl();
+        if (this.$route.query.redirect) {
+          successRedirectUrl = appUrl + this.$route.query.redirect;
+        } else {
+          successRedirectUrl = appUrl;
+        }
+      }
       window.location.href =
         this.config.url +
         "/api/v2/login/socialite/qq?success_redirect=" +
-        urlencode(window.document.location.href) +
+        urlencode(successRedirectUrl) +
         "&failed_redirect=" +
         urlencode(this.config.url + "/500");
     },
@@ -921,6 +920,21 @@ export default {
       clearInterval(this.timer);
       this.resetDialog();
       this.$emit("hideLoginDialog");
+    },
+    redirectHandler() {
+      if (this.$route.name === "login") {
+        if (this.$route.query.redirect) {
+          this.$router.replace({
+            path: this.$route.query.redirect,
+          });
+        } else {
+          this.$router.replace({
+            name: "index",
+          });
+        }
+      } else {
+        location.reload();
+      }
     },
     passwordFormValidate() {
       if (this.loading) {
@@ -949,17 +963,10 @@ export default {
               this.loginHandle(res.data);
               this.resetDialog();
               this.hideLoginDialog();
-              location.reload();
+              this.redirectHandler();
             })
             .catch((e) => {
-              if (e.code === 401) {
-                Utils.clearToken();
-                this.$router.replace({
-                  name: "index",
-                });
-              } else {
-                this.$message.error(e.message);
-              }
+              this.$message.error(e.message);
             });
         })
         .catch((e) => {
@@ -998,17 +1005,10 @@ export default {
               this.loginHandle(res.data);
               this.resetDialog();
               this.hideLoginDialog();
-              location.reload();
+              this.redirectHandler();
             })
             .catch((e) => {
-              if (e.code === 401) {
-                Utils.clearToken();
-                this.$router.replace({
-                  name: "index",
-                });
-              } else {
-                this.$message.error(e.message);
-              }
+              this.$message.error(e.message);
             });
         })
         .catch((e) => {

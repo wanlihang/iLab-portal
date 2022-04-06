@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <nav-header v-if="!this.$route.meta.hideHeader"></nav-header>
+
     <Login-Dialog
       :dialogType="loginDialogType"
       :status="loginDialogStatus"
@@ -10,15 +11,17 @@
       @changeType="changeType"
     ></Login-Dialog>
 
-    <keep-alive>
-      <router-view v-if="config && this.$route.meta.keepAlive"></router-view>
-    </keep-alive>
-    <router-view v-if="config && !this.$route.meta.keepAlive"></router-view>
+    <template v-if="initComplete">
+      <keep-alive>
+        <router-view v-if="config && this.$route.meta.keepAlive"></router-view>
+      </keep-alive>
+      <router-view v-if="config && !this.$route.meta.keepAlive"></router-view>
+    </template>
 
     <back-top v-show="backTopStatus"></back-top>
+
     <sign
-      @change="reloadSignStatus"
-      v-if="signStatus && this.$route.meta.sign"
+      v-if="this.$route.meta.sign && isLogin && configFunc.daySignIn"
     ></sign>
   </div>
 </template>
@@ -42,36 +45,13 @@ export default {
     return {
       cancelStatus: false,
       backTopStatus: false,
-      signStatus: false,
+      initComplete: false,
     };
   },
   watch: {
-    "$route.query.token"(val) {
-      if (val) {
-        this.$utils.saveToken(val);
-        let newUrl = this.$utils.removeTokenParams(window.location.href);
-        window.location.href = newUrl;
-        this.getUser();
-      }
-    },
-    "$route.query.msv"(val) {
-      if (val) {
-        this.$utils.saveMsv(val);
-      }
-    },
-    $route(to, from) {
-      this.backTopStatus = false;
-      this.signStatus = false;
-      if (this.isLogin && this.configFunc.daySignIn) {
-        this.getSignStatus();
-      }
-    },
     isLogin(val) {
       if (val) {
         this.msvBind();
-        if (this.configFunc.daySignIn) {
-          this.getSignStatus();
-        }
       }
     },
   },
@@ -86,7 +66,34 @@ export default {
     ]),
   },
   mounted() {
-    this.MeEduInit();
+    this.$router.onReady(() => {
+      // 社交登录回调处理
+      if (this.$route.query.token) {
+        this.$utils.saveToken(this.$route.query.token);
+        let newUrl = this.$utils.removeTokenParams(window.location.href);
+        window.location.href = newUrl;
+      }
+      // msv分销id记录
+      if (this.$route.query.msv) {
+        this.$utils.saveMsv(this.$route.query.msv);
+      }
+
+      // 自动登录
+      this.getConfig();
+      if (this.$utils.getToken()) {
+        this.getUser();
+      }
+
+      // 初始化完成
+      this.initComplete = true;
+
+      // 关闭加载框
+      let loadingBoxDom = window.document.getElementById("meedu-loading-box");
+      if (loadingBoxDom) {
+        loadingBoxDom.remove();
+      }
+    });
+
     window.addEventListener("scroll", this.getHeight, true);
   },
   beforeDestroy() {
@@ -112,32 +119,6 @@ export default {
 
       this.backTopStatus = scrollTop >= 2000;
     },
-    getSignStatus() {
-      if (!this.$route.meta.sign) {
-        return;
-      }
-      this.$api.Sign.User()
-        .then((res) => {
-          let is_submit = res.data.is_submit;
-          if (is_submit === 0) {
-            this.signStatus = true;
-          } else {
-            this.signStatus = false;
-          }
-        })
-        .catch((e) => {
-          console.log(e.message);
-        });
-    },
-    reloadSignStatus() {
-      this.getSignStatus();
-    },
-    MeEduInit() {
-      this.getConfig();
-      if (this.$utils.getToken()) {
-        this.getUser();
-      }
-    },
     msvBind() {
       let msv = this.$utils.getMsv();
       if (!msv) {
@@ -146,7 +127,6 @@ export default {
 
       this.$api.MultiLevelShare.Bind({ msv: msv })
         .then(() => {
-          console.log("bind success");
           this.$utils.clearMsv();
         })
         .catch((e) => {
@@ -158,7 +138,6 @@ export default {
       try {
         let res = await this.$api.User.Detail();
         this.loginHandle(res.data);
-        this.msvBind();
 
         // 强制绑定手机号
         if (
@@ -215,5 +194,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

@@ -51,7 +51,7 @@
         </template>
         <template v-else>
           <div class="right-list">
-            <div class="tit">热门畅销书</div>
+            <div class="tit">推荐阅读</div>
             <template v-if="HotList.length > 0">
               <div class="right-box">
                 <div class="book-item" v-for="item in HotList" :key="item.id">
@@ -67,11 +67,6 @@
                     </div>
                     <div class="book-body">
                       <div class="book-title">{{ item.name }}</div>
-                      <div class="book-info">
-                        <span class="read-count"
-                          >{{ item.user_count }}订阅</span
-                        >
-                      </div>
                       <div class="book-charge">
                         <div class="charge-text" v-if="item.charge !== 0">
                           <span class="unit">￥</span>{{ item.charge }}
@@ -330,9 +325,11 @@ export default {
                 }
                 .book-charge {
                   width: 100%;
+                  float: left;
                   font-size: 20px;
                   line-height: 20px;
                   font-weight: 600;
+                  margin-top: 20px;
 
                   .charge-text {
                     color: #ff5858;

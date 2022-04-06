@@ -138,6 +138,12 @@ export default {
           name: "试卷",
         });
       }
+      if (this.configFunc["mockPaper"]) {
+        types.push({
+          key: "mock_paper",
+          name: "模拟试卷",
+        });
+      }
       if (this.configFunc["practice"]) {
         types.push({
           key: "practice",
@@ -164,6 +170,8 @@ export default {
         return "电子书";
       } else if (val === "paper") {
         return "试卷";
+      } else if (val === "mock_paper") {
+        return "模拟试卷";
       } else if (val === "practice") {
         return "练习";
       } else {
@@ -253,6 +261,13 @@ export default {
       } else if (val === "paper") {
         this.$router.push({
           name: "ExamPapersDetail",
+          query: {
+            id: id,
+          },
+        });
+      } else if (val === "mock_paper") {
+        this.$router.push({
+          name: "ExamMockpaperDetail",
           query: {
             id: id,
           },

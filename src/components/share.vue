@@ -8,7 +8,7 @@
         height="40"
         src="../assets/img/commen/icon-qq.png"
     /></a>
-    <a
+    <!--<a
       class="wechat"
       v-if="config && config.h5_url"
       @mouseenter="enter()"
@@ -20,7 +20,7 @@
         height="40"
         src="../assets/img/commen/icon-weixin.png"
       />
-    </a>
+    </a>-->
     <a class="sina" v-if="sina.url" target="_blank" :href="sina.url"
       ><img
         class="sina-icon"
@@ -73,12 +73,16 @@ export default {
             this.cid
         );
         link =
-          host + "pages/webview/webview?url=" + url + "&title=" + this.title;
+          host +
+          "pages/webview/webview?url=" +
+          url +
+          "&title=" +
+          encodeURIComponent(this.title);
         var qrcode = new QRCode("qrcode", {
           text: link, //表示内容，可以是地址或者是文字'55566'或者参数
           colorDark: "#000000", //前景色
           colorLight: "#ffffff", //背景色
-          correctLevel: QRCode.CorrectLevel.H, //容错级别
+          correctLevel: QRCode.CorrectLevel.Q, //容错级别
         });
       }
     },

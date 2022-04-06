@@ -8,7 +8,6 @@
         <div
           class="topic-course-item hover:shadow-lg"
           :key="index"
-          v-if="course.is_show === 1"
           @click="goTopicDetail(course)"
         >
           <div class="topic-course-thumb">
@@ -86,14 +85,23 @@ export default {
       padding: 15px;
       border-radius: 8px;
       border: 1px solid #f1f2fa;
+      &:hover {
+        .topic-course-thumb {
+          img {
+            transform: scale(1.1, 1.1);
+          }
+        }
+      }
       .topic-course-thumb {
         width: 133px;
         height: 100px;
+        border-radius: 8px;
         overflow: hidden;
         img {
           width: 100%;
           height: 100%;
           border-radius: 8px;
+          transition: all 0.3s;
         }
       }
 

@@ -20,6 +20,14 @@ const routes = [
     component: () => import("../views/index/index.vue"),
   },
   {
+    path: "/login",
+    name: "login",
+    meta: {
+      title: "密码登录",
+    },
+    component: () => import("../views/login/index.vue"),
+  },
+  {
     path: "/courses",
     name: "courses",
     meta: {
@@ -36,6 +44,9 @@ const routes = [
   {
     path: "/courses/video",
     name: "coursesVideo",
+    meta: {
+      auth: true,
+    },
     component: () => import("../views/course/vod/video.vue"),
   },
   {
@@ -70,6 +81,7 @@ const routes = [
     name: "liveVideo",
     meta: {
       hideHeader: true,
+      auth: true,
     },
     component: () => import("../views/course/live/video.vue"),
   },
@@ -106,6 +118,7 @@ const routes = [
     name: "bookRead",
     meta: {
       hideHeader: true,
+      auth: true,
     },
     component: () => import("../views/book/read.vue"),
   },
@@ -146,24 +159,20 @@ const routes = [
     component: () => import("../views/role/index.vue"),
   },
   {
-    path: "/study",
-    name: "study",
-    meta: {
-      title: "学习中心",
-    },
-    component: () => import("../views/study/index.vue"),
-  },
-  {
     path: "/credictmall",
     name: "Credictmall",
     meta: {
       title: "积分商城",
+      auth: true,
     },
     component: () => import("../views/credictmall/index.vue"),
   },
   {
     path: "/credictmall/detail",
     name: "CredictmallDetail",
+    meta: {
+      auth: true,
+    },
     component: () => import("../views/credictmall/detail.vue"),
   },
   {
@@ -171,6 +180,7 @@ const routes = [
     name: "order",
     meta: {
       title: "收银台",
+      auth: true,
     },
     component: () => import("../views/order/order.vue"),
   },
@@ -179,6 +189,7 @@ const routes = [
     name: "orderPay",
     meta: {
       title: "支付中",
+      auth: true,
     },
     component: () => import("../views/order/pay.vue"),
   },
@@ -196,6 +207,7 @@ const routes = [
     meta: {
       title: "用户中心",
       sign: true,
+      auth: true,
     },
     component: () => import("../views/member/index.vue"),
   },
@@ -203,7 +215,8 @@ const routes = [
     path: "/member/courses",
     name: "MemberCourses",
     meta: {
-      title: "点播课程",
+      title: "我的录播课",
+      auth: true,
     },
     component: () => import("../views/member/courses.vue"),
   },
@@ -212,6 +225,7 @@ const routes = [
     name: "MemberK12",
     meta: {
       title: "我的班课",
+      auth: true,
     },
     component: () => import("../views/member/k12.vue"),
   },
@@ -219,7 +233,8 @@ const routes = [
     path: "/member/live",
     name: "MemberLive",
     meta: {
-      title: "直播课程",
+      title: "我的直播课",
+      auth: true,
     },
     component: () => import("../views/member/live.vue"),
   },
@@ -227,7 +242,8 @@ const routes = [
     path: "/member/books",
     name: "MemberBooks",
     meta: {
-      title: "电子书",
+      title: "已购电子书",
+      auth: true,
     },
     component: () => import("../views/member/books.vue"),
   },
@@ -235,7 +251,8 @@ const routes = [
     path: "/member/topic",
     name: "MemberTopic",
     meta: {
-      title: "图文",
+      title: "已购图文",
+      auth: true,
     },
     component: () => import("../views/member/topic.vue"),
   },
@@ -244,6 +261,7 @@ const routes = [
     name: "MemberHistory",
     meta: {
       title: "浏览历史",
+      auth: true,
     },
     component: () => import("../views/member/history.vue"),
   },
@@ -252,6 +270,7 @@ const routes = [
     name: "MemberPaper",
     meta: {
       title: "我的考试",
+      auth: true,
     },
     component: () => import("../views/member/paper.vue"),
   },
@@ -260,6 +279,7 @@ const routes = [
     name: "MembermMckpaper",
     meta: {
       title: "我的模考",
+      auth: true,
     },
     component: () => import("../views/member/mockpaper.vue"),
   },
@@ -268,6 +288,7 @@ const routes = [
     name: "MemberPractice",
     meta: {
       title: "我的练习",
+      auth: true,
     },
     component: () => import("../views/member/practice.vue"),
   },
@@ -276,6 +297,7 @@ const routes = [
     name: "MemberMessages",
     meta: {
       title: "我的消息",
+      auth: true,
     },
     component: () => import("../views/member/messages.vue"),
   },
@@ -284,6 +306,7 @@ const routes = [
     name: "MemberProfile",
     meta: {
       title: "我的资料",
+      auth: true,
     },
     component: () => import("../views/member/profile.vue"),
   },
@@ -292,6 +315,7 @@ const routes = [
     name: "MemberOrders",
     meta: {
       title: "所有订单",
+      auth: true,
     },
     component: () => import("../views/member/orders.vue"),
   },
@@ -300,6 +324,7 @@ const routes = [
     name: "MemberQuestions",
     meta: {
       title: "我的问答",
+      auth: true,
     },
     component: () => import("../views/member/questions.vue"),
   },
@@ -308,6 +333,7 @@ const routes = [
     name: "MemberShare",
     meta: {
       title: "邀请推广",
+      auth: true,
     },
     component: () => import("../views/member/share.vue"),
   },
@@ -316,6 +342,7 @@ const routes = [
     name: "MemberCodeExchanger",
     meta: {
       title: "兑换课程",
+      auth: true,
     },
     component: () => import("../views/member/codeexchanger.vue"),
   },
@@ -324,6 +351,7 @@ const routes = [
     name: "MemberCredit1Records",
     meta: {
       title: "积分商城",
+      auth: true,
     },
     component: () => import("../views/member/credit1_records.vue"),
   },
@@ -332,6 +360,7 @@ const routes = [
     name: "MemberCredit1Free",
     meta: {
       title: "我的积分",
+      auth: true,
     },
     component: () => import("../views/member/credit1_free.vue"),
   },
@@ -340,6 +369,7 @@ const routes = [
     name: "MemberMiaosha",
     meta: {
       title: "我的秒杀",
+      auth: true,
     },
     component: () => import("../views/member/miaosha.vue"),
   },
@@ -363,6 +393,9 @@ const routes = [
   {
     path: "/exam/papers/detail",
     name: "ExamPapersDetail",
+    meta: {
+      auth: true,
+    },
     component: () => import("../views/exam/paper/detail.vue"),
   },
   {
@@ -370,6 +403,7 @@ const routes = [
     name: "ExamPapersPlay",
     meta: {
       hideHeader: true,
+      auth: true,
     },
     component: () => import("../views/exam/paper/play.vue"),
   },
@@ -384,6 +418,9 @@ const routes = [
   {
     path: "/exam/mockpaper/detail",
     name: "ExamMockpaperDetail",
+    meta: {
+      auth: true,
+    },
     component: () => import("../views/exam/mock/detail.vue"),
   },
   {
@@ -391,6 +428,7 @@ const routes = [
     name: "ExamMockpaperPlay",
     meta: {
       hideHeader: true,
+      auth: true,
     },
     component: () => import("../views/exam/mock/play.vue"),
   },
@@ -405,6 +443,9 @@ const routes = [
   {
     path: "/exam/practice/detail",
     name: "ExamPracticeDetail",
+    meta: {
+      auth: true,
+    },
     component: () => import("../views/exam/practice/detail.vue"),
   },
   {
@@ -412,6 +453,7 @@ const routes = [
     name: "ExamPracticePlay",
     meta: {
       hideHeader: true,
+      auth: true,
     },
     component: () => import("../views/exam/practice/play.vue"),
   },
@@ -420,6 +462,7 @@ const routes = [
     name: "ExamWrongBook",
     meta: {
       title: "考试错题本",
+      auth: true,
     },
     component: () => import("../views/exam/wrongbook/index.vue"),
   },
@@ -429,6 +472,7 @@ const routes = [
     meta: {
       title: "错题本练习",
       hideHeader: true,
+      auth: true,
     },
     component: () => import("../views/exam/wrongbook/play.vue"),
   },
@@ -437,6 +481,7 @@ const routes = [
     name: "ExamCollection",
     meta: {
       title: "收藏习题",
+      auth: true,
     },
     component: () => import("../views/exam/collection/index.vue"),
   },
@@ -446,6 +491,7 @@ const routes = [
     meta: {
       title: "收藏习题详情",
       hideHeader: true,
+      auth: true,
     },
     component: () => import("../views/exam/collection/play.vue"),
   },
@@ -454,6 +500,7 @@ const routes = [
     name: "ExamQuestionbank",
     meta: {
       title: "试题库",
+      auth: true,
     },
     component: () => import("../views/exam/questionbank/index.vue"),
   },
@@ -463,6 +510,7 @@ const routes = [
     meta: {
       title: "试题库练习",
       hideHeader: true,
+      auth: true,
     },
     component: () => import("../views/exam/questionbank/play.vue"),
   },
@@ -477,6 +525,9 @@ const routes = [
   {
     path: "/ms/detail",
     name: "msDetail",
+    meta: {
+      auth: true,
+    },
     component: () => import("../views/ms/detail.vue"),
   },
   {
@@ -490,6 +541,9 @@ const routes = [
   {
     path: "/tg/detail",
     name: "tgDetail",
+    meta: {
+      auth: true,
+    },
     component: () => import("../views/tg/detail.vue"),
   },
   {
@@ -510,6 +564,7 @@ const routes = [
     name: "Share",
     meta: {
       title: "推广",
+      auth: true,
     },
     component: () => import("../views/share/index.vue"),
   },

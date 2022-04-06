@@ -87,6 +87,13 @@ export default {
       padding: 15px;
       border-radius: 8px;
       border: 1px solid #f1f2fa;
+      &:hover {
+        .book-course-thumb {
+          img {
+            transform: scale(1.1, 1.1);
+          }
+        }
+      }
       .book-course-thumb {
         width: 100%;
         height: 160px;
@@ -97,6 +104,7 @@ export default {
           width: 120px;
           height: 160px;
           border-radius: 8px;
+          transition: all 0.3s;
         }
       }
 

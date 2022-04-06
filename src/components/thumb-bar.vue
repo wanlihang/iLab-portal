@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="content-box">
     <div class="flex justify-center" style="width: 100%">
       <div
         class="thumb"
@@ -23,7 +23,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.box {
+.content-box {
   display: block;
   width: 100%;
   height: auto;
