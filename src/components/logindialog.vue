@@ -908,7 +908,7 @@ export default {
         "/api/v2/login/socialite/qq?success_redirect=" +
         urlencode(successRedirectUrl) +
         "&failed_redirect=" +
-        urlencode(this.config.url + "/error");
+        urlencode(this.$utils.getAppUrl() + "/error");
     },
     changeWeixin() {
       this.dialogStatus = 5;
