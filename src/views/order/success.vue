@@ -27,12 +27,12 @@ export default {
   },
   methods: {
     goIndex() {
-      this.$router.push({
+      this.$router.replace({
         name: "index",
       });
     },
     find() {
-      this.$router.push({
+      this.$router.replace({
         name: "MemberOrders",
       });
     },
