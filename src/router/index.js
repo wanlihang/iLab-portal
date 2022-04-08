@@ -587,6 +587,15 @@ const routes = [
     component: () => import("../views/index/404.vue"),
   },
   {
+    path: "/error",
+    name: "Error",
+    meta: {
+      title: "错误",
+      hideHeader: true,
+    },
+    component: () => import("../views/index/error.vue"),
+  },
+  {
     path: "*",
     meta: {
       title: "404错误",
