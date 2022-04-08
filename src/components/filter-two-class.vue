@@ -22,7 +22,9 @@
         <div
           class="box2"
           v-if="
-            categories[cateIndex] && categories[cateIndex].children.length > 0
+            categories[cateIndex] &&
+            categories[cateIndex].children &&
+            categories[cateIndex].children.length > 0
           "
         >
           <div class="label">细分：</div>
