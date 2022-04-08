@@ -388,7 +388,7 @@ export default {
         }, 1000);
       } else {
         if (this.payment === "alipay") {
-          let host = window.location.host;
+          let host = this.$utils.getAppUrl();
           let redirect = encodeURIComponent(host + "/order/success");
           let indexUrl = encodeURIComponent(host + "/");
           window.location.href =
