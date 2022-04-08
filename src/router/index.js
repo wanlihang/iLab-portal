@@ -212,7 +212,7 @@ const routes = [
     component: () => import("../views/member/index.vue"),
   },
   {
-    path: "/member/courses",
+    path: "/member/mycourses",
     name: "MemberCourses",
     meta: {
       title: "我的录播课",
@@ -221,7 +221,7 @@ const routes = [
     component: () => import("../views/member/courses.vue"),
   },
   {
-    path: "/member/k12",
+    path: "/member/myk12",
     name: "MemberK12",
     meta: {
       title: "我的班课",
@@ -230,7 +230,7 @@ const routes = [
     component: () => import("../views/member/k12.vue"),
   },
   {
-    path: "/member/live",
+    path: "/member/mylive",
     name: "MemberLive",
     meta: {
       title: "我的直播课",
@@ -239,7 +239,7 @@ const routes = [
     component: () => import("../views/member/live.vue"),
   },
   {
-    path: "/member/books",
+    path: "/member/mybooks",
     name: "MemberBooks",
     meta: {
       title: "已购电子书",
@@ -248,7 +248,7 @@ const routes = [
     component: () => import("../views/member/books.vue"),
   },
   {
-    path: "/member/topic",
+    path: "/member/mytopic",
     name: "MemberTopic",
     meta: {
       title: "已购图文",
