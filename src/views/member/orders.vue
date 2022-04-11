@@ -9,7 +9,12 @@
             <skeletonMemberOrder></skeletonMemberOrder>
           </template>
           <template v-else-if="list.length > 0">
-            <div class="project-item" v-for="item in list" :key="item.id">
+            <div
+              class="project-item"
+              v-for="item in list"
+              :key="item.id"
+              @click="goDetail(item)"
+            >
               <div
                 class="item-thumb"
                 v-if="item.goods[0] && item.goods[0].goods_thumb"
@@ -189,6 +194,76 @@ export default {
         this.total = res.data.total;
       });
     },
+    goDetail(item) {
+      if (item.goods[0].goods_type === "ROLE") {
+        this.$router.push({
+          name: "vip",
+        });
+      } else if (item.goods[0].goods_type === "BOOK") {
+        this.$router.push({
+          name: "bookDetail",
+          query: {
+            id: item.goods[0].goods_id,
+          },
+        });
+      } else if (item.goods[0].goods_type === "COURSE") {
+        this.$router.push({
+          name: "coursesDetail",
+          query: {
+            id: item.goods[0].goods_id,
+          },
+        });
+      } else if (item.goods[0].goods_type === "直播课程") {
+        this.$router.push({
+          name: "liveDetail",
+          query: {
+            id: item.goods[0].goods_id,
+          },
+        });
+      } else if (item.goods[0].goods_type === "文章") {
+        this.$router.push({
+          name: "topicDetail",
+          query: {
+            id: item.goods[0].goods_id,
+          },
+        });
+      } else if (item.goods[0].goods_type === "VIDEO") {
+        this.$router.push({
+          name: "coursesVideo",
+          query: {
+            id: item.goods[0].goods_id,
+          },
+        });
+      } else if (item.goods[0].goods_type === "学习路径") {
+        this.$router.push({
+          name: "learnPathDetail",
+          query: {
+            id: item.goods[0].goods_id,
+          },
+        });
+      } else if (item.goods[0].goods_type === "试卷") {
+        this.$router.push({
+          name: "ExamPapersDetail",
+          query: {
+            id: item.goods[0].goods_id,
+          },
+        });
+      } else if (item.goods[0].goods_type === "练习") {
+        this.$router.push({
+          name: "ExamPracticeDetail",
+          query: {
+            id: item.goods[0].goods_id,
+          },
+        });
+      } else if (item.goods[0].goods_type === "模拟试卷") {
+        this.$router.push({
+          name: "ExamMockpaperDetail",
+          query: {
+            id: item.goods[0].goods_id,
+          },
+        });
+      }
+    },
   },
 };
 </script>
@@ -230,6 +305,10 @@ export default {
           margin-bottom: 20px;
           display: flex;
           flex-direction: row;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.9;
+          }
 
           .item-thumb {
             width: 133px;
