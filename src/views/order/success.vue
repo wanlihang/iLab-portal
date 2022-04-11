@@ -2,9 +2,7 @@
   <div class="content">
     <div class="pay-success-box">
       <div class="success-info">
-        <img
-          src="../../assets/img/commen/icon-adopt.png"
-        />支付成功，商品已发放！
+        <img src="../../assets/img/commen/icon-adopt.png" />支付成功！
       </div>
       <div class="price">
         实付款：<span class="value"
