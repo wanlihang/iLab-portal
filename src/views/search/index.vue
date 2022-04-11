@@ -153,6 +153,12 @@ export default {
       return types;
     },
   },
+  watch: {
+    "$route.query.keywords"(val) {
+      this.pagination.keywords = val;
+      this.search();
+    },
+  },
   mounted() {
     this.getData();
   },
