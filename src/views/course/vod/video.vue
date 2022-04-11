@@ -648,6 +648,10 @@ export default {
         this.goLogin();
         return;
       }
+      if (!this.isBuy) {
+        this.$message.error("请购买课程后下载");
+        return;
+      }
       window.open(
         `${this.config.url}/api/v2/course/attach/${id}/download?token=${token}`
       );
