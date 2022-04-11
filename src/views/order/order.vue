@@ -4,7 +4,20 @@
       <div class="tit">订阅信息</div>
       <div class="goods-box">
         <div class="goods-thumb" v-if="hasThumb">
-          <img :src="goods.icon" />
+          <thumb-bar
+            v-if="goods.type === 'book'"
+            :value="goods.icon"
+            :border="4"
+            :width="90"
+            :height="120"
+          ></thumb-bar>
+          <thumb-bar
+            v-else
+            :value="goods.icon"
+            :border="4"
+            :width="160"
+            :height="120"
+          ></thumb-bar>
         </div>
         <div class="goods-info">
           <div class="goods-name">{{ goods.name }}</div>
@@ -468,14 +481,9 @@ export default {
       .goods-thumb {
         width: 160px;
         height: 120px;
-        border-radius: 2px;
+        border-radius: 4px;
         overflow: hidden;
         margin-right: 50px;
-        img {
-          width: 160px;
-          height: 120px;
-          border-radius: 2px;
-        }
       }
       .goods-info {
         display: flex;
