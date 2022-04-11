@@ -48,8 +48,8 @@
               <li
                 class="item-content"
                 v-highlight="{ keyword: pagination.keywords, separator: ' ' }"
-                v-if="item.short_desc"
-                v-html="item.short_desc"
+                v-if="item.p"
+                v-html="item.p"
               ></li>
             </ul>
           </template>
@@ -151,6 +151,12 @@ export default {
         });
       }
       return types;
+    },
+  },
+  watch: {
+    "$route.query.keywords"(val) {
+      this.pagination.keywords = val;
+      this.search();
     },
   },
   mounted() {

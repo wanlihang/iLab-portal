@@ -1,14 +1,14 @@
 <template>
   <div class="content page-main-body-box">
-    <filter-box
+    <filter-two-class
       v-show="!navLoading"
-      :categories1="scenes"
-      :categories2="categories"
-      :cid1="pagination.scene"
-      :cid2="pagination.category_id"
+      :scenes="scenes"
+      :categories="categories"
+      :cid="cid"
+      :child="child"
+      :scene="pagination.scene"
       @change="filterChange"
-    ></filter-box>
-
+    ></filter-two-class>
     <template v-if="navLoading">
       <skeletonNav></skeletonNav>
       <skeletonNav2></skeletonNav2>
@@ -49,7 +49,7 @@
 <script>
 import None from "../../../components/none.vue";
 import VodCourseItem from "../../../components/vod-course-item.vue";
-import FilterBox from "../../../components/filter-box.vue";
+import FilterTwoClass from "../../../components/filter-two-class.vue";
 import PageBox from "../../../components/page.vue";
 import NavFooter from "../../../components/footer.vue";
 import SkeletonCourseList from "../../../components/skeleton/skeletonCourseList.vue";
@@ -59,7 +59,7 @@ import SkeletonNav2 from "../../../components/skeleton/skeletonNav2.vue";
 export default {
   components: {
     VodCourseItem,
-    FilterBox,
+    FilterTwoClass,
     PageBox,
     NavFooter,
     None,
@@ -90,12 +90,14 @@ export default {
         page: 1,
         size: 16,
         scene: this.$route.query.scene || "",
-        category_id: this.$route.query.category_id || 0,
+        category_id: 0,
       },
       categories: [],
       over: false,
       loading: false,
       navLoading: false,
+      cid: this.$route.query.cid || 0,
+      child: this.$route.query.child || 0,
     };
   },
   mounted() {
@@ -113,60 +115,41 @@ export default {
   },
   methods: {
     changefilter() {
-      let cid = this.pagination.category_id;
+      let cid1 = this.cid;
+      let cid2 = this.child;
       let scene = this.pagination.scene;
-      if (cid === 0 && scene === "") {
-        this.$router.push({
-          path: this.$route.path,
-        });
-      } else if (cid !== 0 && scene === "") {
-        this.$router.push({
-          path: this.$route.path,
-          query: {
-            category_id: cid,
-          },
-        });
-      } else if (cid === 0 && scene !== "") {
+      if (parseInt(cid1) === 0) {
         this.$router.push({
           path: this.$route.path,
           query: {
             scene: scene,
           },
         });
-      } else if (cid !== 0 && scene !== "") {
+      } else {
         this.$router.push({
           path: this.$route.path,
           query: {
-            category_id: cid,
+            cid: cid1,
+            child: cid2,
             scene: scene,
           },
         });
       }
     },
-    filterChange(scene, cid) {
-      if (cid === 0 && scene === "") {
-        this.$router.push({
-          path: this.$route.path,
-        });
-      } else if (cid !== 0 && scene === "") {
-        this.$router.push({
-          path: this.$route.path,
-          query: {
-            category_id: cid,
-          },
-        });
-      } else if (cid === 0 && scene !== "") {
+    filterChange(cid1, cid2, scene) {
+      if (parseInt(cid1) === 0) {
         this.$router.push({
           path: this.$route.path,
           query: {
             scene: scene,
           },
         });
-      } else if (cid !== 0 && scene !== "") {
+      } else {
         this.$router.push({
           path: this.$route.path,
           query: {
-            category_id: cid,
+            cid: cid1,
+            child: cid2,
             scene: scene,
           },
         });
@@ -190,6 +173,7 @@ export default {
         let categories = [];
         categories.push(...res.data);
         this.categories.push(...categories);
+        this.filterChange(this.cid, this.child, this.scene);
       });
     },
     getData() {
@@ -198,7 +182,13 @@ export default {
       }
       this.loading = true;
       this.pagination.scene = this.$route.query.scene || "";
-      this.pagination.category_id = this.$route.query.category_id || 0;
+      this.cid = this.$route.query.cid || 0;
+      this.child = this.$route.query.child || 0;
+      if (parseInt(this.child) === 0) {
+        this.pagination.category_id = this.cid;
+      } else {
+        this.pagination.category_id = this.child;
+      }
       this.$api.Course.List(this.pagination).then((res) => {
         this.loading = false;
         let list = res.data.data;

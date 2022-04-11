@@ -69,6 +69,9 @@ const Api = {
     WechatMiniLoginMobile(params) {
       return post(`/api/v2/login/wechatMiniMobile`, params);
     },
+    Logout(params) {
+      return post(`/api/v2/logout`, params);
+    },
   },
   Sign: {
     User() {

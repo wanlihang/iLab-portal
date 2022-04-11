@@ -724,9 +724,21 @@ export default {
       "logout",
     ]),
     goLogout() {
-      this.logout();
-      this.resetDialog();
-      this.hideLoginDialog();
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
+      this.$api.Auth.Logout()
+        .then((res) => {
+          this.loading = false;
+          this.logout();
+          this.resetDialog();
+          this.hideLoginDialog();
+        })
+        .catch((e) => {
+          this.loading = false;
+          this.$message.error("网络错误");
+        });
     },
     resetDialog() {
       this.currentTab = 1;
