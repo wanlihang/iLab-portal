@@ -3,25 +3,27 @@
     <div class="spItem" :class="{ active: id === 0 }" @click="goMember()">
       用户中心
     </div>
-    <div class="item" v-for="(item, index) in menus" :key="index">
-      <span class="title">{{ item.name }}</span>
-      <div class="children">
-        <template v-if="item.childrens.length > 0">
-          <template v-for="children in item.childrens">
-            <div
-              class="item-children"
-              @click="setScene(children.path)"
-              :class="{ active: id === children.id }"
-              v-if="children.status"
-              :key="children.id"
-            >
-              {{ children.name }}
-              <div class="point" v-if="newStatus && children.id === 7"></div>
-            </div>
+    <template v-for="(item, index) in menus">
+      <div class="item" v-if="item.status" :key="index">
+        <span class="title">{{ item.name }}</span>
+        <div class="children">
+          <template v-if="item.childrens.length > 0">
+            <template v-for="children in item.childrens">
+              <div
+                class="item-children"
+                @click="setScene(children.path)"
+                :class="{ active: id === children.id }"
+                v-if="children.status"
+                :key="children.id"
+              >
+                {{ children.name }}
+                <div class="point" v-if="newStatus && children.id === 7"></div>
+              </div>
+            </template>
           </template>
-        </template>
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -41,6 +43,7 @@ export default {
       let menus = [
         {
           name: "学习",
+          status: true,
           childrens: [
             {
               name: "点播课程",
@@ -76,6 +79,7 @@ export default {
         },
         {
           name: "用户",
+          status: true,
           childrens: [
             {
               name: "所有订单",
@@ -105,6 +109,7 @@ export default {
         },
         {
           name: "试题",
+          status: this.configFunc["paper"],
           childrens: [
             {
               name: "我的考试",
@@ -134,6 +139,7 @@ export default {
         },
         {
           name: "其他",
+          status: true,
           childrens: [
             {
               name: "我的问答",

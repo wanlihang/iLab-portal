@@ -69,6 +69,9 @@ const Api = {
     WechatMiniLoginMobile(params) {
       return post(`/api/v2/login/wechatMiniMobile`, params);
     },
+    Logout(params) {
+      return post(`/api/v2/logout`, params);
+    },
   },
   Sign: {
     User() {
@@ -564,8 +567,8 @@ const Api = {
     CheckOrderStatus(params) {
       return get("/api/v2/order/status", params);
     },
-    HandPay() {
-      return get("/api/v2/order/pay/handPay");
+    HandPay(params) {
+      return post("/api/v3/order/pay/handPay", params);
     },
   },
   Wenda: {
