@@ -567,8 +567,8 @@ const Api = {
     CheckOrderStatus(params) {
       return get("/api/v2/order/status", params);
     },
-    HandPay() {
-      return get("/api/v2/order/pay/handPay");
+    HandPay(params) {
+      return post("/api/v3/order/pay/handPay", params);
     },
   },
   Wenda: {
