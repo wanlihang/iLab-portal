@@ -190,7 +190,10 @@
                   </template>
                   <template v-else-if="video.status === 2">
                     <span>已结束 </span>
-                    <duration :seconds="video.duration"></duration>
+                    <duration
+                      v-if="video.duration !== 0"
+                      :seconds="video.duration"
+                    ></duration>
                   </template>
                 </div>
               </div>
@@ -441,6 +444,9 @@ export default {
       // }
       if (this.isBuy === false) {
         this.$message.error("请购买课程后观看");
+        return;
+      }
+      if (item.status === 2 && item.duration === 0) {
         return;
       }
       this.$router.push({

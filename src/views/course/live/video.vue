@@ -63,7 +63,7 @@
               </div>
             </template>
           </div>
-          <div class="replybox">
+          <div class="replybox" v-if="video.status !== 2">
             <input
               class="reply-content"
               type="text"
@@ -77,7 +77,13 @@
         </div>
         <div class="chat-item">
           <div class="tit">聊天互动</div>
-          <div class="chat-box" ref="chatBox">
+          <div
+            class="chat-box"
+            ref="chatBox"
+            :class="{
+              end: video.status === 2,
+            }"
+          >
             <div
               class="bullet-chat"
               v-for="(item, index) in chatRecords"
@@ -533,14 +539,14 @@ export default {
     background-size: 100% 100%;
     .live-box {
       width: 1200px;
-      height: 689px;
+      height: auto;
       margin: 0 auto;
       background-color: #fff;
       display: flex;
       flex-direction: row;
       .live-item {
         width: 950px;
-        height: 689px;
+        height: auto;
         position: relative;
         display: flex;
         flex-direction: column;
@@ -663,7 +669,7 @@ export default {
       }
       .chat-item {
         width: 250px;
-        height: 689px;
+        height: auto;
         box-sizing: border-box;
         padding: 15px 0 0 0;
         position: relative;
@@ -689,6 +695,9 @@ export default {
           flex-direction: column;
           box-sizing: border-box;
           padding: 0 15px;
+          &.end {
+            height: 551px;
+          }
 
           .bullet-chat {
             width: 100%;
