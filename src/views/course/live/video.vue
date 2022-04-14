@@ -423,7 +423,9 @@ export default {
           url: item.url,
         });
       });
-
+      let bulletSecretFontSize = !this.config.player.bullet_secret.size
+        ? 14
+        : this.config.player.bullet_secret.size;
       this.vodPlayer = new window.DPlayer({
         container: document.getElementById("meedu-vod-player"),
         autoplay: false,
@@ -434,9 +436,14 @@ export default {
         },
         bulletSecret: {
           enabled: parseInt(this.config.player.enabled_bullet_secret) === 1,
-          text: this.user.mobile,
-          size: "15px",
-          color: "red",
+          text: this.config.player.bullet_secret.text
+            .replace("${user.mobile}", this.user.mobile)
+            .replace("${user.id}", this.user.id),
+          size: bulletSecretFontSize + "px",
+          color: !this.config.player.bullet_secret.color
+            ? "red"
+            : this.config.player.bullet_secret.color,
+          opacity: this.config.player.bullet_secret.opacity,
         },
       });
       this.vodPlayer.on("timeupdate", () => {
