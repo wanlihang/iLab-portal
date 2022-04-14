@@ -756,9 +756,10 @@ export default {
             box-sizing: border-box;
             padding-top: 22px;
             .login-button {
+              color: #3ca7fa;
               cursor: pointer;
               &:hover {
-                color: #3ca7fa;
+                opacity: 0.8;
               }
             }
 

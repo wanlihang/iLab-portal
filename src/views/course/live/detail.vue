@@ -33,7 +33,11 @@
         <div class="course-info">
           <div class="course-info-box">
             <div class="course-thumb">
-              <img :src="course.thumb" />
+              <thumb-bar
+                :value="course.thumb"
+                :width="320"
+                :height="240"
+              ></thumb-bar>
               <div class="status">
                 <span>{{ course.status_text }}</span>
               </div>
@@ -186,7 +190,10 @@
                   </template>
                   <template v-else-if="video.status === 2">
                     <span>已结束 </span>
-                    <duration :seconds="video.duration"></duration>
+                    <duration
+                      v-if="video.duration !== 0"
+                      :seconds="video.duration"
+                    ></duration>
                   </template>
                 </div>
               </div>
@@ -439,6 +446,9 @@ export default {
         this.$message.error("请购买课程后观看");
         return;
       }
+      if (item.status === 2 && item.duration === 0) {
+        return;
+      }
       this.$router.push({
         name: "liveVideo",
         query: {
@@ -670,11 +680,7 @@ export default {
           border-radius: 8px;
           margin-right: 50px;
           position: relative;
-          img {
-            width: 320px;
-            height: 240px;
-            border-radius: 8px;
-          }
+          overflow: hidden;
           .status {
             position: absolute;
             top: 10px;
