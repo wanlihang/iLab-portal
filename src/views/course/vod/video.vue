@@ -574,6 +574,7 @@ export default {
           enabled: parseInt(this.config.player.enabled_bullet_secret) === 1,
           text: this.config.player.bullet_secret.text
             .replace("${user.mobile}", this.user.mobile)
+            .replace("${mobile}", this.user.mobile)
             .replace("${user.id}", this.user.id),
           size: bulletSecretFontSize + "px",
           color: !this.config.player.bullet_secret.color
