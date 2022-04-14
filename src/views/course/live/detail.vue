@@ -182,9 +182,9 @@
                   </div>
                   <div class="video-info">
                     <template v-if="video.status === 0">
-                      <span style="color: #3ca7fa"
-                        >开播时间 {{ video.published_at }}</span
-                      >
+                      <span style="color: #3ca7fa">{{
+                        video.published_at | dateFormat
+                      }}</span>
                     </template>
                     <template v-else-if="video.status === 1">
                       <span style="color: #04c877">直播中</span>
@@ -230,9 +230,9 @@
                   </div>
                   <div class="video-info">
                     <template v-if="video.status === 0">
-                      <span style="color: #3ca7fa"
-                        >开播时间 {{ video.published_at }}</span
-                      >
+                      <span style="color: #3ca7fa">{{
+                        video.published_at | dateFormat
+                      }}</span>
                     </template>
                     <template v-else-if="video.status === 1">
                       <span style="color: #04c877">直播中</span>
