@@ -8,12 +8,14 @@
         end: status === 2,
       }"
     >
-      <div class="bullet-chat active" v-if="!over">
-        <div class="addmore" @click="getMoreChatRecords()">加载更多</div>
-      </div>
-      <div class="bullet-chat active" v-else>
-        <div class="addmore">已全部加载</div>
-      </div>
+      <template v-if="chatRecords.length > 0">
+        <div class="bullet-chat active" v-if="!over">
+          <div class="addmore" @click="getMoreChatRecords()">加载更多</div>
+        </div>
+        <div class="bullet-chat active" v-else>
+          <div class="addmore">已全部加载</div>
+        </div>
+      </template>
       <div
         class="bullet-chat"
         v-for="(item, index) in chatRecords"
