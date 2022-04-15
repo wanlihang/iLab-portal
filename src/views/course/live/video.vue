@@ -325,7 +325,7 @@ export default {
         poster: this.course.poster || this.config.player.cover,
         width: 950,
         height: 535,
-        listener: function (msg) {
+        listener: function(msg) {
           if (msg.type == "timeupdate") {
             that.playRecord(parseInt(msg.timeStamp / 1000));
           } else if (msg.type == "ended") {
@@ -709,9 +709,9 @@ export default {
 
           .bullet-chat {
             width: 100%;
-            display: flex;
-            flex-direction: row;
-            margin-bottom: 30px;
+            height: auto;
+            float: left;
+            margin-bottom: 20px;
 
             &:last-child {
               margin-bottom: 15px;
@@ -737,14 +737,24 @@ export default {
             }
 
             .nickname {
+              width: 100%;
+              height: auto;
+              float: left;
               font-size: 13px;
               font-weight: 400;
-              color: #3ca7fa;
+              color: #666666;
               line-height: 18px;
+              margin-bottom: 5px;
             }
 
             .chat-content {
-              flex: 1;
+              width: auto;
+              height: auto;
+              float: left;
+              background: #e1f1fd;
+              box-sizing: border-box;
+              padding: 8px 10px;
+              border-radius: 8px;
               font-size: 13px;
               font-weight: 400;
               color: #333333;
