@@ -96,7 +96,7 @@
               </template>
 
               <template v-else>
-                <div class="nickname">{{ item.user.nick_name }}：</div>
+                <div class="nickname">{{ item.user.nick_name }}</div>
                 <div class="chat-content">{{ item.content }}</div>
               </template>
             </div>
