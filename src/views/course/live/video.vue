@@ -134,6 +134,7 @@ export default {
       record_exists: 0,
       record_duration: 0,
       timeValue: 0,
+      curDuration: 0,
     };
   },
   computed: {
@@ -251,9 +252,11 @@ export default {
         closeVideoClick: true,
       });
       this.livePlayer.on("timeupdate", () => {
+        this.curDuration = parseInt(this.livePlayer.currentTime);
         this.playRecord(parseInt(this.livePlayer.currentTime));
       });
       this.livePlayer.on("ended", () => {
+        this.curDuration = parseInt(this.livePlayer.currentTime);
         this.playRecord(parseInt(this.livePlayer.currentTime), true);
       });
     },
@@ -267,8 +270,10 @@ export default {
         height: 535,
         listener: function(msg) {
           if (msg.type == "timeupdate") {
+            that.curDuration = parseInt(msg.timeStamp / 1000);
             that.playRecord(parseInt(msg.timeStamp / 1000));
           } else if (msg.type == "ended") {
+            that.curDuration = parseInt(msg.timeStamp / 1000);
             that.playRecord(parseInt(msg.timeStamp / 1000), true);
           }
         },
@@ -323,11 +328,9 @@ export default {
       }
     },
     saveChat(content) {
-      let curDuration =
-        this.livePlayer === null ? 0 : this.livePlayer.video.currentTime;
       this.$api.Live.SendMessage(this.course.id, this.video.id, {
         content: content,
-        duration: curDuration,
+        duration: this.curDuration,
       }).catch((e) => {
         this.$msg.error(e.message);
       });
