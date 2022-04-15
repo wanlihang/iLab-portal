@@ -76,41 +76,16 @@
           </div>
         </div>
         <div class="chat-item">
-          <div class="tit">聊天互动</div>
-          <div
-            class="chat-box"
-            ref="chatBox"
-            :class="{
-              end: video.status === 2,
-            }"
-          >
-            <div
-              class="bullet-chat"
-              v-for="(item, index) in chatRecords"
-              :key="index"
-            >
-              <template v-if="item.local">
-                <div class="alert-message">
-                  <span class="text-block">{{ item.content }}</span>
-                </div>
-              </template>
-
-              <template v-else>
-                <div class="nickname">{{ item.user.nick_name }}</div>
-                <div class="chat-content">{{ item.content }}</div>
-              </template>
-            </div>
-          </div>
+          <chat-box
+            :chat="chat"
+            :enabledChat="enabledChat"
+            :status="video.status"
+            :cid="course.id"
+            :vid="video.id"
+          ></chat-box>
         </div>
       </div>
     </div>
-
-    <remote-script
-      src="https://cdn.aodianyun.com/dms/rop_client.js"
-      @load="initADY"
-      v-if="enabledChat"
-    ></remote-script>
-
     <template v-if="video.status === 1">
       <template v-if="webrtc_play_url">
         <remote-script
@@ -129,9 +104,13 @@
   </div>
 </template>
 <script>
+import ChatBox from "../../../components/chat-box.vue";
 import { mapState } from "vuex";
 
 export default {
+  components: {
+    ChatBox,
+  },
   data() {
     return {
       id: this.$route.query.id,
@@ -149,19 +128,7 @@ export default {
       second: "00",
       livePlayer: null,
       vodPlayer: null,
-      chatRecords: [],
-      chatChannel: null,
-      chatUser: null,
-      ADYParams: {
-        pub_key: null,
-        sub_key: null,
-        channel: null,
-        user: {
-          id: null,
-          name: null,
-          avatar: null,
-        },
-      },
+      chat: null,
       isWebrtc: false,
       vodPlayerStatus: false,
       record_exists: 0,
@@ -194,22 +161,12 @@ export default {
       return s >= 10 ? s : "0" + s;
     },
   },
-  watch: {
-    chatRecords() {
-      this.chatBoxScrollBottom();
-    },
-  },
   mounted() {
     this.getData();
   },
   beforeDestroy() {
     this.livePlayer && this.livePlayer.destroy(true);
     this.vodPlayer && this.vodPlayer.destroy();
-
-    // 断开聊天室
-    if (window.ROP) {
-      window.ROP.Leave();
-    }
   },
   methods: {
     getData() {
@@ -219,32 +176,15 @@ export default {
 
           // 网页标题
           document.title = resData.video.title;
-
-          // 初始化聊天服务
-          if (typeof resData.chat !== "undefined") {
-            this.chatChannel = resData.chat.channel;
-            this.chatUser = resData.chat.user;
-
-            this.ADYParams.sub_key = resData.chat.aodianyun.sub_key;
-            this.ADYParams.pub_key = resData.chat.aodianyun.pub_key;
-            this.ADYParams.channel = resData.chat.channel;
-            this.ADYParams.user.id = resData.chat.user.id;
-            this.ADYParams.user.name = resData.chat.user.name;
-            this.ADYParams.user.avatar = resData.chat.user.avatar;
-          }
-
+          this.chat = resData.chat;
           // 倒计时
           this.curStartTime = resData.video.published_at;
-
           this.course = resData.course;
           this.video = resData.video;
           this.playUrl = resData.play_url;
           this.record_exists = resData.record_exists;
           this.record_duration = resData.record_duration;
           this.webrtc_play_url = resData.web_rtc_play_url;
-
-          // 聊天记录
-          this.getChatRecords();
 
           // 初始化播放器
           if (this.video.status === 0) {
@@ -334,87 +274,7 @@ export default {
         },
       });
     },
-    initADY() {
-      let pubKey = this.ADYParams.pub_key;
-      let subKey = this.ADYParams.sub_key;
-      let channel = this.ADYParams.channel;
-      let id = this.ADYParams.user.id;
-      let nickname = this.ADYParams.user.name;
-      let avatar = this.ADYParams.user.avatar;
 
-      if (pubKey === null) {
-        return;
-      }
-
-      window.ROP.Enter(pubKey, subKey, id, true);
-      window.ROP.On("enter_suc", () => {
-        window.ROP.Subscribe(channel);
-        // 发送新用户上线消息
-        window.ROP.Publish(
-          JSON.stringify({
-            t: "connect",
-            v: "",
-            u: {
-              id: id,
-              nickname: nickname,
-              avatar: avatar,
-            },
-          }),
-          channel
-        );
-      });
-      window.ROP.On("enter_fail", (err) => {
-        this.chanEvt("connect-fail", err);
-      });
-      window.ROP.On("offline", (err) => {
-        this.chanEvt("connect-off", err);
-      });
-      window.ROP.On("losed", () => {
-        this.chanEvt("connect-lose");
-      });
-      window.ROP.On("reconnect", () => {
-        this.chanEvt("connect-reconnect");
-      });
-      window.ROP.On("connectold", () => {
-        this.chanEvt("connect-repeat");
-      });
-      window.ROP.On("publish_data", (data, topic) => {
-        if (topic !== channel) {
-          return;
-        }
-        let message = JSON.parse(data);
-        if (message.t === "message") {
-          this.chatRecords.push({
-            content: message.v,
-            user: {
-              nick_name: message.u.name,
-            },
-          });
-        } else if (message.t === "connect") {
-          this.chatRecords.push({
-            local: 1,
-            content: message.u.nickname + "已加入",
-          });
-        }
-      });
-    },
-    chanEvt(e, data) {
-      const mesMap = {
-        "connect-success": "已加入聊天室",
-        enter_fail: "无法加入聊天室",
-        offline: "已断开连接",
-        losed: "已断开连接",
-        reconnect: "已重新连接",
-        connectold: "异地登录",
-        "connect-repeat": "异地登录",
-        "connect-lose": "已断开链接",
-      };
-
-      this.chatRecords.push({
-        local: 1,
-        content: mesMap[e],
-      });
-    },
     initVodPlayer(url, poster) {
       let dplayerUrls = [];
       url.forEach((item) => {
@@ -462,14 +322,6 @@ export default {
         });
       }
     },
-    getChatRecords() {
-      this.$api.Live.ChatRecords(this.course.id, this.video.id, {
-        page: 1,
-        size: 2000,
-      }).then((res) => {
-        this.chatRecords.push(...res.data.data);
-      });
-    },
     saveChat(content) {
       let curDuration =
         this.livePlayer === null ? 0 : this.livePlayer.video.currentTime;
@@ -486,11 +338,6 @@ export default {
       }
       this.saveChat(this.message.content);
       this.message.content = null;
-    },
-    chatBoxScrollBottom() {
-      setTimeout(() => {
-        this.$refs["chatBox"].scrollTop = this.$refs["chatBox"].scrollHeight;
-      }, 150);
     },
   },
 };
@@ -678,91 +525,7 @@ export default {
       .chat-item {
         width: 250px;
         height: auto;
-        box-sizing: border-box;
-        padding: 15px 0 0 0;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-
-        .tit {
-          width: 100%;
-          height: 16px;
-          font-size: 16px;
-          font-weight: 600;
-          color: #333333;
-          margin-bottom: 15px;
-          box-sizing: border-box;
-          padding: 0 15px 30px 15px;
-        }
-        .chat-box {
-          width: 100%;
-          height: 610px;
-          overflow-x: hidden;
-          overflow-y: auto;
-          display: flex;
-          flex-direction: column;
-          box-sizing: border-box;
-          padding: 0 15px;
-          &.end {
-            height: 551px;
-          }
-
-          .bullet-chat {
-            width: 100%;
-            height: auto;
-            float: left;
-            margin-bottom: 20px;
-
-            &:last-child {
-              margin-bottom: 15px;
-            }
-
-            .alert-message {
-              width: 100%;
-              height: auto;
-              float: left;
-
-              .text-block {
-                width: auto;
-                height: 26px;
-                padding: 7px 12px;
-                background: #cccccc;
-                border-radius: 15px;
-                display: inline-block;
-                font-size: 12px;
-                line-height: 12px;
-                font-weight: 400;
-                color: #ffffff;
-              }
-            }
-
-            .nickname {
-              width: 100%;
-              height: auto;
-              float: left;
-              font-size: 13px;
-              font-weight: 400;
-              color: #666666;
-              line-height: 18px;
-              margin-bottom: 5px;
-            }
-
-            .chat-content {
-              width: auto;
-              height: auto;
-              float: left;
-              background: #e1f1fd;
-              box-sizing: border-box;
-              padding: 8px 10px;
-              border-radius: 8px;
-              font-size: 13px;
-              font-weight: 400;
-              color: #333333;
-              line-height: 18px;
-              word-break: break-all;
-            }
-          }
-        }
+        float: left;
       }
     }
   }
