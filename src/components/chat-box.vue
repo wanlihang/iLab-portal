@@ -193,12 +193,11 @@ export default {
         this.chanEvt("connect-repeat");
       });
       window.ROP.On("publish_data", (data, topic) => {
-        console.log(data);
-        this.messageDisabled = false;
         if (topic !== channel) {
           return;
         }
         this.enabledScrollBottom = true;
+        this.messageDisabled = false;
         let message = JSON.parse(data);
         if (message.t === "message") {
           let msgV = JSON.parse(message.v);
