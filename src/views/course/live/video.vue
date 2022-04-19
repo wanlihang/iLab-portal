@@ -67,7 +67,7 @@
             <input
               class="reply-content"
               type="text"
-              :disabled="video.status === 2"
+              :disabled="video.status === 2 || messageDisabled"
               v-model="message.content"
               placeholder="按回车键可直接发送"
               @keyup.enter="submitMessage()"
@@ -82,6 +82,7 @@
             :status="video.status"
             :cid="course.id"
             :vid="video.id"
+            @change="getStatus"
           ></chat-box>
         </div>
       </div>
@@ -135,6 +136,7 @@ export default {
       record_duration: 0,
       timeValue: 0,
       curDuration: 0,
+      messageDisabled: false,
     };
   },
   computed: {
@@ -170,6 +172,9 @@ export default {
     this.vodPlayer && this.vodPlayer.destroy();
   },
   methods: {
+    getStatus(status) {
+      this.messageDisabled = status;
+    },
     getData() {
       this.$api.Live.Play(this.id)
         .then((res) => {
@@ -337,6 +342,9 @@ export default {
     },
     submitMessage() {
       if (!this.message.content) {
+        return;
+      }
+      if (this.messageDisabled) {
         return;
       }
       this.saveChat(this.message.content);

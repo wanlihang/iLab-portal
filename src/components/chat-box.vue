@@ -42,6 +42,7 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 export default {
   props: ["chat", "enabledChat", "status", "cid", "vid"],
   data() {
@@ -68,6 +69,7 @@ export default {
       total: 0,
       enabledScrollBottom: false,
       newId: null,
+      messageDisabled: false,
     };
   },
   watch: {
@@ -91,6 +93,9 @@ export default {
       this.enabledScrollBottom = true;
       this.getChatRecords();
     },
+  },
+  computed: {
+    ...mapState(["user"]),
   },
   beforeDestroy() {
     // 断开聊天室
@@ -188,6 +193,8 @@ export default {
         this.chanEvt("connect-repeat");
       });
       window.ROP.On("publish_data", (data, topic) => {
+        console.log(data);
+        this.messageDisabled = false;
         if (topic !== channel) {
           return;
         }
@@ -203,7 +210,14 @@ export default {
             local: 1,
             content: message.u.nickname + "已加入",
           });
+        } else if (
+          message.t === "room-ban" ||
+          (message.t === "room-user-ban" &&
+            message.t.params[0] === this.user.id)
+        ) {
+          this.messageDisabled = true;
         }
+        this.$emit("change", this.messageDisabled);
       });
     },
     chanEvt(e, data) {
