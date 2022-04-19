@@ -197,7 +197,6 @@ export default {
           return;
         }
         this.enabledScrollBottom = true;
-        this.messageDisabled = false;
         let message = JSON.parse(data);
         if (message.t === "message") {
           let msgV = JSON.parse(message.v);
@@ -214,8 +213,15 @@ export default {
           (message.t === "room-user-ban" && message.params[0] === this.user.id)
         ) {
           this.messageDisabled = true;
+          this.$emit("change", this.messageDisabled);
+        } else if (
+          message.t === "room-un-ban" ||
+          message.t === "room-user-un-ban" ||
+          (message.t === "room-user-ban" && message.params[0] !== this.user.id)
+        ) {
+          this.messageDisabled = false;
+          this.$emit("change", this.messageDisabled);
         }
-        this.$emit("change", this.messageDisabled);
       });
     },
     chanEvt(e, data) {

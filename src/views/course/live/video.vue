@@ -191,7 +191,9 @@ export default {
           this.record_exists = resData.record_exists;
           this.record_duration = resData.record_duration;
           this.webrtc_play_url = resData.web_rtc_play_url;
-
+          if (resData.room_is_ban === 1 || resData.user_is_ban === 1) {
+            this.messageDisabled = true;
+          }
           // 初始化播放器
           if (this.video.status === 0) {
             this.countTime();
