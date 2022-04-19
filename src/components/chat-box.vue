@@ -211,8 +211,7 @@ export default {
           });
         } else if (
           message.t === "room-ban" ||
-          (message.t === "room-user-ban" &&
-            message.t.params[0] === this.user.id)
+          (message.t === "room-user-ban" && message.params[0] === this.user.id)
         ) {
           this.messageDisabled = true;
         }
