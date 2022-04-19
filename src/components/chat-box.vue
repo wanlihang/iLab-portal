@@ -29,8 +29,8 @@
         </template>
 
         <template v-else>
-          <div class="nickname">{{ item.user.nick_name }}</div>
-          <div class="chat-content">{{ item.content }}</div>
+          <div class="nickname">{{ item.msg_body.nick_name }}</div>
+          <div class="chat-content">{{ item.msg_body.content }}</div>
         </template>
       </div>
     </div>
@@ -194,11 +194,9 @@ export default {
         this.enabledScrollBottom = true;
         let message = JSON.parse(data);
         if (message.t === "message") {
+          let msgV = JSON.parse(message.v);
           this.chatRecords.push({
-            content: message.v,
-            user: {
-              nick_name: message.u.name,
-            },
+            msg_body: msgV,
           });
         } else if (message.t === "connect") {
           this.chatRecords.push({
