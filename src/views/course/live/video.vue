@@ -370,6 +370,9 @@ export default {
 }
 .content {
   width: 100%;
+  height: 100%;
+  position: relative;
+  margin: 0;
   .navheader {
     width: 100%;
     height: 70px;
