@@ -26,8 +26,12 @@
         </template>
 
         <template v-else>
-          <div class="nickname">{{ item.msg_body.nick_name }}</div>
-          <div class="chat-content">{{ item.msg_body.content }}</div>
+          <div class="nickname" :class="{ teacher: item.msg_body.tec }">
+            {{ item.msg_body.nick_name }}
+          </div>
+          <div class="message-content">
+            <div class="chat-content">{{ item.msg_body.content }}</div>
+          </div>
         </template>
       </div>
     </div>
@@ -331,21 +335,38 @@ export default {
         color: #666666;
         line-height: 18px;
         margin-bottom: 5px;
+        &.teacher {
+          width: auto;
+          font-size: 12px;
+          font-weight: 400;
+          color: #ffffff;
+          line-height: 12px;
+          padding: 5px 10px;
+          background: #3ca7fa;
+          border-radius: 2px;
+        }
       }
 
-      .chat-content {
-        width: auto;
+      .message-content {
+        width: 100%;
         height: auto;
         float: left;
-        background: #e1f1fd;
-        box-sizing: border-box;
-        padding: 8px 10px;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 400;
-        color: #333333;
-        line-height: 18px;
-        word-break: break-all;
+        display: flex;
+        justify-content: space-between;
+        .chat-content {
+          width: auto;
+          height: auto;
+          float: left;
+          background: #e1f1fd;
+          box-sizing: border-box;
+          padding: 8px 10px;
+          border-radius: 8px;
+          font-size: 13px;
+          font-weight: 400;
+          color: #333333;
+          line-height: 18px;
+          word-break: break-all;
+        }
       }
     }
   }
