@@ -249,7 +249,7 @@ export default {
 <style lang="less" scoped>
 .chat-box {
   width: 100%;
-  height: auto;
+  height: 100%;
   box-sizing: border-box;
   padding: 15px 0 0 0;
   position: relative;
@@ -267,7 +267,7 @@ export default {
   }
   .chat-box {
     width: 100%;
-    height: 610px;
+    height: 630px;
     overflow-x: hidden;
     overflow-y: auto;
     display: flex;
