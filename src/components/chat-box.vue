@@ -12,9 +12,6 @@
         <div class="bullet-chat active" v-if="!over">
           <div class="addmore" @click="getMoreChatRecords()">加载更多</div>
         </div>
-        <div class="bullet-chat active" v-else>
-          <div class="addmore">已全部加载</div>
-        </div>
       </template>
       <div
         class="bullet-chat"
@@ -309,6 +306,7 @@ export default {
         width: 100%;
         height: auto;
         float: left;
+        text-align: center;
 
         .text-block {
           width: auto;
