@@ -1,6 +1,12 @@
 <template>
   <div class="chat-box">
     <div class="tit">聊天互动</div>
+    <div class="tip" v-if="messageDisabled && userDisabled">
+      您已被禁言
+    </div>
+    <div class="tip" v-if="messageDisabled && !userDisabled">
+      全员已禁言
+    </div>
     <div
       class="chat-box"
       ref="chatBox"
@@ -45,7 +51,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
-  props: ["chat", "enabledChat", "status", "cid", "vid"],
+  props: ["chat", "enabledChat", "status", "cid", "vid", "disabled"],
   data() {
     return {
       chatChannel: null,
@@ -71,12 +77,22 @@ export default {
       enabledScrollBottom: false,
       newId: null,
       messageDisabled: false,
+      userDisabled: false,
     };
   },
   watch: {
     chatRecords() {
       if (this.enabledScrollBottom) {
         this.chatBoxScrollBottom();
+      }
+    },
+    disabled(val) {
+      if (val === 2) {
+        this.messageDisabled = true;
+        this.userDisabled = true;
+      } else if (val === 1) {
+        this.messageDisabled = true;
+        this.userDisabled = false;
       }
     },
     chat(data) {
@@ -209,10 +225,15 @@ export default {
             local: 1,
             content: message.u.nickname + "已加入",
           });
+        } else if (message.t === "room-ban") {
+          this.userDisabled = false;
+          this.messageDisabled = true;
+          this.$emit("change", this.messageDisabled);
         } else if (
-          message.t === "room-ban" ||
-          (message.t === "room-user-ban" && message.params[0] === this.user.id)
+          message.t === "room-user-ban" &&
+          message.params[0] === this.user.id
         ) {
+          this.userDisabled = true;
           this.messageDisabled = true;
           this.$emit("change", this.messageDisabled);
         } else if (
@@ -220,6 +241,7 @@ export default {
           message.t === "room-user-un-ban" ||
           (message.t === "room-user-ban" && message.params[0] !== this.user.id)
         ) {
+          this.userDisabled = false;
           this.messageDisabled = false;
           this.$emit("change", this.messageDisabled);
         }
@@ -255,19 +277,36 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
+  .tip {
+    width: 80px;
+    height: 20px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 12px;
+    background: #faad14;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 28px;
+    left: 89px;
+  }
   .tit {
     width: 100%;
-    height: 16px;
+    height: auto;
     font-size: 16px;
+    line-height: 16px;
     font-weight: 600;
     color: #333333;
     margin-bottom: 15px;
     box-sizing: border-box;
-    padding: 0 15px 30px 15px;
+    padding: 15px 15px 0px 15px;
   }
   .chat-box {
     width: 100%;
-    height: 630px;
+    height: 628px;
     overflow-x: hidden;
     overflow-y: auto;
     display: flex;
@@ -275,7 +314,7 @@ export default {
     box-sizing: border-box;
     padding: 0 15px;
     &.end {
-      height: 551px;
+      height: 549px;
     }
 
     .bullet-chat {

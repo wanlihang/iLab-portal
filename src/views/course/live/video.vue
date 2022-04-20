@@ -80,6 +80,7 @@
             :chat="chat"
             :enabledChat="enabledChat"
             :status="video.status"
+            :disabled="userDisabled"
             :cid="course.id"
             :vid="video.id"
             @change="getStatus"
@@ -137,6 +138,7 @@ export default {
       timeValue: 0,
       curDuration: 0,
       messageDisabled: false,
+      userDisabled: null,
     };
   },
   computed: {
@@ -191,7 +193,12 @@ export default {
           this.record_exists = resData.record_exists;
           this.record_duration = resData.record_duration;
           this.webrtc_play_url = resData.web_rtc_play_url;
-          if (resData.room_is_ban === 1 || resData.user_is_ban === 1) {
+          if (resData.room_is_ban === 1) {
+            this.userDisabled = 1;
+            this.messageDisabled = true;
+          }
+          if (resData.user_is_ban === 1) {
+            this.userDisabled = 2;
             this.messageDisabled = true;
           }
           // 初始化播放器
