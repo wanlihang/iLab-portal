@@ -401,7 +401,7 @@ export default {
   }
   .live-banner {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     padding-top: 50px;
     box-sizing: border-box;
     padding-bottom: 270px;
