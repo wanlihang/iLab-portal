@@ -200,6 +200,55 @@
                 </div>
               </div>
             </div>
+            <template v-if="videos[0] !== undefined && videos[0].length > 0">
+              <div class="chapter-item">
+                <div class="chapter-name">无章节内容</div>
+                <div
+                  class="chapter-videos-box"
+                  :class="{
+                    active: videos.length > 0 && chapters.length === 0,
+                  }"
+                >
+                  <div
+                    class="video-item"
+                    @click="goPlay(video)"
+                    v-for="video in videos[0]"
+                    :key="video.id"
+                  >
+                    <img
+                      v-if="isBuy"
+                      class="play-icon"
+                      src="../../../assets/img/commen/icon-unlock.png"
+                    />
+                    <img
+                      class="play-icon"
+                      v-else
+                      src="../../../assets/img/commen/icon-lock.png"
+                    />
+                    <div class="video-title">
+                      <span class="text">{{ video.title }}</span>
+                    </div>
+                    <div class="video-info">
+                      <template v-if="video.status === 0">
+                        <span style="color: #3ca7fa">{{
+                          video.published_at | dateFormat
+                        }}</span>
+                      </template>
+                      <template v-else-if="video.status === 1">
+                        <span style="color: #04c877">直播中</span>
+                      </template>
+                      <template v-else-if="video.status === 2">
+                        <span>已结束 </span>
+                        <duration
+                          v-if="video.duration !== 0"
+                          :seconds="video.duration"
+                        ></duration>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
           </template>
           <template v-else-if="videos.length > 0">
             <div class="chapter-item">

@@ -248,6 +248,7 @@ export default {
         Number(this.min) === 0 &&
         Number(this.second) === 0
       ) {
+        this.video.status = 1;
         return;
       } else {
         setTimeout(this.countTime, 1000);
