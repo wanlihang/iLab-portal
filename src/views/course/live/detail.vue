@@ -98,8 +98,8 @@
                   <template
                     v-if="
                       tgData &&
-                      tgData.goods &&
-                      (!tgData.join_item || tgData.join_item.length === 0)
+                        tgData.goods &&
+                        (!tgData.join_item || tgData.join_item.length === 0)
                     "
                   >
                     <div class="role-button" @click="goPay(0)">
