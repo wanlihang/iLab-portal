@@ -244,6 +244,11 @@ export default {
           this.userDisabled = false;
           this.messageDisabled = false;
           this.$emit("change", this.messageDisabled);
+        } else if (message.t === "room-over") {
+          this.$message.success("当前直播已结束");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
         }
       });
     },
