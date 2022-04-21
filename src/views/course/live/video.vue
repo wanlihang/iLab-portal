@@ -197,7 +197,6 @@ export default {
           // 网页标题
           document.title = resData.video.title;
           this.chat = resData.chat;
-          // 倒计时
           this.curStartTime = resData.video.published_at;
           this.course = resData.course;
           this.video = resData.video;
@@ -213,7 +212,7 @@ export default {
             this.userDisabled = 2;
             this.messageDisabled = true;
           }
-          // 初始化播放器
+          // 倒计时
           if (this.video.status === 0) {
             this.countTime();
           }
