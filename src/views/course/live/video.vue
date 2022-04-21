@@ -69,10 +69,22 @@
               type="text"
               :disabled="video.status === 2 || messageDisabled"
               v-model="message.content"
-              placeholder="按回车键可直接发送"
+              :placeholder="
+                messageDisabled
+                  ? '禁言状态下无法发布消息'
+                  : '按回车键可直接发送'
+              "
               @keyup.enter="submitMessage()"
             />
-            <div class="submit" @click="submitMessage()">发布</div>
+            <div
+              class="submit"
+              :class="{
+                disabled: messageDisabled,
+              }"
+              @click="submitMessage()"
+            >
+              发布
+            </div>
           </div>
         </div>
         <div class="chat-item">
@@ -542,6 +554,9 @@ export default {
             z-index: 10;
             &:hover {
               opacity: 0.8;
+            }
+            &.disabled {
+              background: #cccccc;
             }
           }
         }
