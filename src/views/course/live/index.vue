@@ -1,12 +1,12 @@
 <template>
   <div class="content page-main-body-box">
-    <filter-box
+    <filter-two-class
       v-show="!navLoading"
-      :categories2="categories"
-      :cid1="pagination.scene"
-      :cid2="pagination.cid"
+      :categories="categories"
+      :cid="cid"
+      :child="child"
       @change="filterChange"
-    ></filter-box>
+    ></filter-two-class>
     <template v-if="navLoading">
       <skeletonNav></skeletonNav>
     </template>
@@ -67,7 +67,7 @@
 </template>
 <script>
 import None from "../../../components/none.vue";
-import FilterBox from "../../../components/filter-box.vue";
+import FilterTwoClass from "../../../components/filter-two-class.vue";
 import PageBox from "../../../components/page.vue";
 import NavFooter from "../../../components/footer.vue";
 import SkeletonCourseList from "../../../components/skeleton/skeletonCourseList.vue";
@@ -75,7 +75,7 @@ import SkeletonNav from "../../../components/skeleton/skeletonNav.vue";
 
 export default {
   components: {
-    FilterBox,
+    FilterTwoClass,
     PageBox,
     NavFooter,
     None,
@@ -90,8 +90,10 @@ export default {
       pagination: {
         page: 1,
         size: 16,
-        cid: this.$route.query.category_id || 0,
+        cid: 0,
       },
+      cid: this.$route.query.cid || 0,
+      child: this.$route.query.child || 0,
       categories: [],
       over: false,
       loading: false,
@@ -112,8 +114,9 @@ export default {
   },
   methods: {
     changefilter() {
-      let cid = this.pagination.cid;
-      if (cid === 0) {
+      let cid1 = this.cid;
+      let cid2 = this.child;
+      if (parseInt(cid1) === 0) {
         this.$router.push({
           path: this.$route.path,
         });
@@ -121,7 +124,8 @@ export default {
         this.$router.push({
           path: this.$route.path,
           query: {
-            category_id: cid,
+            cid: cid1,
+            child: cid2,
           },
         });
       }
@@ -129,9 +133,8 @@ export default {
     goLiveDetail(item) {
       this.$router.push({ name: "liveDetail", query: { id: item.id } });
     },
-    filterChange(scene, cid) {
-      this.pagination.scene = scene;
-      if (cid === 0) {
+    filterChange(cid1, cid2) {
+      if (parseInt(cid1) === 0) {
         this.$router.push({
           path: this.$route.path,
         });
@@ -139,7 +142,8 @@ export default {
         this.$router.push({
           path: this.$route.path,
           query: {
-            category_id: cid,
+            cid: cid1,
+            child: cid2,
           },
         });
       }
@@ -161,7 +165,13 @@ export default {
         return;
       }
       this.loading = true;
-      this.pagination.cid = this.$route.query.category_id || 0;
+      this.cid = this.$route.query.cid || 0;
+      this.child = this.$route.query.child || 0;
+      if (parseInt(this.child) === 0) {
+        this.pagination.cid = this.cid;
+      } else {
+        this.pagination.cid = this.child;
+      }
       this.$api.Live.List(this.pagination).then((res) => {
         this.loading = false;
         this.navLoading = false;

@@ -1,9 +1,16 @@
 import Vue from "vue";
-
+import moment from "moment";
 import { format } from "timeago.js";
 
+Vue.prototype.moment = moment;
 Vue.filter("changeTime", function (dateStr) {
   return format(dateStr, "zh_CN").replace("片刻后", "刚刚");
+});
+Vue.filter("dateFormat", function (dateStr, pattern = "YYYY-MM-DD HH:mm") {
+  if (!dateStr) {
+    return dateStr;
+  }
+  return moment(dateStr).format(pattern);
 });
 
 Vue.directive("code", function (el) {

@@ -43,7 +43,11 @@
         <div class="course-info">
           <div class="course-info-box">
             <div class="course-thumb">
-              <img :src="course.thumb" />
+              <thumb-bar
+                :value="course.thumb"
+                :width="320"
+                :height="240"
+              ></thumb-bar>
             </div>
             <div class="info">
               <div class="course-info-title">{{ course.title }}</div>
@@ -101,8 +105,8 @@
                   <template
                     v-if="
                       tgData &&
-                      tgData.goods &&
-                      (!tgData.join_item || tgData.join_item.length === 0)
+                        tgData.goods &&
+                        (!tgData.join_item || tgData.join_item.length === 0)
                     "
                   >
                     <div class="role-button" @click="goPay(0)">
@@ -248,7 +252,7 @@ import SkeletonDetail from "../../../components/skeleton/skeletonDetail.vue";
 import TuangouList from "../../../components/tuangou-list.vue";
 import MiaoshaList from "../../../components/miaosha-list.vue";
 import VideoListComp from "./components/detail/video-list.vue";
-import VideoChapterListComp from "./components/detail/video-chaper-list.vue";
+import VideoChapterListComp from "./components/detail/video-chapter-list.vue";
 
 export default {
   components: {
@@ -725,11 +729,7 @@ export default {
           border-radius: 8px;
           margin-right: 50px;
           position: relative;
-          img {
-            width: 320px;
-            height: 240px;
-            border-radius: 8px;
-          }
+          overflow: hidden;
           .status {
             position: absolute;
             top: 10px;

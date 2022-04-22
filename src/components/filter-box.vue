@@ -74,7 +74,7 @@ export default {
     width: 100%;
     height: auto;
     background: #ffffff;
-    padding: 18px 0px 8px 0px;
+    padding: 15px 0px 5px 0px;
     box-sizing: border-box;
     .box {
       width: 1200px;
@@ -85,10 +85,10 @@ export default {
       .first-item {
         width: 42px;
         height: 14px;
-        margin: 10px 42px 0px 0px;
+        margin: 10px 15px 0px 0px;
         font-size: 14px;
         font-weight: 400;
-        color: #333333;
+        color: #666666;
         line-height: 14px;
       }
       .item-box {
@@ -104,7 +104,7 @@ export default {
           display: flex;
           justify-content: center;
           align-items: center;
-          margin-right: 30px;
+          margin-right: 20px;
           font-size: 14px;
           font-weight: 400;
           color: #333333;

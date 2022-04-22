@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav-header v-if="!this.$route.meta.hideHeader"></nav-header>
-
+    
     <Login-Dialog
       :dialogType="loginDialogType"
       :status="loginDialogStatus"

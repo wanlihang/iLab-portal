@@ -59,6 +59,67 @@
         </div>
       </div>
     </div>
+    <template v-if="videos[0] && videos[0].length > 0">
+      <div class="chapter-item">
+        <div class="chapter-name">无章节内容</div>
+        <div class="chapter-videos-box">
+          <div
+            class="video-item"
+            :class="{ selChapter: videoItem.id === video.id }"
+            @click="switchVideo(videoItem)"
+            v-for="videoItem in videos[0]"
+            :key="videoItem.id"
+          >
+            <img
+              class="play-icon"
+              v-if="
+                isBuy ||
+                  course.is_free === 1 ||
+                  videoItem.charge === 0 ||
+                  (videoItem.charge > 0 && videoItem.free_seconds > 0) ||
+                  buyVideos.indexOf(videoItem.id) !== -1
+              "
+              src="@/assets/img/commen/icon-unlock.png"
+            />
+            <img
+              class="play-icon"
+              v-else
+              src="@/assets/img/commen/icon-lock.png"
+            />
+            <div class="video-title">
+              <div
+                :class="{
+                  active: videoItem.id === video.id,
+                  text1:
+                    !isBuy &&
+                    course.is_free !== 1 &&
+                    (videoItem.charge === 0 || videoItem.free_seconds > 0),
+                  text2: !(
+                    !isBuy &&
+                    course.is_free !== 1 &&
+                    (videoItem.charge === 0 || videoItem.free_seconds > 0)
+                  ),
+                }"
+                class="text"
+              >
+                {{ videoItem.title }}
+              </div>
+
+              <div
+                class="free"
+                v-if="
+                  isBuy === false &&
+                    course.is_free !== 1 &&
+                    (videoItem.charge === 0 || videoItem.free_seconds > 0)
+                "
+              >
+                试看
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 

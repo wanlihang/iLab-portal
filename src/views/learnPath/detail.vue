@@ -13,7 +13,11 @@
         <div class="book-info">
           <div class="book-info-box">
             <div class="book-thumb">
-              <img :src="learn.thumb" />
+              <thumb-bar
+                :value="learn.thumb"
+                :width="320"
+                :height="240"
+              ></thumb-bar>
             </div>
             <div class="info">
               <div class="book-info-title">{{ learn.name }}</div>
@@ -437,11 +441,7 @@ export default {
           border-radius: 8px;
           margin-right: 50px;
           position: relative;
-          img {
-            width: 320px;
-            height: 240px;
-            border-radius: 8px;
-          }
+          overflow: hidden;
           .status {
             position: absolute;
             top: 10px;
