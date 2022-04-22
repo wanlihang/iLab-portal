@@ -144,7 +144,6 @@ export default {
       this.$api.LearnPath.Create().then((res) => {
         this.navLoading = false;
         this.categories = res.data;
-        this.filterChange(this.cid, this.child);
       });
     },
     getData() {

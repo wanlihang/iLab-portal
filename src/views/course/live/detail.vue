@@ -98,8 +98,8 @@
                   <template
                     v-if="
                       tgData &&
-                      tgData.goods &&
-                      (!tgData.join_item || tgData.join_item.length === 0)
+                        tgData.goods &&
+                        (!tgData.join_item || tgData.join_item.length === 0)
                     "
                   >
                     <div class="role-button" @click="goPay(0)">
@@ -153,52 +153,141 @@
           <div class="new-content" v-html="course.render_desc"></div>
         </div>
         <div class="course-chapter-box" v-show="currentTab === 3">
-          <div
-            class="chapter-item"
-            v-for="chapter in chapters"
-            :key="chapter.id"
-          >
-            <div class="chapter-name">{{ chapter.name }}</div>
-            <div class="chapter-videos-box">
-              <div
-                class="video-item"
-                @click="goPlay(video)"
-                v-for="video in chapter.videos"
-                :key="video.id"
-              >
-                <img
-                  v-if="isBuy"
-                  class="play-icon"
-                  src="../../../assets/img/commen/icon-unlock.png"
-                />
-                <img
-                  class="play-icon"
-                  v-else
-                  src="../../../assets/img/commen/icon-lock.png"
-                />
-                <div class="video-title">
-                  <span class="text">{{ video.title }}</span>
-                </div>
-                <div class="video-info">
-                  <template v-if="video.status === 0">
-                    <span style="color: #3ca7fa"
-                      >开播时间 {{ video.published_at }}</span
-                    >
-                  </template>
-                  <template v-else-if="video.status === 1">
-                    <span style="color: #04c877">直播中</span>
-                  </template>
-                  <template v-else-if="video.status === 2">
-                    <span>已结束 </span>
-                    <duration
-                      v-if="video.duration !== 0"
-                      :seconds="video.duration"
-                    ></duration>
-                  </template>
+          <template v-if="chapters.length > 0">
+            <div
+              class="chapter-item"
+              v-for="chapter in chapters"
+              :key="chapter.id"
+            >
+              <div class="chapter-name">{{ chapter.name }}</div>
+              <div class="chapter-videos-box">
+                <div
+                  class="video-item"
+                  @click="goPlay(video)"
+                  v-for="video in chapter.videos"
+                  :key="video.id"
+                >
+                  <img
+                    v-if="isBuy"
+                    class="play-icon"
+                    src="../../../assets/img/commen/icon-unlock.png"
+                  />
+                  <img
+                    class="play-icon"
+                    v-else
+                    src="../../../assets/img/commen/icon-lock.png"
+                  />
+                  <div class="video-title">
+                    <span class="text">{{ video.title }}</span>
+                  </div>
+                  <div class="video-info">
+                    <template v-if="video.status === 0">
+                      <span style="color: #3ca7fa">{{
+                        video.published_at | dateFormat
+                      }}</span>
+                    </template>
+                    <template v-else-if="video.status === 1">
+                      <span style="color: #04c877">直播中</span>
+                    </template>
+                    <template v-else-if="video.status === 2">
+                      <span>已结束 </span>
+                      <duration
+                        v-if="video.duration !== 0"
+                        :seconds="video.duration"
+                      ></duration>
+                    </template>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+            <template v-if="videos[0] && videos[0].length > 0">
+              <div class="chapter-item">
+                <div class="chapter-name">无章节内容</div>
+                <div class="chapter-videos-box">
+                  <div
+                    class="video-item"
+                    @click="goPlay(video)"
+                    v-for="video in videos[0]"
+                    :key="video.id"
+                  >
+                    <img
+                      v-if="isBuy"
+                      class="play-icon"
+                      src="../../../assets/img/commen/icon-unlock.png"
+                    />
+                    <img
+                      class="play-icon"
+                      v-else
+                      src="../../../assets/img/commen/icon-lock.png"
+                    />
+                    <div class="video-title">
+                      <span class="text">{{ video.title }}</span>
+                    </div>
+                    <div class="video-info">
+                      <template v-if="video.status === 0">
+                        <span style="color: #3ca7fa">{{
+                          video.published_at | dateFormat
+                        }}</span>
+                      </template>
+                      <template v-else-if="video.status === 1">
+                        <span style="color: #04c877">直播中</span>
+                      </template>
+                      <template v-else-if="video.status === 2">
+                        <span>已结束 </span>
+                        <duration
+                          v-if="video.duration !== 0"
+                          :seconds="video.duration"
+                        ></duration>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </template>
+          <template v-else>
+            <div class="chapter-item">
+              <div class="chapter-videos-box active">
+                <div
+                  class="video-item"
+                  @click="goPlay(video)"
+                  v-for="video in videos[0]"
+                  :key="video.id"
+                >
+                  <img
+                    v-if="isBuy"
+                    class="play-icon"
+                    src="../../../assets/img/commen/icon-unlock.png"
+                  />
+                  <img
+                    class="play-icon"
+                    v-else
+                    src="../../../assets/img/commen/icon-lock.png"
+                  />
+                  <div class="video-title">
+                    <span class="text">{{ video.title }}</span>
+                  </div>
+                  <div class="video-info">
+                    <template v-if="video.status === 0">
+                      <span style="color: #3ca7fa">{{
+                        video.published_at | dateFormat
+                      }}</span>
+                    </template>
+                    <template v-else-if="video.status === 1">
+                      <span style="color: #04c877">直播中</span>
+                    </template>
+                    <template v-else-if="video.status === 2">
+                      <span>已结束 </span>
+                      <duration
+                        v-if="video.duration !== 0"
+                        :seconds="video.duration"
+                      ></duration>
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
         </div>
         <div class="course-comments-box" v-show="currentTab === 4">
           <div class="comment-divider">全部评论</div>
@@ -301,6 +390,7 @@ export default {
       currentTab: 2,
       total: null,
       chapters: [],
+      videos: [],
       tabs: [
         {
           name: "直播详情",
@@ -466,6 +556,7 @@ export default {
           this.loading = false;
           this.course = res.data.course;
           this.chapters = res.data.chapters;
+          this.videos = res.data.videos;
           this.isBuy = res.data.is_buy;
           document.title = res.data.course.title;
           //获取秒杀信息
@@ -891,6 +982,9 @@ export default {
           width: 100%;
           height: auto;
           margin-top: 30px;
+          &.active {
+            margin-top: 0px;
+          }
           .video-item {
             width: 100%;
             height: 24px;
