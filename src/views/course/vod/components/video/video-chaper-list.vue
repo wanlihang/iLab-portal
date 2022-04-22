@@ -59,7 +59,7 @@
         </div>
       </div>
     </div>
-    <template v-if="videos[0] !== undefined && videos[0].length > 0">
+    <template v-if="videos[0] && videos[0].length > 0">
       <div class="chapter-item">
         <div class="chapter-name">无章节内容</div>
         <div class="chapter-videos-box">
