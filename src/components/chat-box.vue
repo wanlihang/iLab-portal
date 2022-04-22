@@ -339,7 +339,6 @@ export default {
         display: inline-block;
         width: auto;
         height: auto;
-        float: left;
         font-size: 13px;
         font-weight: 400;
         color: #666666;
