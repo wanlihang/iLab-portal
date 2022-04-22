@@ -92,8 +92,8 @@
                   class="subscribe-button2"
                   v-if="
                     video.charge > 0 &&
-                    video.is_ban_sell === 0 &&
-                    isWatch === false
+                      video.is_ban_sell === 0 &&
+                      isWatch === false
                   "
                   @click="paySelect(3)"
                 >
@@ -223,7 +223,7 @@ import None from "../../../components/none.vue";
 import HistoryRecord from "../../../components/history-record.vue";
 import SnapShot from "../../../components/snapshort.vue";
 import VideoListComp from "./components/video/video-list.vue";
-import VideoChapterListComp from "./components/video/video-chaper-list.vue";
+import VideoChapterListComp from "./components/video/video-chapter-list.vue";
 
 export default {
   components: {
@@ -594,7 +594,7 @@ export default {
         this.playTimeUpdate(parseInt(window.player.video.currentTime), true);
         this.playendedStatus = true;
         this.totalTime = 10;
-        this.$nextTick(function () {
+        this.$nextTick(function() {
           if (!this.isLastpage) {
             this.countDown();
           }

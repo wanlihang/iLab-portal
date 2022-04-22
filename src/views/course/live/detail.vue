@@ -203,12 +203,7 @@
             <template v-if="videos[0] && videos[0].length > 0">
               <div class="chapter-item">
                 <div class="chapter-name">无章节内容</div>
-                <div
-                  class="chapter-videos-box"
-                  :class="{
-                    active: videos.length > 0 && chapters.length === 0,
-                  }"
-                >
+                <div class="chapter-videos-box">
                   <div
                     class="video-item"
                     @click="goPlay(video)"
@@ -250,14 +245,9 @@
               </div>
             </template>
           </template>
-          <template v-else-if="videos.length > 0">
+          <template v-else>
             <div class="chapter-item">
-              <div
-                class="chapter-videos-box"
-                :class="{
-                  active: videos.length > 0 && chapters.length === 0,
-                }"
-              >
+              <div class="chapter-videos-box active">
                 <div
                   class="video-item"
                   @click="goPlay(video)"
