@@ -45,18 +45,28 @@
           </div>
         </div>
         <div style="margin-left: 35px">
-          <el-button type="primary" size="small" @click="openWebSSH">
-            开启实验<i class="el-icon-upload el-icon--right"></i>
+          <el-button type="primary" size="small" @click="openWebEditor">
+            开启云端编程环境<i class="el-icon-upload el-icon--right"></i>
+          </el-button>
+          <el-button type="primary" size="small" @click="openWebRemoteDesktop">
+            开启远程桌面环境<i class="el-icon-upload el-icon--right"></i>
+          </el-button>
+          <el-button type="primary" size="small" @click="openWebTerminal">
+            开启远程命令行环境<i class="el-icon-upload el-icon--right"></i>
+          </el-button>
+          <el-button type="primary" size="small" @click="openWebJuypter">
+            开启云端交互式环境<i class="el-icon-upload el-icon--right"></i>
           </el-button>
         </div>
         <el-dialog
             :title="title"
             :visible.sync="open"
             width="80%"
-            center>
-          <span slot="footer" class="dialog-footer">
-          <Terminal></Terminal>
-        </span>
+            @close="handleClose">
+          <Editor v-if="editorModel"></Editor>
+          <RemoteDesktop v-if="remoteDesktopModel"></RemoteDesktop>
+          <Terminal v-if="terminalModel"></Terminal>
+          <Jupyter v-if="jupyterModel"></Jupyter>
         </el-dialog>
       </div>
     </div>
@@ -113,29 +123,65 @@
 
 <script>
 import Duration from "@/components/duration.vue";
+import Editor from './editor'
+import RemoteDesktop from './remoteDesktop'
 import Terminal from './terminal'
+import Jupyter from './jupyter'
 
 export default {
   components: {
     Duration,
-    Terminal
+    Editor,
+    RemoteDesktop,
+    Terminal,
+    Jupyter
   },
   props: ["videos", "isBuy", "course", "buyVideos", "chapters"],
   data() {
     return {
       open: false,
-      title: ""
+      title: "",
+      editorModel: false,
+      remoteDesktopModel: false,
+      terminalModel: false,
+      jupyterModel: false,
     };
   },
   methods: {
     switchVideo(item) {
       this.$emit("switchVideo", item);
     },
-    /** 打开实验环境按钮操作 */
-    openWebSSH() {
+    /** 打开云端编程环境按钮操作 */
+    openWebEditor() {
       this.open = true;
-      this.title = "命令行";
+      this.editorModel = true;
+      this.title = "云端编程环境";
     },
+    /** 打开远程桌面环境按钮操作 */
+    openWebRemoteDesktop() {
+      this.open = true;
+      this.remoteDesktopModel = true;
+      this.title = "远程桌面环境";
+    },
+    /** 打开远程命令行环境按钮操作 */
+    openWebTerminal() {
+      this.open = true;
+      this.terminalModel = true;
+      this.title = "远程命令行环境";
+    },
+    /** 打开远程交互式环境按钮操作 */
+    openWebJuypter() {
+      this.open = true;
+      this.jupyterModel = true;
+      this.title = "云端交互式环境";
+    },
+    handleClose() {
+      this.editorModel = false;
+      this.remoteDesktopModel = false;
+      this.terminalModel = false;
+      this.jupyterModel = false;
+      this.title = "";
+    }
   },
 };
 </script>

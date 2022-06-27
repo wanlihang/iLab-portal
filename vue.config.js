@@ -1,3 +1,5 @@
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+
 module.exports = {
     publicPath: '',
     productionSourceMap: false,
@@ -15,5 +17,13 @@ module.exports = {
                 ws: true
             }
         }
+    },
+
+    lintOnSave: false,
+    configureWebpack: {
+        plugins: [
+            // 配置JS在线代码编辑器monaco-editor的辅助文件
+            new MonacoWebpackPlugin(),
+        ],
     },
 }

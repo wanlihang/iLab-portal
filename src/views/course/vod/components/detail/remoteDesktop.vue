@@ -13,13 +13,13 @@
 
 <script>
 export default {
-  name: 'Terminal',
+  name: "remoteDesktop",
   data() {
     return {
       containerId: 'f68b3a91e526', //this.$route.params.containerId
       src1: 'http://localhost:8000/',
       // 连接容器的地址
-      src2: 'http://192.168.102.40:9000/?arg=test&arg=python-5f584b798c-6trkx&arg=%2fbin%2fbash'
+      src2: 'http://192.168.102.40:6080/'
     }
   },
   mounted() {
@@ -30,5 +30,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
+
 </style>
