@@ -735,6 +735,11 @@ const Api = {
       return post("/addons/Snapshot/api/v1/upload/image", params);
     },
   },
+  iLab: {
+    getEnvPath(params) {
+      return post(`/ilab/iLabEnv/getEnvPath`, params);
+    },
+  },
 };
 
 export default Api;

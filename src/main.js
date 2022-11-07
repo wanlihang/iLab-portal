@@ -1,5 +1,6 @@
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import 'default-passive-events'
 import {
   Pagination,
   Dialog,
@@ -206,8 +207,6 @@ Vue.prototype.$notify = Notification;
 Vue.prototype.$message = Message;
 
 Vue.component("ThumbBar", ThumbBar);
-
-utils.copyright();
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || "";

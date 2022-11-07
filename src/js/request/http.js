@@ -11,6 +11,10 @@ axios.defaults.timeout = 10000;
 // 请求拦截器(附带上token)
 axios.interceptors.request.use(
   (config) => {
+    if (config.url.indexOf("/ilab") >= 0) {
+      config.baseURL = "http://127.0.0.1:9204"
+      config.url = config.url.replace("/ilab", "")
+    }
     const token = Utils.getToken();
     token && (config.headers.Authorization = "Bearer " + token);
     config.headers.common["meedu-platform"] = "PC";
@@ -34,7 +38,7 @@ axios.interceptors.response.use(
         });
       }
       // api请求返回错误
-      return Promise.reject(response);
+      return Promise.resolve(response);
     } else {
       return Promise.resolve(response);
     }

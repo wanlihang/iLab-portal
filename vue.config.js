@@ -4,20 +4,20 @@ module.exports = {
     publicPath: '',
     productionSourceMap: false,
     assetsDir: 'static',
-    devServer: {
-        proxy: {
-            '/api': {
-                target: 'http://192.168.3.8:8000',
-                changeOrigin: true,
-                ws: true
-            },
-            '/addons': {
-                target: 'http://192.168.3.8:8000',
-                changeOrigin: true,
-                ws: true
-            }
-        }
-    },
+    // devServer: {
+    //     host: '0.0.0.0',
+    //     port: 8001,
+    //     open: true,
+    //     proxy: {
+    //         '/ilab': {
+    //             target: 'http://127.0.0.1:9204',
+    //             changeOrigin: true,
+    //             pathRewrite: {
+    //                 '^/ilab': ''
+    //             }
+    //         }
+    //     }
+    // },
 
     lintOnSave: false,
     configureWebpack: {

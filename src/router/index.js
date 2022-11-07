@@ -42,6 +42,11 @@ const routes = [
     component: () => import("../views/course/vod/detail.vue"),
   },
   {
+    path: "/courses/chapter/lab",
+    name: "coursesChapterLab",
+    component: () => import("../views/course/vod/lab.vue"),
+  },
+  {
     path: "/courses/video",
     name: "coursesVideo",
     meta: {

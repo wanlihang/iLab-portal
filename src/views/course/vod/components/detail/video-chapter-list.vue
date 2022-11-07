@@ -4,34 +4,34 @@
       <div class="chapter-name">{{ chapter.title }}</div>
       <div class="chapter-videos-box">
         <div
-            class="video-item"
-            @click="switchVideo(videoItem)"
-            v-for="videoItem in videos[chapter.id]"
-            :key="videoItem.id"
+          class="video-item"
+          @click="switchVideo(videoItem)"
+          v-for="videoItem in videos[chapter.id]"
+          :key="videoItem.id"
         >
           <img
-              class="play-icon"
-              v-if="
+            class="play-icon"
+            v-if="
               isBuy ||
                 course.is_free === 1 ||
                 videoItem.charge === 0 ||
                 (videoItem.charge > 0 && videoItem.free_seconds > 0) ||
                 buyVideos.indexOf(videoItem.id) !== -1
             "
-              src="@/assets/img/commen/icon-unlock.png"
+            src="@/assets/img/commen/icon-unlock.png"
           />
           <img
-              class="play-icon"
-              v-else
-              src="@/assets/img/commen/icon-lock.png"
+            class="play-icon"
+            v-else
+            src="@/assets/img/commen/icon-lock.png"
           />
           <div class="video-title">
             <div class="text">
               {{ videoItem.title }}
             </div>
             <div
-                class="free"
-                v-if="
+              class="free"
+              v-if="
                 isBuy === false &&
                   course.is_free !== 1 &&
                   (videoItem.charge === 0 || videoItem.free_seconds > 0)
@@ -45,29 +45,10 @@
           </div>
         </div>
         <div style="margin-left: 35px">
-          <el-button type="primary" size="small" @click="openWebEditor">
-            开启云端编程环境<i class="el-icon-upload el-icon--right"></i>
-          </el-button>
-          <el-button type="primary" size="small" @click="openWebRemoteDesktop">
-            开启远程桌面环境<i class="el-icon-upload el-icon--right"></i>
-          </el-button>
-          <el-button type="primary" size="small" @click="openWebTerminal">
-            开启远程命令行环境<i class="el-icon-upload el-icon--right"></i>
-          </el-button>
-          <el-button type="primary" size="small" @click="openWebJuypter">
-            开启云端交互式环境<i class="el-icon-upload el-icon--right"></i>
+          <el-button type="primary" size="small" @click="openLabEnv(chapter)">
+            开启实验环境<i class="el-icon-upload el-icon--right"></i>
           </el-button>
         </div>
-        <el-dialog
-            :title="title"
-            :visible.sync="open"
-            width="80%"
-            @close="handleClose">
-          <Editor v-if="editorModel"></Editor>
-          <RemoteDesktop v-if="remoteDesktopModel"></RemoteDesktop>
-          <Terminal v-if="terminalModel"></Terminal>
-          <Jupyter v-if="jupyterModel"></Jupyter>
-        </el-dialog>
       </div>
     </div>
     <template v-if="videos[0] && videos[0].length > 0">
@@ -75,34 +56,34 @@
         <div class="chapter-name">无章节内容</div>
         <div class="chapter-videos-box">
           <div
-              class="video-item"
-              @click="switchVideo(videoItem)"
-              v-for="videoItem in videos[0]"
-              :key="videoItem.id"
+            class="video-item"
+            @click="switchVideo(videoItem)"
+            v-for="videoItem in videos[0]"
+            :key="videoItem.id"
           >
             <img
-                class="play-icon"
-                v-if="
+              class="play-icon"
+              v-if="
                 isBuy ||
                   course.is_free === 1 ||
                   videoItem.charge === 0 ||
                   (videoItem.charge > 0 && videoItem.free_seconds > 0) ||
                   buyVideos.indexOf(videoItem.id) !== -1
               "
-                src="@/assets/img/commen/icon-unlock.png"
+              src="@/assets/img/commen/icon-unlock.png"
             />
             <img
-                class="play-icon"
-                v-else
-                src="@/assets/img/commen/icon-lock.png"
+              class="play-icon"
+              v-else
+              src="@/assets/img/commen/icon-lock.png"
             />
             <div class="video-title">
               <div class="text">
                 {{ videoItem.title }}
               </div>
               <div
-                  class="free"
-                  v-if="
+                class="free"
+                v-if="
                   isBuy === false &&
                     course.is_free !== 1 &&
                     (videoItem.charge === 0 || videoItem.free_seconds > 0)
@@ -112,7 +93,7 @@
               </div>
             </div>
             <div class="video-info">
-              <duration :seconds="videoItem.duration"></duration>
+              <Duration :seconds="videoItem.duration"></Duration>
             </div>
           </div>
         </div>
@@ -123,65 +104,39 @@
 
 <script>
 import Duration from "@/components/duration.vue";
-import Editor from './editor'
-import RemoteDesktop from './remoteDesktop'
-import Terminal from './terminal'
-import Jupyter from './jupyter'
 
 export default {
+  name: "videoChapterList",
   components: {
     Duration,
-    Editor,
-    RemoteDesktop,
-    Terminal,
-    Jupyter
   },
   props: ["videos", "isBuy", "course", "buyVideos", "chapters"],
   data() {
-    return {
-      open: false,
-      title: "",
-      editorModel: false,
-      remoteDesktopModel: false,
-      terminalModel: false,
-      jupyterModel: false,
-    };
+    return {};
   },
   methods: {
     switchVideo(item) {
       this.$emit("switchVideo", item);
     },
-    /** 打开云端编程环境按钮操作 */
-    openWebEditor() {
-      this.open = true;
-      this.editorModel = true;
-      this.title = "云端编程环境";
+    /** 打开实验环境按钮操作 */
+    openLabEnv(chapter) {
+      this.$api.iLab.getEnvPath(chapter)
+        .then((res) => {
+          console.log("getEnvPath", res);
+          this.$router.push({
+            name: "coursesChapterLab",
+            query: {
+              lavEnv: res.data,
+            },
+          });
+        })
+        .catch((e) => {
+          this.$message.error("getEnvPath 失败:" + e);
+        })
+        .finally(() => {
+
+        });
     },
-    /** 打开远程桌面环境按钮操作 */
-    openWebRemoteDesktop() {
-      this.open = true;
-      this.remoteDesktopModel = true;
-      this.title = "远程桌面环境";
-    },
-    /** 打开远程命令行环境按钮操作 */
-    openWebTerminal() {
-      this.open = true;
-      this.terminalModel = true;
-      this.title = "远程命令行环境";
-    },
-    /** 打开远程交互式环境按钮操作 */
-    openWebJuypter() {
-      this.open = true;
-      this.jupyterModel = true;
-      this.title = "云端交互式环境";
-    },
-    handleClose() {
-      this.editorModel = false;
-      this.remoteDesktopModel = false;
-      this.terminalModel = false;
-      this.jupyterModel = false;
-      this.title = "";
-    }
   },
 };
 </script>
@@ -198,7 +153,7 @@ export default {
   cursor: pointer;
 
   &:first-child {
-    margin-top: 0px;
+    margin-top: 0;
   }
 
   .play-icon {
@@ -251,7 +206,7 @@ export default {
   margin-top: 50px;
 
   &:first-child {
-    margin-top: 0px;
+    margin-top: 0;
   }
 
   .chapter-name {
@@ -264,11 +219,11 @@ export default {
     margin-bottom: 30px;
 
     &:first-child {
-      margin-bottom: 0px;
+      margin-bottom: 0;
     }
 
     &:last-child {
-      margin-bottom: 0px;
+      margin-bottom: 0;
     }
   }
 

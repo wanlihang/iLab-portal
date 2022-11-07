@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="content">
     <el-container>
-      <el-aside width="30%" style="background-color: rgb(238, 241, 246)">
-        <iframe :src="src1" ref="iframe1" height="500px" width="100%"></iframe>
+      <el-aside width="40%" style="background-color: rgb(238, 241, 246)">
+        <iframe :src="this.lavEnv.coursewarePath" ref="iframe1" height="700px" width="100%"></iframe>
       </el-aside>
-      <el-aside width="70%" style="background-color: rgb(238, 241, 211)">
-        <iframe :src="src2" ref="iframe2" height="500px" width="100%"></iframe>
+      <el-aside width="60%" style="background-color: rgb(238, 241, 211)">
+        <iframe :src="this.lavEnv.labEnvPath" ref="iframe2" height="700px" width="100%"></iframe>
       </el-aside>
     </el-container>
   </div>
@@ -14,13 +14,10 @@
 <script>
 export default {
   name: "remoteDesktop",
+
+  props: ["lavEnv"],
   data() {
-    return {
-      containerId: 'f68b3a91e526', //this.$route.params.containerId
-      src1: 'http://localhost:8000/',
-      // 连接容器的地址
-      src2: 'http://192.168.102.40:6080/'
-    }
+    return {}
   },
   mounted() {
 
