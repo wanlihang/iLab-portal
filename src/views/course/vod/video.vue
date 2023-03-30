@@ -35,7 +35,7 @@
       ></historyRecord>
       <div class="nav">
         <a @click="$router.push({ name: 'index' })">首页</a> /
-        <a @click="$router.push({ name: 'courses' })">点播课</a> /
+        <a @click="$router.push({ name: 'courses' })">实验课</a> /
         <a
           v-if="course"
           @click="
@@ -396,7 +396,7 @@ export default {
           query: {
             goods_type: "vod",
             goods_charge: this.course.charge,
-            goods_label: "点播课程",
+            goods_label: "实验课程",
             goods_name: this.course.title,
             goods_id: this.course.id,
             goods_thumb: this.course.thumb,

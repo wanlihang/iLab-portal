@@ -1,7 +1,15 @@
 <template>
   <div>
-    <div class="chapter-item" v-for="chapter in chapters" :key="chapter.id">
-      <div class="chapter-name">{{ chapter.title }}</div>
+    <div class="chapter-item" v-for="(chapter, index) in chapters" :key="chapter.id">
+      <div class="chapter-name">
+
+        第 {{ index + 1 }} 章：{{ chapter.title }}
+
+        <el-button type="primary" size="mini" @click="openLabEnv(chapter, index)" style="float: right">
+          进入实验<i class="el-icon-upload el-icon--right"></i>
+        </el-button>
+      </div>
+
       <div class="chapter-videos-box">
         <div
           class="video-item"
@@ -44,12 +52,8 @@
             <duration :seconds="videoItem.duration"></duration>
           </div>
         </div>
-        <div style="margin-left: 35px">
-          <el-button type="primary" size="small" @click="openLabEnv(chapter)">
-            开启实验环境<i class="el-icon-upload el-icon--right"></i>
-          </el-button>
-        </div>
       </div>
+      <el-divider></el-divider>
     </div>
     <template v-if="videos[0] && videos[0].length > 0">
       <div class="chapter-item">
@@ -104,9 +108,13 @@
 
 <script>
 import Duration from "@/components/duration.vue";
+import {mapState} from "vuex";
 
 export default {
   name: "videoChapterList",
+  computed: {
+    ...mapState(["isLogin", "user", "freshUnread", "config", "configFunc"]),
+  },
   components: {
     Duration,
   },
@@ -119,14 +127,24 @@ export default {
       this.$emit("switchVideo", item);
     },
     /** 打开实验环境按钮操作 */
-    openLabEnv(chapter) {
-      this.$api.iLab.getEnvPath(chapter)
+    openLabEnv(chapter, index) {
+      if (this.user == null) {
+        alert("未登录")
+        return
+      }
+      chapter.index = index
+      chapter.chapter_id = chapter.id
+      this.user.user_id = this.user.id
+      const params = Object.assign({}, chapter, this.user);
+      this.$api.iLab.getEnvPath(params)
         .then((res) => {
           console.log("getEnvPath", res);
           this.$router.push({
-            name: "coursesChapterLab",
+            name: "Lab",
             query: {
               lavEnv: res.data,
+              chapter: chapter,
+              course: this.course
             },
           });
         })
@@ -143,7 +161,7 @@ export default {
 
 <style lang="less" scoped>
 .video-item {
-  width: 100%;
+  //width: auto;
   height: 24px;
   display: flex;
   flex-direction: row;

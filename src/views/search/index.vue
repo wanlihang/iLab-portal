@@ -107,11 +107,11 @@ export default {
         },
         {
           key: "vod",
-          name: "录播课",
+          name: "实课",
         },
         {
           key: "video",
-          name: "录播视频",
+          name: "实视频",
         },
       ];
       if (this.configFunc["live"]) {
@@ -165,9 +165,9 @@ export default {
   methods: {
     change(val) {
       if (val === "video") {
-        return "录播视频";
+        return "实视频";
       } else if (val === "vod") {
-        return "录播课";
+        return "实课";
       } else if (val === "live") {
         return "直播课";
       } else if (val === "topic") {

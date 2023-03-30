@@ -20,6 +20,7 @@
     "qrcodejs": "^1.0.0",
     "qrcodejs2": "^0.0.2",
     "querystring": "^0.2.1",
+    "splitpanes": "^2.4.1",
     "swiper": "^5.4.5",
     "timeago.js": "^4.0.2",
     "urlencode": "^1.1.0",

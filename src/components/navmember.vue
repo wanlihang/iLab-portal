@@ -46,7 +46,7 @@ export default {
           status: true,
           childrens: [
             {
-              name: "点播课程",
+              name: "实验课程",
               id: 1,
               path: "MemberCourses",
               status: true,

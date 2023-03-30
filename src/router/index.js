@@ -31,7 +31,7 @@ const routes = [
     path: "/courses",
     name: "courses",
     meta: {
-      title: "点播课",
+      title: "实验课",
       keepAlive: true,
     },
     component: () => import("../views/course/vod/index.vue"),
@@ -42,9 +42,12 @@ const routes = [
     component: () => import("../views/course/vod/detail.vue"),
   },
   {
-    path: "/courses/chapter/lab",
-    name: "coursesChapterLab",
-    component: () => import("../views/course/vod/lab.vue"),
+    path: "/",
+    name: "Lab",
+    meta: {
+      hideHeader: true,
+    },
+    component: () => import("../views/lab/index.vue"),
   },
   {
     path: "/courses/video",

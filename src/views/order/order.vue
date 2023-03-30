@@ -229,7 +229,7 @@ export default {
       }
       this.loading = true;
       if (this.goods.type === "vod") {
-        // 点播课程
+        // 实验课程
         this.$api.Order.CreateCourseOrder({
           course_id: this.goods.id,
           promo_code: this.promoCode,

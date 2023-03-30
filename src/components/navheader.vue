@@ -7,7 +7,7 @@
             <div class="flex-initial">
               <div v-if="loading" class="skeletonLogo"></div>
               <a v-else-if="config" href="/" class="logo">
-                <img v-show="config.logo" :src="config.logo.logo" />
+                <img :src="require('../assets/img/commen/logo.png')" />
               </a>
             </div>
 
@@ -35,19 +35,6 @@
             </div>
 
             <div class="flex-initial flex items-center">
-              <a
-                @click="$router.push({ name: 'vip' })"
-                v-if="configFunc.vip"
-                class="rounded mr-12 text-center color-vip"
-              >
-                <img
-                  src="../assets/img/commen/icon-VIP.png"
-                  width="20"
-                  height="20"
-                  style="margin: 0 auto"
-                />
-                <div class="text-sm mt-1 text-center font-medium">VIP会员</div>
-              </a>
               <a
                 v-if="isLogin"
                 @click="$router.push({ name: 'MemberMessages' })"

@@ -45,7 +45,7 @@ export default {
   .index-section-title {
     width: 100%;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     .index-section-title-text {
       height: 30px;
       font-size: 30px;

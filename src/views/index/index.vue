@@ -246,7 +246,7 @@ export default {
   .box {
     width: 100%;
     box-sizing: border-box;
-    padding-top: 40px;
+    padding-top: 0px;
     .code-box {
       width: 100%;
       overflow: hidden;

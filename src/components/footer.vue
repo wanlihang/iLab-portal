@@ -11,17 +11,11 @@
           >{{ item.name }}</a
         >
       </div>
-      <div class="info2">
-        <a href="https://www.meedu.vip/" target="_blank"
-          ><img src="../assets/img/commen/footlink.png"
-        /></a>
-      </div>
       <div class="info1">
-        © 2021 {{ config.webname }}
+        wanlh.top © 2020 - 2023 {{ config.webname }}
         <a v-if="config.icp" :href="config.icp_link" target="_blank">
           •{{ config.icp }}</a
         >
-
         <a v-if="config.icp2" :href="config.icp2_link" target="_blank"
           >•{{ config.icp2 }}</a
         >
@@ -59,7 +53,7 @@ export default {
 </script>
 <style lang='less' scoped>
 .footer {
-  margin-top: 150px;
+  margin-top: 80px;
   width: 100%;
   background: #0f0a1e;
   &.active {
@@ -70,7 +64,7 @@ export default {
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    padding: 60px 0px 30px 0px;
+    padding: 10px 0px 20px 0px;
     box-sizing: border-box;
     .tit {
       width: 100%;
@@ -86,7 +80,7 @@ export default {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      margin-bottom: 50px;
+      //margin-bottom: 50px;
       a {
         height: 14px;
         font-size: 14px;
@@ -99,7 +93,7 @@ export default {
     }
     .info2 {
       width: 160px;
-      height: 18px;
+      //height: 18px;
       margin: 0 auto;
       cursor: pointer;
       a {
@@ -119,7 +113,7 @@ export default {
       font-weight: 400;
       color: rgba(107, 114, 128);
       line-height: 12px;
-      margin-top: 28px;
+      margin-top: 10px;
     }
   }
 }
