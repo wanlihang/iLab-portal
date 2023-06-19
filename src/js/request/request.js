@@ -739,6 +739,12 @@ const Api = {
     getEnvPath(params) {
       return post(`/ilab/iLabEnv/getEnvPath`, params);
     },
+    saveEditorCode(params) {
+      return post(`/ilab/iLabEnv/saveEditorCode`, params);
+    },
+    runEditorCode(params) {
+      return post(`/ilab/iLabEnv/runEditorCode`, params);
+    },
   },
 };
 

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <iframe :src="src1" ref="iframe1" height="100%" width="100%"></iframe>
+    <iframe :src="this.lavEnv.labEnvPath" ref="iframe1" height="100%" width="100%"></iframe>
   </div>
 </template>
 
@@ -9,10 +9,9 @@
 export default {
 
   name: "jupyter",
+  props: ["lavEnv"],
   data() {
-    return {
-      src1: 'http://192.168.103.66:8888/notebooks/jupyter/main.ipynb',
-    }
+    return {}
   },
   mounted() {
 

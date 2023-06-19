@@ -22,6 +22,7 @@
       <Editor
         v-show="editorModel"
         :lavEnv="lavEnv"
+        :chapter="chapter"
       ></Editor>
 
       <RemoteDesktop
@@ -71,6 +72,7 @@ export default {
       remoteDesktopModel: false,
       terminalModel: false,
       jupyterModel: false,
+      fullscreenLoading: false
     };
   },
   computed: {
@@ -97,11 +99,26 @@ export default {
     }
     this.loading = false;
     console.log("lab envType", this.lavEnv.envType);
+
+    this.openFullScreen2()
+
   },
   beforeDestroy() {
 
   },
-  methods: {},
+  methods: {
+    openFullScreen2() {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      setTimeout(() => {
+        loading.close();
+      }, 3000);
+    }
+  },
 };
 </script>
 <style lang="less" scoped>
